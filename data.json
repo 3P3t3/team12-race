@@ -1,6 +1,14 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": null,
-  "people": []
+  "updatedAt": "2026-09-14T17:44:13.210Z",
+  "people": [
+    {
+      "id": "mu1j8g4abzip",
+      "name": "Riley Jackson",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0
+    }
+  ]
 }
