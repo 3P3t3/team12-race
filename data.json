@@ -1,14 +1,40 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T17:45:17.990Z",
+  "updatedAt": "2026-09-14T18:58:04.999Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
       "name": "Riley Jackson",
+      "color": "#FF5C8A",
       "ds": 0,
       "nc": 1,
-      "usd": 60
+      "usd": 60,
+      "customers": [
+        {
+          "id": "c0-0",
+          "name": "",
+          "at": null
+        }
+      ],
+      "sales": [
+        {
+          "id": "s0-0",
+          "product": "",
+          "usd": 60,
+          "at": null
+        }
+      ]
+    },
+    {
+      "id": "mu1lvfpiixdt",
+      "name": "Ester & Michael",
+      "color": "#FF8A3D",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "customers": [],
+      "sales": []
     }
   ]
 }
