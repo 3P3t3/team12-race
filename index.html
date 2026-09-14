@@ -330,7 +330,7 @@ body:not(.owner) .row.has-more{cursor:pointer}
       <span class="lbl">New customers <b class="lbl-val" id="edNcCount">0</b></span>
       <div class="adder">
         <label class="sr" for="edCust">Customer name</label>
-        <input class="text-input" id="edCust" maxlength="60" placeholder="Customer name" autocomplete="off" enterkeyhint="done">
+        <input class="text-input" id="edCust" maxlength="60" placeholder="Customer name (optional)" autocomplete="off" enterkeyhint="done">
         <button type="button" class="btn-add" id="edCustAdd">Add</button>
       </div>
       <ul class="entries" id="edCustList"></ul>
@@ -351,7 +351,7 @@ body:not(.owner) .row.has-more{cursor:pointer}
     </div>
     <div class="sheet-actions">
       <button type="button" class="link-danger" id="edDelete">Remove runner</button>
-      <button class="btn-acid" value="save">Save</button>
+      <button class="btn-acid" value="save">Done</button>
     </div>
   </form>
 </dialog>
@@ -861,7 +861,7 @@ $('#addForm').addEventListener('submit', e => {
 });
 
 /* Editor */
-let editing = null, draft = null; // edits happen on a draft; Save copies it back
+let editing = null, draft = null; // the sheet edits a draft; every change is copied back and saved right away
 rowsEl.addEventListener('click', e => {
   const row = e.target.closest('.row'); if (!row) return;
   if (!owner) {
@@ -891,10 +891,10 @@ function paintEditor() {
   $('#edUsdTotal').textContent = USD.format(draft.sales.reduce((s, x) => s + x.usd, 0));
   const cl = $('#edCustList'); cl.textContent = '';
   if (!draft.customers.length) cl.innerHTML = '<li class="empty-e">No new customers yet</li>';
-  draft.customers.slice().reverse().forEach(c => cl.appendChild(entryRow(c.name || 'Customer (no name)', !c.name, null, 'cust', c.id)));
+  draft.customers.slice().reverse().forEach(c => cl.appendChild(entryRow(c.name || 'New customer (no name)', !c.name, null, 'cust', c.id)));
   const sl = $('#edSaleList'); sl.textContent = '';
   if (!draft.sales.length) sl.innerHTML = '<li class="empty-e">No sales yet</li>';
-  draft.sales.slice().reverse().forEach(s => sl.appendChild(entryRow(s.product || 'Earlier sales (no product)', !s.product, USD.format(s.usd), 'sale', s.id)));
+  draft.sales.slice().reverse().forEach(s => sl.appendChild(entryRow(s.product || (s.at ? 'Sale (no product)' : 'Earlier sales (no product)'), !s.product, USD.format(s.usd), 'sale', s.id)));
   const wrap = $('#edColors');
   if (!wrap.children.length) COLORS.forEach(([hex, name]) => {
     const b = document.createElement('button');
@@ -905,22 +905,39 @@ function paintEditor() {
   [...wrap.children].forEach(b => b.setAttribute('aria-checked', String(b.dataset.color === draft.color)));
   $('#edColorName').textContent = (COLORS.find(c => c[0] === draft.color) || [null, ''])[1];
 }
-function addCustomer() {
+// Copy the sheet's current state onto the runner and save it (no-op when nothing changed)
+function applyDraft(msg) {
+  if (!editing || !draft || !state.people.includes(editing)) return;
+  const name = $('#edName').value.trim().replace(/\s+/g, ' ');
+  if (name) draft.name = name;
+  draft.ds = Math.max(0, Math.round(+$('#edDs').value || 0));
+  const next = clean({ people: [draft] }).people[0];
+  if (JSON.stringify(next) === JSON.stringify(editing)) return;
+  Object.assign(editing, next);
+  saveSoon(msg || `Update ${editing.name}`);
+  renderBoard();
+}
+// Every new customer counts +1 for this runner; the name is optional
+function addCustomer({ allowBlank = true } = {}) {
   const name = $('#edCust').value.trim().replace(/\s+/g, ' ');
-  if (!name) { $('#edCust').focus(); return; }
+  if (!name && !allowBlank) return;
   draft.customers.push({ id: uid(), name, at: isoOf(new Date()) });
-  $('#edCust').value = ''; paintEditor(); $('#edCust').focus();
+  $('#edCust').value = '';
+  paintEditor();
+  applyDraft(`New customer for ${draft.name}`);
 }
 function addSale() {
   const usd = money($('#edAmt').value), product = $('#edProd').value.trim().replace(/\s+/g, ' ');
   if (!usd) { $(product ? '#edAmt' : '#edProd').focus(); return; }
   draft.sales.push({ id: uid(), product, usd, at: isoOf(new Date()) });
-  $('#edProd').value = $('#edAmt').value = ''; paintEditor(); $('#edProd').focus();
+  $('#edProd').value = $('#edAmt').value = '';
+  paintEditor();
+  applyDraft(`Sale for ${draft.name}`);
 }
 $('#editForm').addEventListener('click', e => {
   if (!draft) return;
   const st = e.target.closest('[data-step]');
-  if (st) { const inp = $('#edDs'); inp.value = Math.max(0, Math.round((+inp.value || 0) + +st.dataset.by)); }
+  if (st) { const inp = $('#edDs'); inp.value = Math.max(0, Math.round((+inp.value || 0) + +st.dataset.by)); applyDraft(); }
   if (e.target.closest('#edCustAdd')) addCustomer();
   if (e.target.closest('#edSaleAdd')) addSale();
   const del = e.target.closest('[data-del]');
@@ -928,29 +945,29 @@ $('#editForm').addEventListener('click', e => {
     const list = del.dataset.del === 'cust' ? draft.customers : draft.sales;
     const i = list.findIndex(x => x.id === del.dataset.id);
     if (i > -1) list.splice(i, 1);
-    paintEditor();
+    paintEditor(); applyDraft();
   }
   const sw = e.target.closest('[data-color]');
-  if (sw) { draft.color = sw.dataset.color; paintEditor(); }
+  if (sw) { draft.color = sw.dataset.color; paintEditor(); applyDraft(); }
 });
+$('#edName').addEventListener('change', () => applyDraft());
+$('#edDs').addEventListener('change', () => applyDraft());
 // Enter adds to a list instead of submitting (or closing) the sheet
 $('#editForm').addEventListener('keydown', e => {
   if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
   e.preventDefault();
-  if (e.target.id === 'edCust') addCustomer();
+  if (e.target.id === 'edCust') addCustomer({ allowBlank: false });
   else if (e.target.id === 'edProd') $('#edAmt').focus();
   else if (e.target.id === 'edAmt') addSale();
-  else e.target.blur();
+  else { e.target.blur(); applyDraft(); }
 });
-$('#editForm').addEventListener('submit', e => {
-  if (!e.submitter || e.submitter.value !== 'save' || !editing) return;
-  if ($('#edCust').value.trim()) addCustomer();   // don't lose something typed but not yet added
+// However the sheet closes (Done, Close, Esc), keep everything — including anything typed but not yet added
+$('#editor').addEventListener('close', () => {
+  if (!draft || !editing || !state.people.includes(editing)) return;
+  if ($('#edCust').value.trim()) addCustomer({ allowBlank: false });
   if (money($('#edAmt').value)) addSale();
-  const name = $('#edName').value.trim().replace(/\s+/g, ' ');
-  if (name) draft.name = name;
-  draft.ds = Math.max(0, Math.round(+$('#edDs').value || 0));
-  Object.assign(editing, clean({ people: [draft] }).people[0]);
-  saveSoon(`Update ${editing.name}`); renderBoard();
+  applyDraft();
+  editing = draft = null;
 });
 $('#edDelete').addEventListener('click', () => {
   if (!editing || !confirm(`Remove ${editing.name} from the race? Their stats will be deleted.`)) return;
