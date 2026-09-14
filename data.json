@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T18:58:14.013Z",
+  "updatedAt": "2026-09-14T19:07:53.308Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -50,6 +50,16 @@
       "id": "mu1lvmnxgi4o",
       "name": "Josh Ludwig",
       "color": "#3DDC97",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "customers": [],
+      "sales": []
+    },
+    {
+      "id": "mu1m81ng8ih2",
+      "name": "Joshua Smith",
+      "color": "#2EC4F1",
       "ds": 0,
       "nc": 0,
       "usd": 0,
