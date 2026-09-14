@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T19:17:27.698Z",
+  "updatedAt": "2026-09-14T19:17:45.432Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -88,15 +88,9 @@
       "name": "Anthony & Jess",
       "color": "#B06BFF",
       "ds": 0,
-      "nc": 1,
+      "nc": 0,
       "usd": 0,
-      "customers": [
-        {
-          "id": "mu1mkcuqenx3",
-          "name": "Mary - GI Primer",
-          "at": "2026-09-14"
-        }
-      ],
+      "customers": [],
       "sales": []
     }
   ]
