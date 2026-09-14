@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T19:10:17.695Z",
+  "updatedAt": "2026-09-14T19:17:15.908Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -88,9 +88,15 @@
       "name": "Anthony & Jess",
       "color": "#B06BFF",
       "ds": 0,
-      "nc": 0,
+      "nc": 1,
       "usd": 0,
-      "customers": [],
+      "customers": [
+        {
+          "id": "mu1mk3r76gb3",
+          "name": "Mary",
+          "at": "2026-09-14"
+        }
+      ],
       "sales": []
     }
   ]
