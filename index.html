@@ -1,0 +1,1412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0A24">
+<title>Team 12 Retail Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --night:#0E0A24; --night2:#150F33; --night3:#1E1747;
+  --line:rgba(236,232,255,.11); --line2:rgba(236,232,255,.22);
+  --ink:#F2EFFF; --mute:#A7A1CE; --dim:#6E6799;
+  --violet:#6633FF; --violet-hi:#9173FF; --acid:#E4FF3A;
+  --display:'Big Shoulders Display','Oswald','Arial Narrow',Impact,sans-serif;
+  --text:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --skew:-8deg;
+  --gutter:16px;
+}
+*{box-sizing:border-box}
+html{background:var(--night);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--night);color:var(--ink);font:15px/1.4 var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ───── Stage ───── */
+.stage{position:relative;height:clamp(500px,68svh,640px);overflow:hidden;background:#140d3c;isolation:isolate}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shade-top,.shade-bot{position:absolute;left:0;right:0;pointer-events:none}
+.shade-top{top:0;height:170px;background:linear-gradient(rgba(9,6,28,.62),rgba(9,6,28,0))}
+.shade-bot{bottom:0;height:46%;background:linear-gradient(rgba(14,10,36,0),rgba(14,10,36,.78) 55%,var(--night))}
+.hud{position:absolute;inset:0;display:flex;flex-direction:column;padding:max(14px,env(safe-area-inset-top)) var(--gutter) 16px;pointer-events:none}
+.mast{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mark{display:flex;align-items:center;gap:10px}
+.mark-12{display:grid;place-items:center;width:42px;height:38px;background:var(--violet);transform:skewX(var(--skew));font:900 30px/1 var(--display);color:var(--acid);box-shadow:3px 3px 0 var(--acid)}
+.mark-12 span{transform:skewX(8deg)}
+.mark-txt{font:800 15px/.95 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.mark-txt small{display:block;font-weight:700;color:var(--acid);letter-spacing:.14em;font-size:11px;margin-top:3px}
+.count{text-align:right;display:flex;align-items:center;gap:8px}
+.count b{font:900 40px/.8 var(--display);transform:skewX(var(--skew));display:inline-block}
+.count span{font:700 11px/1.05 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-align:left}
+.wx{margin-top:14px;display:flex;align-items:flex-start;gap:10px}
+.wx-temp{font:800 58px/.8 var(--display);transform:skewX(var(--skew));letter-spacing:-.01em}
+.wx-meta{display:flex;flex-direction:column;gap:1px;padding-top:2px;font-size:12.5px;color:var(--mute)}
+.wx-meta .cond{color:var(--ink);font-weight:600;font-size:14px}
+.live{display:inline-flex;align-items:center;gap:6px;font:700 11px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--dim)}
+.live.on i{background:var(--acid);box-shadow:0 0 0 0 rgba(228,255,58,.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(228,255,58,0)}100%{box-shadow:0 0 0 0 rgba(228,255,58,0)}}
+.stop{margin-top:auto}
+.kicker{display:inline-flex;align-items:center;gap:8px;font:800 12px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--night);background:var(--acid);padding:5px 9px 4px;transform:skewX(var(--skew))}
+.kicker span{transform:skewX(8deg);display:inline-block}
+.stop-name{margin:10px 0 0;font:900 clamp(50px,14.5vw,104px)/.84 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left bottom;letter-spacing:-.005em;text-wrap:balance;text-shadow:0 2px 24px rgba(14,10,36,.6)}
+.stop-place{display:block;margin-top:8px;font-size:13px;color:var(--mute)}
+
+/* ───── Panel ───── */
+.panel{padding-inline:var(--gutter);padding-bottom:40px}
+.route{padding-block:18px 8px}
+.eyebrow{display:flex;justify-content:space-between;align-items:baseline;font:700 12px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.eyebrow b{color:var(--ink);font-weight:800}
+.track{position:relative;height:44px;margin:14px 6px 0}
+.track::before{content:"";position:absolute;left:0;right:0;top:14px;height:4px;background:repeating-linear-gradient(90deg,var(--line2) 0 6px,transparent 6px 10px)}
+.track-fill{position:absolute;left:0;top:14px;height:4px;width:0;background:var(--acid);box-shadow:0 0 12px rgba(228,255,58,.55)}
+.stops{list-style:none;margin:0;padding:0}
+.stops li{position:absolute;top:9px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--night);border:2px solid var(--dim)}
+.stops li.done{border-color:var(--acid);background:var(--acid)}
+.stops li.next{border-color:var(--acid);background:var(--night);box-shadow:0 0 0 4px rgba(228,255,58,.18)}
+.stops li span{position:absolute;top:20px;left:50%;transform:translateX(-50%);white-space:nowrap;font:700 11px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);opacity:0}
+.stops li.next span,.stops li:first-child span,.stops li:last-child span{opacity:1}
+.stops li:first-child span{left:-2px;transform:none}
+.stops li:last-child span{left:auto;right:-2px;transform:none}
+.stops li.next span{color:var(--acid)}
+.runner-dot{position:absolute;top:4px;width:0;height:0}
+.runner-dot::after{content:"";position:absolute;left:-7px;top:-4px;width:14px;height:14px;background:var(--violet);border:2px solid var(--acid);transform:rotate(45deg)}
+
+.board{padding-top:22px}
+.board-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.board-head h2{margin:0;font:900 40px/.85 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left bottom}
+.total{text-align:right;font-size:12px;color:var(--mute);line-height:1.2}
+.total b{display:block;font:800 22px/1 var(--display);color:var(--ink);letter-spacing:.01em}
+.tabs{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(3,1fr);margin:16px calc(var(--gutter) * -1) 0;padding:0 var(--gutter);background:rgba(14,10,36,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tab{position:relative;appearance:none;border:0;background:none;padding:14px 4px 13px;text-align:left;font:800 15px/.95 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);transition:color .2s}
+.tab small{display:block;font:600 11px/1 var(--text);letter-spacing:0;text-transform:none;margin-top:5px;color:inherit;opacity:.8}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[aria-selected="true"] small{color:var(--acid);opacity:1}
+.tab-ink{position:absolute;bottom:-1px;left:var(--gutter);height:3px;width:calc((100% - var(--gutter)*2)/3 - 10px);background:var(--acid);transform:translateX(calc(var(--i,0) * (100% + 10px)));transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.metric-desc{margin:14px 0 4px;font-size:13px;color:var(--mute)}
+
+.rows{list-style:none;margin:0;padding:0}
+.row{position:relative;display:grid;grid-template-columns:48px 1fr auto;align-items:center;column-gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
+.pos{font:900 34px/.8 var(--display);color:var(--dim);transform:skewX(var(--skew));text-align:left}
+.who{min-width:0}
+.name{display:block;font-weight:600;font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gap{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
+.bar{display:block;height:3px;margin-top:9px;background:rgba(236,232,255,.07);overflow:hidden}
+.bar b{display:block;height:100%;width:0;background:var(--violet-hi);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.val{font:800 30px/.9 var(--display);font-variant-numeric:tabular-nums;text-align:right;letter-spacing:.01em}
+.row.first{margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);padding-block:20px;background:linear-gradient(100deg,rgba(102,51,255,.34),rgba(102,51,255,.06) 60%,transparent);border-bottom-color:var(--line2)}
+.row.first .pos{font-size:62px;color:var(--acid)}
+.row.first .name{font-size:21px;font-weight:700}
+.row.first .gap{color:var(--acid)}
+.row.first .bar b{background:var(--acid)}
+.row.first .val{font-size:44px}
+.row.first{grid-template-columns:56px 1fr auto}
+.row .edit{display:none}
+body.owner .row{cursor:pointer}
+body.owner .row .edit{display:block;position:absolute;right:0;top:8px;font:700 10px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+body.owner .row.first .edit{right:var(--gutter)}
+body.owner .row:active{background-color:rgba(145,115,255,.08)}
+.empty{padding:34px 0 10px}
+.empty p{margin:0;font:900 30px/.95 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left}
+.empty span{display:block;margin-top:10px;color:var(--mute);font-size:14px}
+
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+.foot .race{font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase}
+.ghost{appearance:none;background:none;border:1px solid var(--line2);color:var(--ink);padding:10px 14px;font:800 13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase}
+.ghost:hover{border-color:var(--ink)}
+body.owner .foot .owner-in{display:none}
+
+/* Owner dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px var(--gutter) max(10px,env(safe-area-inset-bottom));background:rgba(21,15,51,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2)}
+.dock-in{display:flex;gap:8px;align-items:center;max-width:560px;margin:0 auto}
+.dock form{flex:1;display:flex;min-width:0}
+.dock input{flex:1;min-width:0;height:46px;border:1px solid var(--line2);border-right:0;background:var(--night);padding:0 12px;font-size:16px;outline:none}
+.dock input:focus{border-color:var(--acid)}
+.btn-acid{appearance:none;border:0;height:46px;padding:0 16px;background:var(--acid);color:var(--night);font:900 16px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.icon-btn{appearance:none;width:46px;height:46px;display:grid;place-items:center;border:1px solid var(--line2);background:none;color:var(--ink);flex:none}
+.icon-btn svg{width:20px;height:20px}
+body.owner .panel{padding-bottom:110px}
+.owner-flag{display:none;margin:0 0 0 auto;font:800 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--acid)}
+body.owner .owner-flag{display:block}
+
+/* Sheets */
+dialog.sheet{border:0;padding:0;margin:0;max-width:none;max-height:92svh;width:100%;top:auto;bottom:0;left:0;right:0;background:var(--night2);color:var(--ink);border-top:3px solid var(--acid);overflow:auto;overscroll-behavior:contain}
+dialog.sheet::backdrop{background:rgba(6,4,20,.66)}
+dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet-in{padding:18px var(--gutter) max(18px,env(safe-area-inset-bottom))}
+.sheet h3{margin:0;font:900 30px/.9 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left}
+.sheet p.note{margin:8px 0 0;color:var(--mute);font-size:13.5px}
+.sheet-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sheet-top .close{margin-left:auto}
+.name-edit{flex:1;min-width:0;border:0;border-bottom:2px solid var(--line2);background:none;padding:6px 0;font:900 30px/1 var(--display);text-transform:uppercase;outline:none}
+.name-edit:focus{border-color:var(--acid)}
+.field{padding:14px 0;border-bottom:1px solid var(--line)}
+.field>label,.field>.lbl{display:flex;justify-content:space-between;font:800 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.step{display:grid;grid-template-columns:56px 1fr 56px;height:56px}
+.step button{appearance:none;border:1px solid var(--line2);background:none;font:700 26px/1 var(--text);color:var(--ink)}
+.step button:active{background:var(--violet)}
+.step input,.money{border:1px solid var(--line2);border-inline:0;background:var(--night);text-align:center;font:800 32px/1 var(--display);font-variant-numeric:tabular-nums;outline:none;width:100%;min-width:0}
+.money{display:flex;align-items:center;justify-content:center}
+.money span{font:800 24px/1 var(--display);color:var(--mute)}
+.money input{border:0;background:none;text-align:left;font:inherit;width:100%;outline:none;padding-left:2px}
+.step input:focus,.money:focus-within{box-shadow:inset 0 -3px 0 var(--acid)}
+.chips{display:flex;gap:8px;margin-top:10px}
+.chips button{appearance:none;flex:1;height:38px;border:1px solid var(--line2);background:none;font:800 14px/1 var(--display);letter-spacing:.06em}
+.chips button:active{background:var(--violet)}
+.sheet-actions{display:flex;gap:10px;align-items:center;margin-top:18px}
+.sheet-actions .btn-acid{margin-left:auto;min-width:130px}
+.link-danger{appearance:none;border:0;background:none;color:#FF8FA3;padding:10px 0;font-weight:600;font-size:14px}
+.pin-input{width:100%;height:58px;margin-top:16px;border:1px solid var(--line2);background:var(--night);text-align:center;font:800 32px/1 var(--display);letter-spacing:.4em;outline:none}
+.pin-input:focus{border-color:var(--acid)}
+.err{min-height:18px;margin-top:8px;color:#FF8FA3;font-size:13px}
+.set-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.set-row input,.set-row select,.field select{width:100%;height:46px;border:1px solid var(--line2);background:var(--night);padding:0 10px;font-size:15px;color-scheme:dark;outline:none}
+.set-row label{display:block;font-size:12px;color:var(--mute);margin-bottom:6px}
+.btn-line{appearance:none;border:1px solid var(--line2);background:none;height:44px;padding:0 14px;font:800 14px/1 var(--display);letter-spacing:.1em;text-transform:uppercase}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);opacity:0;z-index:40;background:var(--acid);color:var(--night);padding:10px 14px;font:800 14px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;transition:.25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.text-input{width:100%;height:48px;border:1px solid var(--line2);background:var(--night);padding:0 12px;font-size:16px;outline:none}
+.text-input:focus{border-color:var(--acid)}
+.help{display:inline-block;margin-top:10px;color:var(--acid);font-weight:600;font-size:14px;text-underline-offset:3px}
+.save-status{display:flex;align-items:center;gap:8px;max-width:560px;margin:0 auto 8px;padding:0;border:0;background:none;text-align:left;font-size:12.5px;color:var(--mute)}
+.save-status::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--acid)}
+.save-status[data-kind="saving"]::before{background:var(--violet-hi);animation:pulse 1.2s infinite}
+.save-status[data-kind="error"]{color:#FF8FA3;cursor:pointer}
+.save-status[data-kind="error"]::before{background:#FF8FA3}
+.btn-acid:disabled{opacity:.6}
+
+/* ───── Desktop adaptation ───── */
+@media (min-width:700px){
+  dialog.sheet{top:0;bottom:0;margin:auto;width:440px;height:fit-content;border:1px solid var(--line2);border-top:3px solid var(--acid)}
+  .sheet-in{padding:22px 24px}
+}
+@media (min-width:1000px){
+  :root{--gutter:28px}
+  .app{display:grid;grid-template-columns:minmax(0,1fr) 500px;min-height:100vh}
+  .stage{position:sticky;top:0;height:100vh}
+  .hud{padding:28px 36px 34px}
+  .shade-bot{height:40%;background:linear-gradient(rgba(14,10,36,0),rgba(14,10,36,.7))}
+  .mark-12{width:52px;height:46px;font-size:36px}
+  .mark-txt{font-size:18px}
+  .count b{font-size:56px}
+  .wx-temp{font-size:76px}
+  .panel{height:100vh;overflow:auto;border-left:1px solid var(--line);background:var(--night)}
+  .route{padding-top:30px}
+  .dock{left:auto;width:500px}
+  .toast{left:auto;right:250px;transform:translate(50%,20px)}
+  .toast.show{transform:translate(50%,0)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="stage" aria-label="Race course view">
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="shade-top"></div><div class="shade-bot"></div>
+    <div class="hud">
+      <div class="mast">
+        <div class="mark"><div class="mark-12"><span>12</span></div><div class="mark-txt">Team 12<small>Retail Challenge</small></div></div>
+        <div class="count"><b id="daysLeft">—</b><span>days to<br>new year</span></div>
+      </div>
+      <div class="wx">
+        <div class="wx-temp" id="wxTemp">—°</div>
+        <div class="wx-meta">
+          <span class="live" id="wxLive"><i></i>Roseville, CA</span>
+          <span class="cond" id="wxCond">Reading the sky…</span>
+          <span id="wxDate"></span>
+        </div>
+      </div>
+      <div class="stop">
+        <span class="kicker"><span id="stopKicker">Next stop</span></span>
+        <h1 class="stop-name" id="stopName">—</h1>
+        <span class="stop-place" id="stopPlace"></span>
+      </div>
+    </div>
+  </section>
+
+  <main class="panel">
+    <section class="route" aria-label="Course progress">
+      <div class="eyebrow"><span>The course · Roseville → Sacramento</span><b id="dayOf"></b></div>
+      <div class="track">
+        <div class="track-fill" id="trackFill"></div>
+        <ol class="stops" id="stops"></ol>
+        <span class="runner-dot" id="runnerDot"></span>
+      </div>
+    </section>
+
+    <section class="board" aria-label="Standings">
+      <div class="board-head">
+        <h2>Standings</h2>
+        <div class="total" id="teamTotal"></div>
+      </div>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab" role="tab" data-i="0" aria-selected="true">Double<br>Sampled<small>workflow</small></button>
+        <button class="tab" role="tab" data-i="1" aria-selected="false">New<br>Customers<small>closed</small></button>
+        <button class="tab" role="tab" data-i="2" aria-selected="false">Sales<br>Dollars<small>total $</small></button>
+        <span class="tab-ink" aria-hidden="true"></span>
+      </div>
+      <p class="metric-desc" id="metricDesc"></p>
+      <ol class="rows" id="rows"></ol>
+      <div class="empty" id="empty" hidden>
+        <p>No runners on<br>the course yet</p>
+        <span id="emptyHint">The race director hasn't added anyone. Check back soon.</span>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span class="race">Race ID LPK63F · Sprint to ’27</span>
+      <button class="ghost owner-in" id="ownerBtn">Owner sign-in</button>
+      <span class="owner-flag">Owner mode</span>
+    </footer>
+  </main>
+</div>
+
+<div class="dock" id="dock" hidden>
+  <button type="button" class="save-status" id="saveStatus" data-kind="saved" aria-live="polite">Everything’s saved</button>
+  <div class="dock-in">
+    <form id="addForm" autocomplete="off">
+      <label class="sr" for="addName">Runner name</label>
+      <input id="addName" maxlength="40" placeholder="Add a runner’s name" enterkeyhint="done">
+      <button class="btn-acid" type="submit">Add</button>
+    </form>
+    <button class="icon-btn" id="settingsBtn" aria-label="Race settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
+    <button class="icon-btn" id="lockBtn" aria-label="Lock owner mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></button>
+  </div>
+</div>
+
+<!-- Editor -->
+<dialog class="sheet" id="editor">
+  <form class="sheet-in" id="editForm" method="dialog">
+    <div class="sheet-top">
+      <label class="sr" for="edName">Name</label>
+      <input class="name-edit" id="edName" maxlength="40" required>
+      <button class="btn-line close" value="cancel" formnovalidate>Close</button>
+    </div>
+    <div class="field">
+      <span class="lbl">Double sampled <span id="edDsHint"></span></span>
+      <div class="step"><button type="button" data-step="ds" data-by="-1" aria-label="Minus one">−</button><input id="edDs" type="number" inputmode="numeric" min="0" step="1" aria-label="Double sampled"><button type="button" data-step="ds" data-by="1" aria-label="Plus one">+</button></div>
+    </div>
+    <div class="field">
+      <span class="lbl">New customers</span>
+      <div class="step"><button type="button" data-step="nc" data-by="-1" aria-label="Minus one">−</button><input id="edNc" type="number" inputmode="numeric" min="0" step="1" aria-label="New customers"><button type="button" data-step="nc" data-by="1" aria-label="Plus one">+</button></div>
+    </div>
+    <div class="field">
+      <span class="lbl">Sales dollars</span>
+      <div class="step"><button type="button" data-step="usd" data-by="-100" aria-label="Minus 100 dollars">−</button><div class="money"><span>$</span><input id="edUsd" type="number" inputmode="decimal" min="0" step="0.01" aria-label="Sales dollars"></div><button type="button" data-step="usd" data-by="100" aria-label="Plus 100 dollars">+</button></div>
+      <div class="chips"><button type="button" data-add="100">+$100</button><button type="button" data-add="500">+$500</button><button type="button" data-add="1000">+$1K</button><button type="button" data-add="5000">+$5K</button></div>
+    </div>
+    <div class="sheet-actions">
+      <button type="button" class="link-danger" id="edDelete">Remove runner</button>
+      <button class="btn-acid" value="save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Owner sign-in (GitHub key) -->
+<dialog class="sheet" id="keySheet">
+  <form class="sheet-in" id="keyForm" method="dialog">
+    <div class="sheet-top"><h3>Owner sign-in</h3><button class="btn-line close" value="cancel" formnovalidate>Close</button></div>
+    <p class="note">Paste your GitHub access key. It stays in this browser only, and it’s what lets this device save standings to the site.</p>
+    <div class="field">
+      <label for="keyRepo">GitHub project</label>
+      <input class="text-input" id="keyRepo" placeholder="your-username/team12-race" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <div class="field" style="border:0">
+      <label for="keyToken">Access key</label>
+      <input class="text-input" id="keyToken" type="password" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <a class="help" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Make a key on GitHub ↗</a>
+    </div>
+    <div class="err" id="keyErr"></div>
+    <div class="sheet-actions"><button class="btn-acid" value="ok" id="keyGo">Sign in</button></div>
+  </form>
+</dialog>
+
+<!-- Settings -->
+<dialog class="sheet" id="settings">
+  <form class="sheet-in" method="dialog" id="setForm">
+    <div class="sheet-top"><h3>Race settings</h3><button class="btn-line close" value="cancel" formnovalidate>Done</button></div>
+    <div class="field">
+      <span class="lbl">Race window</span>
+      <div class="set-row">
+        <div><label for="setStart">Start</label><input type="date" id="setStart"></div>
+        <div><label for="setEnd">Finish</label><input type="date" id="setEnd"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="setWx">Weather</label>
+      <select id="setWx">
+        <option value="live">Live — Roseville, CA (this device only)</option>
+        <option value="clear-day">Preview: sunny</option>
+        <option value="clear-night">Preview: clear night</option>
+        <option value="partly">Preview: partly cloudy</option>
+        <option value="cloudy">Preview: overcast</option>
+        <option value="fog">Preview: tule fog</option>
+        <option value="rain">Preview: rain</option>
+        <option value="storm">Preview: thunderstorm</option>
+        <option value="snow">Preview: snow</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="lbl">Backups</span>
+      <div class="btn-row">
+        <button type="button" class="btn-line" id="exportBtn">Download backup</button>
+        <button type="button" class="btn-line" id="importBtn">Restore backup</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+      </div>
+    </div>
+    <div class="field" style="border:0">
+      <span class="lbl">This device <span id="repoName"></span></span>
+      <div class="btn-row">
+        <button type="button" class="btn-line" id="signOutBtn">Sign out &amp; forget key</button>
+        <button type="button" class="btn-line" id="resetBtn" style="color:#FF8FA3">Reset race</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+const SEED = 'LPK63Fgxg8HlQs2OtPh8HO83oggMrUykIxumppQYj0uBpC5hWShsDZoCPf4ftSCb';
+const $ = s => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const DAY = 864e5;
+
+/* ───────────── Course ───────────── */
+const STOPS = [
+  { id:'galleria',  name:'Westfield Galleria',   short:'Galleria',     place:'Roseville' },
+  { id:'speedway',  name:'All American Speedway', short:'Speedway',     place:'Placer County Fairgrounds · Roseville' },
+  { id:'sunsplash', name:'Golfland Sunsplash',   short:'Sunsplash',    place:'Roseville' },
+  { id:'calexpo',   name:'Cal Expo',             short:'Cal Expo',     place:'California State Fair grounds · Sacramento' },
+  { id:'sutter',    name:"Sutter’s Fort",        short:'Sutter’s Fort',place:'Midtown Sacramento' },
+  { id:'capitol',   name:'State Capitol',        short:'Capitol',      place:'Capitol Mall · Sacramento' },
+  { id:'golden1',   name:'Golden 1 Center',      short:'Golden 1',     place:'Downtown Sacramento' },
+  { id:'tower',     name:'Tower Bridge',         short:'Tower Bridge', place:'Old Sacramento Waterfront' },
+];
+const LEGS = STOPS.length - 1;
+
+const NF = new Intl.NumberFormat('en-US');
+const USD = new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+const METRICS = [
+  { key:'ds',  label:'Double Sampled', unit:'double samples', desc:'Customers taken all the way through the workflow — both samples.', fmt:v => NF.format(v) },
+  { key:'nc',  label:'New Customers',  unit:'new customers',  desc:'Brand-new customer sales closed.', fmt:v => NF.format(v) },
+  { key:'usd', label:'Sales Dollars',  unit:'in sales',       desc:'Total dollars sold during the sprint.', fmt:v => USD.format(v) },
+];
+
+/* ───────────── State ───────────── */
+const hashParams = new URLSearchParams(location.hash.slice(1));
+const DEMO = hashParams.has('demo');
+const KEY = 'team12-retail-challenge.v2';
+const pad = n => String(n).padStart(2, '0');
+const isoOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseISO = s => { const [y, m, d] = String(s).split('-').map(Number); return new Date(y, (m || 1) - 1, d || 1); };
+
+// Small localStorage wrapper — never throws (private windows, blocked storage)
+const ls = {
+  get(k, d = null) { try { const v = localStorage.getItem(KEY + ':' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { v == null ? localStorage.removeItem(KEY + ':' + k) : localStorage.setItem(KEY + ':' + k, JSON.stringify(v)); } catch (e) {} },
+};
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function clean(d) {
+  d = d && typeof d === 'object' ? d : {};
+  return {
+    start: DATE_RE.test(d.start) ? d.start : '2026-09-14',
+    end: DATE_RE.test(d.end) ? d.end : '2027-01-01',
+    updatedAt: typeof d.updatedAt === 'string' ? d.updatedAt : null,
+    people: (Array.isArray(d.people) ? d.people : []).filter(p => p && p.name).map((p, i) => ({
+      id: String(p.id || 'r' + i), name: String(p.name).slice(0, 40),
+      ds: Math.max(0, Math.round(+p.ds || 0)), nc: Math.max(0, Math.round(+p.nc || 0)),
+      usd: Math.max(0, Math.round((+p.usd || 0) * 100) / 100),
+    })),
+  };
+}
+let state = DEMO ? clean({
+  people: [
+    ['Maya R.', 41, 12, 18450], ['Devon K.', 37, 15, 21300], ['Priya S.', 44, 9, 16120],
+    ['Luis M.', 29, 11, 14980], ['Jordan T.', 33, 7, 9870], ['Aisha B.', 22, 13, 19240], ['Chris P.', 18, 5, 7420],
+  ].map(([name, ds, nc, usd], i) => ({ id: 'd' + i, name, ds, nc, usd })),
+}) : clean(ls.get('cache'));
+const view = { wx: DEMO && hashParams.get('wx') ? hashParams.get('wx') : ls.get('wx', 'live') };
+
+// Where this site lives on GitHub: https://USER.github.io/REPO/ → USER/REPO
+function guessRepo() {
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+  if (!m) return '';
+  const seg = location.pathname.split('/').filter(Boolean)[0];
+  return seg && !seg.includes('.') ? `${m[1]}/${seg}` : `${m[1]}/${location.hostname}`;
+}
+const conn = { repo: ls.get('repo', '') || guessRepo(), token: ls.get('token', '') };
+
+let owner = false;
+try { owner = !DEMO && !!conn.token && sessionStorage.getItem(KEY + ':owner') === '1'; } catch (e) {}
+let cur = 0;
+let loaded = DEMO || state.people.length > 0;
+
+/* ───────────── Site data (GitHub) ───────────── */
+let pending = false, lastSaved = ls.get('lastSaved', null);
+async function loadData() {
+  if (DEMO) return;
+  try {
+    const r = await fetch('data.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = clean(await r.json());
+    // Skip while saving, or while the site is still catching up to this device's last save
+    if (pending || (lastSaved && (!d.updatedAt || d.updatedAt < lastSaved))) return;
+    const changed = JSON.stringify(d) !== JSON.stringify(state);
+    state = d; ls.set('cache', state);
+    if (changed || !loaded) { loaded = true; renderHud(); renderBoard(); }
+  } catch (e) {
+    if (!loaded) { loaded = true; renderBoard(); }
+  }
+}
+
+const b64 = s => { let bin = ''; new TextEncoder().encode(s).forEach(b => { bin += String.fromCharCode(b); }); return btoa(bin); };
+const unb64 = s => new TextDecoder().decode(Uint8Array.from(atob(String(s).replace(/\s/g, '')), c => c.charCodeAt(0)));
+async function gh(path, opts = {}) {
+  const r = await fetch(`https://api.github.com/repos/${conn.repo}${path}`, {
+    method: opts.method || 'GET', cache: 'no-store',
+    headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + conn.token, ...(opts.body ? { 'Content-Type': 'application/json' } : {}) },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) { const e = new Error(j.message || 'HTTP ' + r.status); e.status = r.status; throw e; }
+  return j;
+}
+function ghMessage(e) {
+  if (!navigator.onLine) return 'You’re offline. Reconnect, then tap here to try again.';
+  if (e.status === 401) return 'GitHub didn’t accept that key. It may be mistyped or expired, so make a new one.';
+  if (e.status === 403) return 'That key can look but can’t save. On GitHub, set “Contents” to “Read and write”.';
+  if (e.status === 404) return 'Couldn’t find that project. Check the name, and that your key is allowed to use it.';
+  return `GitHub had a hiccup (${e.message || 'unknown error'}). Tap here to try again.`;
+}
+
+let saveTimer = null, saving = null;
+const dirty = [];
+function setStatus(kind, msg) {
+  const el = $('#saveStatus'); el.dataset.kind = kind;
+  el.textContent = kind === 'saving' ? 'Saving to your site…' : kind === 'saved' ? 'Saved. Your team will see it in about a minute.' : msg;
+}
+function saveSoon(msg) {
+  if (DEMO) return;
+  state.updatedAt = new Date().toISOString();
+  ls.set('cache', state);
+  pending = true; dirty.push(msg);
+  setStatus('saving');
+  clearTimeout(saveTimer); saveTimer = setTimeout(flush, 900);
+}
+async function flush() {
+  if (saving) await saving.catch(() => {});
+  if (!dirty.length) return;
+  const msgs = dirty.splice(0);
+  const stamp = state.updatedAt;
+  const content = b64(JSON.stringify(state, null, 2) + '\n');
+  const message = msgs.length === 1 ? msgs[0] : `Update standings (${msgs.length} changes)`;
+  setStatus('saving');
+  saving = (async () => {
+    for (let attempt = 0; ; attempt++) {
+      let sha;
+      try { sha = (await gh('/contents/data.json')).sha; } catch (e) { if (e.status !== 404) throw e; }
+      try { await gh('/contents/data.json', { method: 'PUT', body: { message, content, sha } }); return; }
+      catch (e) { if (e.status === 409 && attempt === 0) continue; throw e; }
+    }
+  })();
+  try {
+    await saving;
+    lastSaved = stamp; ls.set('lastSaved', stamp);
+    if (!dirty.length) { pending = false; setStatus('saved'); }
+  } catch (e) {
+    dirty.unshift(...msgs);
+    setStatus('error', ghMessage(e));
+  } finally { saving = null; }
+}
+$('#saveStatus').addEventListener('click', () => { if ($('#saveStatus').dataset.kind === 'error') flush(); });
+addEventListener('beforeunload', e => { if (pending) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ───────────── Race clock ───────────── */
+function raceClock() {
+  const s = parseISO(state.start).getTime(), e = parseISO(state.end).getTime();
+  const span = Math.max(DAY, e - s);
+  let now = Date.now();
+  if (hashParams.has('t')) now = s + clamp(+hashParams.get('t'), 0, 1) * span;
+  const t = clamp((now - s) / span, 0, 1);
+  const legF = t * LEGS;
+  let leg = Math.min(LEGS - 1, Math.floor(legF));
+  const local = t >= 1 ? 1 : legF - leg;
+  const stopDate = i => new Date(s + (i / LEGS) * span);
+  let showIdx, kicker, approach;
+  if (t >= 1) { showIdx = LEGS; kicker = 'Finish line'; approach = 1; }
+  else if (local < 0.07) { showIdx = leg; kicker = leg === 0 ? 'Start line' : 'Now passing'; approach = 1; }
+  else {
+    showIdx = leg + 1; approach = local;
+    const d = Math.ceil((stopDate(showIdx) - now) / DAY);
+    kicker = d <= 1 ? 'Next stop · tomorrow' : `Next stop · ${d} days`;
+  }
+  return {
+    t, leg, local, showIdx, kicker, approach, now: new Date(now), stopDate,
+    daysLeft: Math.max(0, Math.ceil((e - now) / DAY)),
+    dayNum: clamp(Math.floor((now - s) / DAY) + 1, 1, Math.round(span / DAY)),
+    totalDays: Math.round(span / DAY),
+  };
+}
+
+/* ───────────── Weather ───────────── */
+const WX = { kind:'clear', day:true, temp:null, wind:3, label:'', live:false };
+const wxLabel = c => ({0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Rain showers',81:'Rain showers',82:'Heavy showers',85:'Snow showers',86:'Snow showers',95:'Thunderstorm',96:'Storm & hail',99:'Storm & hail'})[c] || 'Clear';
+const wxKind = c => c <= 1 ? 'clear' : c === 2 ? 'partly' : c === 3 ? 'cloudy' : c <= 48 ? 'fog' : c <= 57 ? 'drizzle' : c <= 67 || (c >= 80 && c <= 82) ? 'rain' : c <= 77 || c === 85 || c === 86 ? 'snow' : 'storm';
+function laHour() {
+  const p = new Intl.DateTimeFormat('en-US', { timeZone:'America/Los_Angeles', hour:'numeric', minute:'numeric', hour12:false }).formatToParts(new Date());
+  const h = +p.find(x => x.type === 'hour').value % 24, m = +p.find(x => x.type === 'minute').value;
+  return h + m / 60;
+}
+async function fetchWx() {
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=38.7521&longitude=-121.2880&current=temperature_2m,weather_code,is_day,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles';
+    const r = await fetch(url, { cache:'no-store' });
+    if (!r.ok) throw 0;
+    const c = (await r.json()).current;
+    Object.assign(WX, { code:c.weather_code, kind:wxKind(c.weather_code), day:!!c.is_day, temp:Math.round(c.temperature_2m), wind:c.wind_speed_10m, live:true });
+    WX.label = wxLabel(c.weather_code);
+    if (WX.kind === 'clear' && !WX.day) WX.label = 'Clear night';
+  } catch (e) {
+    const h = laHour();
+    Object.assign(WX, { live:false, day: h >= 6.5 && h < 19.5, label:'Weather offline' });
+  }
+  applyWeather();
+}
+function effectiveWx() {
+  const o = view.wx || 'live';
+  if (o === 'live') return { kind:WX.kind, day:WX.day, wind:WX.wind };
+  if (o === 'clear-day') return { kind:'clear', day:true, wind:4 };
+  if (o === 'clear-night') return { kind:'clear', day:false, wind:3 };
+  return { kind:o, day: WX.live ? WX.day : true, wind: o === 'storm' ? 22 : o === 'rain' ? 12 : 5 };
+}
+
+/* ───────────── HUD ───────────── */
+const fmtDate = d => d.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+const shortDate = d => d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+function renderHud() {
+  const c = raceClock();
+  const stop = STOPS[c.showIdx];
+  $('#daysLeft').textContent = c.daysLeft;
+  $('#wxDate').textContent = fmtDate(c.now);
+  $('#stopKicker').textContent = c.kicker;
+  $('#stopName').textContent = stop.name;
+  $('#stopPlace').textContent = stop.place;
+  $('#dayOf').textContent = c.t >= 1 ? 'Finished' : `Day ${c.dayNum} of ${c.totalDays}`;
+  $('#trackFill').style.width = (c.t * 100) + '%';
+  $('#runnerDot').style.left = (c.t * 100) + '%';
+  const ol = $('#stops');
+  if (!ol.children.length) STOPS.forEach(() => ol.appendChild(document.createElement('li')));
+  [...ol.children].forEach((li, i) => {
+    li.style.left = (i / LEGS * 100) + '%';
+    const done = c.t * LEGS >= i - 1e-9;
+    li.className = (done ? 'done ' : '') + (i === c.showIdx && c.t < 1 && !(done && c.showIdx !== c.leg) ? 'next' : '');
+    li.title = `${STOPS[i].name} · ${shortDate(c.stopDate(i))}`;
+    li.innerHTML = `<span>${STOPS[i].short} · ${shortDate(c.stopDate(i))}</span>`;
+  });
+  // hide the next label if it would collide with the end labels
+  [...ol.children].forEach((li, i) => { if (li.classList.contains('next') && (i === 1 || i === LEGS - 1)) { ol.children[i === 1 ? 0 : LEGS].querySelector('span').style.opacity = 0; } });
+  scene.clock = c;
+}
+function applyWeather() {
+  const ew = effectiveWx();
+  const preview = view.wx && view.wx !== 'live';
+  $('#wxTemp').textContent = WX.temp == null ? '—°' : WX.temp + '°';
+  $('#wxLive').classList.toggle('on', WX.live && !preview);
+  const names = { clear: ew.day ? 'Sunny' : 'Clear night', partly:'Partly cloudy', cloudy:'Overcast', fog:'Tule fog', drizzle:'Drizzle', rain:'Rain', storm:'Thunderstorm', snow:'Snow' };
+  let cond = preview ? `Preview · ${names[ew.kind]}` : (WX.label || names[ew.kind]);
+  if (!preview && WX.live && WX.wind != null) cond += ` · ${Math.round(WX.wind)} mph wind`;
+  $('#wxCond').textContent = cond;
+  scene.setWeather(ew);
+}
+
+/* ───────────── Standings ───────────── */
+const rowsEl = $('#rows');
+const shortName = n => { const p = n.trim().split(/\s+/); const s = p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0]; return s.length > 13 ? s.slice(0, 12) + '…' : s; };
+function renderBoard() {
+  const m = METRICS[cur];
+  const list = [...state.people].sort((a, b) => (b[m.key] - a[m.key]) || a.name.localeCompare(b.name));
+  const max = list.length ? list[0][m.key] : 0;
+  const total = state.people.reduce((s, p) => s + (+p[m.key] || 0), 0);
+
+  $('#metricDesc').textContent = m.desc;
+  $('#teamTotal').innerHTML = list.length ? `Team total<b>${m.fmt(total)}</b>` : '';
+  $('#empty').hidden = list.length > 0;
+  $('#empty p').innerHTML = loaded ? 'No runners on<br>the course yet' : 'Loading<br>standings…';
+  $('#emptyHint').textContent = !loaded ? '' : owner ? 'Add your first runner with the bar below.' : 'The race director hasn’t added anyone yet.';
+
+  const before = new Map();
+  rowsEl.querySelectorAll('.row').forEach(r => before.set(r.dataset.id, r.getBoundingClientRect().top));
+  rowsEl.textContent = '';
+  const leaders = list.filter(p => p[m.key] === max).length;
+  list.forEach(p => {
+    const v = +p[m.key] || 0;
+    const rank = 1 + list.filter(q => q[m.key] > v).length;
+    const li = document.createElement('li');
+    li.className = 'row' + (rank === 1 && v > 0 ? ' first' : '');
+    li.dataset.id = p.id;
+    let gap;
+    if (max === 0) gap = 'Warming up';
+    else if (rank === 1) gap = leaders > 1 ? 'Tied for the lead' : `Leading by ${m.fmt(v - (list.find(q => q[m.key] < v)?.[m.key] ?? 0))}`;
+    else gap = `${m.fmt(max - v)} behind the leader`;
+    li.innerHTML = `<span class="pos"></span><span class="who"><span class="name"></span><span class="gap"></span><i class="bar"><b></b></i></span><span class="val"></span><span class="edit">Edit</span>`;
+    li.querySelector('.pos').textContent = rank;
+    li.querySelector('.name').textContent = p.name;
+    li.querySelector('.gap').textContent = gap;
+    li.querySelector('.val').textContent = m.fmt(v);
+    const bar = li.querySelector('.bar b');
+    rowsEl.appendChild(li);
+    requestAnimationFrame(() => { bar.style.width = (max ? v / max * 100 : 0) + '%'; });
+  });
+  rowsEl.querySelectorAll('.row').forEach(r => {
+    const old = before.get(r.dataset.id);
+    if (old == null) return;
+    const dy = old - r.getBoundingClientRect().top;
+    if (Math.abs(dy) > 1 && r.animate) r.animate([{ transform:`translateY(${dy}px)` }, { transform:'none' }], { duration:520, easing:'cubic-bezier(.2,.8,.2,1)' });
+  });
+
+  scene.runners = (list.length ? list.slice(0, 3) : [null]).map((p, i) => ({
+    name: p ? shortName(p.name) : 'Team 12',
+    rank: p ? 1 + list.filter(q => q[m.key] > p[m.key]).length : 1,
+    ratio: p ? (max > 0 ? p[m.key] / max : 1 - i * 0.12) : 1,
+  }));
+}
+
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if (!b) return;
+  cur = +b.dataset.i;
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t === b));
+  $('#tabs').style.setProperty('--i', cur);
+  renderBoard();
+});
+
+/* ───────────── Owner mode ───────────── */
+function setOwner(on) {
+  owner = on;
+  document.body.classList.toggle('owner', on);
+  $('#dock').hidden = !on;
+  try { on ? sessionStorage.setItem(KEY + ':owner', '1') : sessionStorage.removeItem(KEY + ':owner'); } catch (e) {}
+  renderBoard();
+}
+// Checks the key can reach the project, then loads the freshest standings straight from GitHub
+async function verify() {
+  const repo = await gh('');
+  if (repo.permissions && repo.permissions.push === false) { const e = new Error('read only'); e.status = 403; throw e; }
+  try {
+    const f = await gh('/contents/data.json');
+    if (!pending) { state = clean(JSON.parse(unb64(f.content))); ls.set('cache', state); loaded = true; renderHud(); renderBoard(); }
+  } catch (e) { if (e.status !== 404) throw e; }
+}
+function openKey(msg) {
+  $('#keyRepo').value = conn.repo;
+  $('#keyToken').value = conn.token;
+  $('#keyErr').textContent = msg || '';
+  $('#keySheet').showModal();
+  setTimeout(() => $(conn.repo ? '#keyToken' : '#keyRepo').focus(), 50);
+}
+$('#ownerBtn').addEventListener('click', async () => {
+  if (DEMO) return toast('Preview mode — remove #demo from the address');
+  if (!conn.repo || !conn.token) return openKey();
+  const b = $('#ownerBtn'); b.disabled = true; b.textContent = 'Checking…';
+  try { await verify(); setOwner(true); toast('Owner mode on'); }
+  catch (e) { openKey(ghMessage(e)); }
+  finally { b.disabled = false; b.textContent = 'Owner sign-in'; }
+});
+$('#keyForm').addEventListener('submit', async e => {
+  if (e.submitter && e.submitter.value === 'cancel') return;
+  e.preventDefault();
+  const repo = $('#keyRepo').value.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\.git$/i, '').replace(/\/+$/, '');
+  const token = $('#keyToken').value.trim();
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) { $('#keyErr').textContent = 'Type the project like this: your-username/team12-race'; return; }
+  if (!token) { $('#keyErr').textContent = 'Paste your access key.'; return; }
+  const prev = { ...conn };
+  Object.assign(conn, { repo, token });
+  const go = $('#keyGo'); go.disabled = true; go.textContent = 'Checking…'; $('#keyErr').textContent = '';
+  try {
+    await verify();
+    ls.set('repo', repo); ls.set('token', token);
+    $('#keySheet').close(); setOwner(true); toast('Owner mode on');
+  } catch (err) {
+    Object.assign(conn, prev);
+    $('#keyErr').textContent = ghMessage(err);
+  } finally { go.disabled = false; go.textContent = 'Sign in'; }
+});
+$('#lockBtn').addEventListener('click', () => { setOwner(false); toast('Owner mode off'); });
+
+$('#addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#addName').value.trim().replace(/\s+/g, ' ');
+  if (!name) return;
+  if (state.people.some(p => p.name.toLowerCase() === name.toLowerCase())) return toast(`${name} is already running`);
+  state.people.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, ds:0, nc:0, usd:0 });
+  saveSoon(`Add ${name}`); $('#addName').value = ''; renderBoard(); toast(`${shortName(name)} is on the course`);
+});
+
+/* Editor */
+let editing = null;
+rowsEl.addEventListener('click', e => {
+  if (!owner) return;
+  const row = e.target.closest('.row'); if (!row) return;
+  editing = state.people.find(p => p.id === row.dataset.id); if (!editing) return;
+  $('#edName').value = editing.name;
+  $('#edDs').value = editing.ds; $('#edNc').value = editing.nc; $('#edUsd').value = editing.usd;
+  $('#editor').showModal();
+});
+const edInput = k => ({ ds:'#edDs', nc:'#edNc', usd:'#edUsd' })[k];
+$('#editForm').addEventListener('click', e => {
+  const st = e.target.closest('[data-step]');
+  if (st) { const inp = $(edInput(st.dataset.step)); inp.value = Math.max(0, Math.round(((+inp.value || 0) + +st.dataset.by) * 100) / 100); }
+  const add = e.target.closest('[data-add]');
+  if (add) { const inp = $('#edUsd'); inp.value = Math.round(((+inp.value || 0) + +add.dataset.add) * 100) / 100; }
+});
+$('#editForm').addEventListener('submit', e => {
+  if (!e.submitter || e.submitter.value !== 'save' || !editing) return;
+  const name = $('#edName').value.trim().replace(/\s+/g, ' ');
+  if (name) editing.name = name;
+  editing.ds = Math.max(0, Math.round(+$('#edDs').value || 0));
+  editing.nc = Math.max(0, Math.round(+$('#edNc').value || 0));
+  editing.usd = Math.max(0, Math.round((+$('#edUsd').value || 0) * 100) / 100);
+  saveSoon(`Update ${editing.name}`); renderBoard();
+});
+$('#edDelete').addEventListener('click', () => {
+  if (!editing || !confirm(`Remove ${editing.name} from the race? Their stats will be deleted.`)) return;
+  const gone = editing.name;
+  state.people = state.people.filter(p => p !== editing);
+  saveSoon(`Remove ${gone}`); $('#editor').close(); renderBoard(); toast('Runner removed');
+});
+
+/* Settings */
+$('#settingsBtn').addEventListener('click', () => {
+  $('#setStart').value = state.start; $('#setEnd').value = state.end; $('#setWx').value = view.wx || 'live';
+  $('#repoName').textContent = conn.repo;
+  $('#settings').showModal();
+});
+$('#setStart').addEventListener('change', e => { if (e.target.value && e.target.value < state.end) { state.start = e.target.value; saveSoon('Change race start date'); renderHud(); } else toast('Start must be before finish'); });
+$('#setEnd').addEventListener('change', e => { if (e.target.value && e.target.value > state.start) { state.end = e.target.value; saveSoon('Change race finish date'); renderHud(); } else toast('Finish must be after start'); });
+$('#setWx').addEventListener('change', e => { view.wx = e.target.value; ls.set('wx', view.wx); applyWeather(); });
+$('#exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `team12-race-backup-${isoOf(new Date())}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+});
+$('#importBtn').addEventListener('click', () => $('#importFile').click());
+$('#importFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (!Array.isArray(d.people)) throw 0;
+    state = clean(d);
+    saveSoon('Restore backup'); renderHud(); renderBoard(); toast(`Restored ${state.people.length} runners`);
+  } catch (err) { toast('That file isn’t a race backup'); }
+  e.target.value = '';
+});
+$('#signOutBtn').addEventListener('click', () => {
+  if (pending) return toast('Wait for saving to finish first');
+  conn.token = ''; ls.set('token', null);
+  $('#settings').close(); setOwner(false); toast('Signed out on this device');
+});
+$('#resetBtn').addEventListener('click', () => {
+  if (!confirm('Reset the race? This removes every runner and stat from the site for everyone.')) return;
+  state = clean({ start: state.start, end: state.end });
+  saveSoon('Reset race');
+  $('#settings').close(); renderHud(); renderBoard(); toast('Race reset');
+});
+
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1900); }
+
+/* ════════════════════════ 3D SCENE ════════════════════════ */
+const scene = (() => {
+  const cv = $('#scene'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W = 0, H = 0, S = 0, HOR = 0;
+
+  // seeded RNG from the race seed
+  let h0 = 1779033703 ^ SEED.length;
+  for (let i = 0; i < SEED.length; i++) { h0 = Math.imul(h0 ^ SEED.charCodeAt(i), 3432918353); h0 = (h0 << 13) | (h0 >>> 19); }
+  let rs = h0 >>> 0;
+  const rnd = () => { rs |= 0; rs = rs + 0x6D2B79F5 | 0; let t = Math.imul(rs ^ rs >>> 15, 1 | rs); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+
+  const hx = h => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map(c => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const css = (a, al) => al == null ? `rgb(${a[0] | 0},${a[1] | 0},${a[2] | 0})` : `rgba(${a[0] | 0},${a[1] | 0},${a[2] | 0},${al})`;
+
+  // Track
+  const SEG = 200, RW = 1000, CAMH = 1000, CAMBACK = 420, DRAW = 150, N = 600, CD = 1 / Math.tan(50 * Math.PI / 180);
+  const segs = Array.from({ length: N }, (_, i) => {
+    const a = i / N * Math.PI * 2;
+    return {
+      curve: Math.sin(a * 5) * 1.5 + Math.sin(a * 13 + 1) * 0.55,
+      y: Math.sin(a * 4) * 700 + Math.sin(a * 11 + 2) * 160,
+      prop: i % 4 === 0 ? { side: (i / 4) % 2 ? 1 : -1, off: 1.5 + rnd() * 0.9, v: rnd(), lamp: rnd() < 0.3 } : null,
+      arch: i % 200 === 90,
+    };
+  });
+  const stars = Array.from({ length: 90 }, () => ({ x: rnd(), y: rnd() * 0.55, r: rnd() * 1.2 + 0.3, p: rnd() * 6 }));
+  const ridge = Array.from({ length: 48 }, (_, i) => 0.35 + 0.65 * Math.abs(Math.sin(i * 0.7 + rnd() * 1.4)) * (0.5 + rnd() * 0.5));
+
+  let pos = 0, time = 0, lmX = null, lmY = null, bgOff = 0, flash = 0, nextFlash = 3;
+  let wx = { kind:'clear', day:true, wind:3 };
+  let pal = null, clouds = [], drops = [];
+
+  const PAL = {
+    sky: {
+      clear:  [['#3420C4','#8A74FF','#FFC6A0'], ['#05031A','#1A1152','#4E2C9A']],
+      partly: [['#3C2DBB','#9384F2','#F4C8B4'], ['#06041C','#1C1650','#46307F']],
+      cloudy: [['#4A4674','#8B86AB','#C8C2D8'], ['#0B0A18','#1E1B34','#3A3454']],
+      fog:    [['#8C88A6','#B9B4CA','#DDD8E7'], ['#1D1B2E','#35314B','#55506D']],
+      drizzle:[['#403C63','#6F6A8F','#A7A2BC'], ['#0A0916','#1C1A30','#34304C']],
+      rain:   [['#2B2747','#4E4970','#7C7796'], ['#08070F','#17152A','#2C2842']],
+      storm:  [['#17142C','#2D2850','#4C466A'], ['#05040C','#120F24','#241F3C']],
+      snow:   [['#8E8BB0','#C3C0DA','#EAE7F3'], ['#141226','#2A2744','#48436A']],
+    },
+    grass: { clear:['#A0923C','#978A35'], partly:['#968B3C','#8D8236'], cloudy:['#6F6D40','#67653A'], fog:['#8A8870','#83816A'], drizzle:['#56593A','#505334'], rain:['#474B30','#42462C'], storm:['#34362A','#303226'], snow:['#D8D5E6','#CDCADF'] },
+    fogDensity: { clear:.8, partly:1, cloudy:1.3, fog:4.5, drizzle:1.9, rain:2.3, storm:2.5, snow:2.1 },
+    haze: { clear:.1, partly:.14, cloudy:.26, fog:.66, drizzle:.32, rain:.4, storm:.44, snow:.36 },
+    band: { clear:.1, partly:.14, cloudy:.2, fog:.8, drizzle:.28, rain:.34, storm:.3, snow:.3 },
+  };
+
+  function buildPal() {
+    const k = wx.kind, d = wx.day;
+    const sky = PAL.sky[k][d ? 0 : 1].map(hx);
+    const night = hx('#120E2C');
+    const g = PAL.grass[k].map(hx).map(c => d ? c : mix(c, night, 0.8));
+    const wet = ['rain', 'storm', 'drizzle'].includes(k);
+    const road = (wet ? ['#2D2944', '#2A2640'] : ['#3C3654', '#38324F']).map(hx).map(c => d ? c : mix(c, night, 0.55));
+    const acid = hx('#E4FF3A'), vio = hx('#6633FF');
+    const lmBody = d ? mix(hx('#3A2B96'), sky[2], PAL.haze[k]) : mix(hx('#130E33'), sky[2], PAL.haze[k] * 0.7);
+    const lmDetail = d ? mix(hx('#6F5DE8'), sky[2], PAL.haze[k]) : mix(hx('#2E2270'), sky[2], PAL.haze[k] * 0.6);
+    pal = {
+      sky, g, road, fogC: sky[2], dens: PAL.fogDensity[k], band: PAL.band[k],
+      rumble: [d ? vio : mix(vio, night, .25), d ? acid : mix(acid, night, .3)],
+      lane: d ? acid : mix(acid, night, .2),
+      lm: {
+        body: css(lmBody), detail: css(lmDetail),
+        glass: css(d ? mix(hx('#B7A8FF'), sky[2], PAL.haze[k]) : hx('#3B2A8C')),
+        win: d ? css(mix(hx('#CFC4FF'), sky[2], PAL.haze[k] + .1), .55) : css(acid, .9),
+        accent: css(d ? mix(acid, sky[2], PAL.haze[k] * .6) : acid),
+        vhi: css(d ? mix(hx('#9173FF'), sky[2], PAL.haze[k] * .6) : hx('#9173FF')),
+        gold: css(d ? mix(hx('#E9C44C'), sky[2], PAL.haze[k] * .7) : mix(hx('#E9C44C'), night, .35)),
+        water: css(d ? mix(hx('#5A4BD6'), sky[2], .35) : hx('#1C1550')),
+        dark: css(d ? mix(hx('#1E1650'), sky[2], PAL.haze[k] * .5) : hx('#07051A')),
+        night: !d,
+      },
+      ridge: css(mix(sky[2], d ? hx('#5A4DB8') : hx('#1C1446'), d ? .42 : .6)),
+      ridgeSnow: css(mix(sky[2], hx('#FFFFFF'), d ? .55 : .12)),
+      tree: css(d ? mix(hx('#3D3A1E'), sky[2], .25) : hx('#0C0920')),
+      propDark: d ? hx('#2E2A18') : hx('#0A081C'),
+      canopy: d ? (['rain','storm','drizzle'].includes(k) ? hx('#3E4A2A') : hx('#55602C')) : hx('#110D29'),
+    };
+    const nCloud = { clear:0, partly:5, cloudy:10, fog:4, drizzle:9, rain:11, storm:12, snow:9 }[k];
+    clouds = Array.from({ length: nCloud }, () => ({ x: rnd() * 1.4 - .2, y: .05 + rnd() * .32, s: .6 + rnd() * .9, v: .004 + rnd() * .01 }));
+    const nDrop = { drizzle:70, rain:170, storm:240, snow:130 }[k] || 0;
+    drops = Array.from({ length: nDrop }, () => ({ x: rnd(), y: rnd(), z: .4 + rnd() * .6 }));
+  }
+
+  function resize() {
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    HOR = H * (W < 700 ? 0.5 : 0.52);
+    S = H * 0.55;
+    lmX = null;
+  }
+
+  /* ─── Sky ─── */
+  function drawSky() {
+    const g = ctx.createLinearGradient(0, 0, 0, HOR + 10);
+    g.addColorStop(0, css(pal.sky[0])); g.addColorStop(.62, css(pal.sky[1])); g.addColorStop(1, css(pal.sky[2]));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, HOR + 12);
+
+    const k = wx.kind, hour = laHour();
+    const cloudy = ['cloudy', 'fog', 'rain', 'storm', 'drizzle', 'snow'].includes(k);
+    if (!wx.day) {
+      const al = cloudy ? .15 : 1;
+      for (const s of stars) {
+        const tw = .55 + .45 * Math.sin(time * 1.3 + s.p);
+        ctx.fillStyle = `rgba(242,239,255,${tw * al * .9})`;
+        ctx.fillRect(s.x * W, s.y * HOR, s.r, s.r);
+      }
+      if (!cloudy || k === 'fog') {
+        const mx = W * .74, my = HOR * .28, mr = Math.max(10, W * .028);
+        const glow = ctx.createRadialGradient(mx, my, 0, mx, my, mr * 6);
+        glow.addColorStop(0, 'rgba(228,255,58,.22)'); glow.addColorStop(1, 'rgba(228,255,58,0)');
+        ctx.fillStyle = glow; ctx.fillRect(mx - mr * 6, my - mr * 6, mr * 12, mr * 12);
+        ctx.fillStyle = '#F3F7C8'; ctx.beginPath(); ctx.arc(mx, my, mr, 0, 7); ctx.fill();
+        ctx.fillStyle = css(pal.sky[0]); ctx.beginPath(); ctx.arc(mx + mr * .45, my - mr * .25, mr * .9, 0, 7); ctx.fill();
+      }
+      // Sacramento city glow on the horizon
+      const cg = ctx.createRadialGradient(W * .5, HOR, 0, W * .5, HOR, W * .7);
+      cg.addColorStop(0, 'rgba(102,51,255,.35)'); cg.addColorStop(1, 'rgba(102,51,255,0)');
+      ctx.fillStyle = cg; ctx.fillRect(0, HOR - W * .5, W, W * .5 + 10);
+    } else {
+      const f = clamp((hour - 6) / 13.5, 0, 1);
+      const sx = W * (.1 + .8 * f), sy = HOR - (HOR * .78) * Math.sin(Math.PI * f) + 10;
+      const sr = Math.max(14, Math.min(W, H) * .045);
+      const al = cloudy ? (k === 'fog' ? .5 : .18) : 1;
+      const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 7);
+      glow.addColorStop(0, `rgba(255,236,190,${.55 * al})`); glow.addColorStop(1, 'rgba(255,236,190,0)');
+      ctx.fillStyle = glow; ctx.fillRect(sx - sr * 7, sy - sr * 7, sr * 14, sr * 14);
+      ctx.fillStyle = `rgba(255,247,214,${al})`; ctx.beginPath(); ctx.arc(sx, sy, sr, 0, 7); ctx.fill();
+    }
+    drawClouds();
+  }
+  function drawClouds() {
+    if (!clouds.length) return;
+    const k = wx.kind, d = wx.day;
+    const base = d ? (k === 'partly' ? [255, 250, 255] : k === 'rain' || k === 'storm' ? [70, 64, 100] : [214, 208, 230]) : (k === 'partly' ? [52, 42, 110] : [34, 30, 58]);
+    const al = k === 'partly' ? .8 : .72;
+    for (const c of clouds) {
+      c.x += c.v * (1 + wx.wind / 10) * (1 / 60) * (reduce ? .2 : 1);
+      if (c.x > 1.3) c.x = -.3;
+      const cx = c.x * W, cy = c.y * HOR, r = Math.min(W, H) * .07 * c.s;
+      ctx.fillStyle = css(base, al);
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, r * 2.4, r * .7, 0, 0, 7);
+      ctx.moveTo(cx - r * .6, cy); ctx.arc(cx - r * .6, cy - r * .3, r * .9, 0, 7);
+      ctx.moveTo(cx + r * .5, cy); ctx.arc(cx + r * .5, cy - r * .45, r * 1.1, 0, 7);
+      ctx.moveTo(cx + r * 1.5, cy); ctx.arc(cx + r * 1.4, cy - r * .1, r * .7, 0, 7);
+      ctx.fill();
+      ctx.fillStyle = css(d ? [120, 110, 170] : [8, 6, 20], .18);
+      ctx.beginPath(); ctx.ellipse(cx, cy + r * .25, r * 2.2, r * .35, 0, 0, 7); ctx.fill();
+    }
+  }
+  function drawRidge(clock) {
+    const n = ridge.length, step = W / (n - 8);
+    const off = ((bgOff * .15) % step + step) % step;
+    const i0 = Math.floor(bgOff * .15 / step);
+    const peak = H * .1;
+    ctx.fillStyle = pal.ridge;
+    ctx.beginPath(); ctx.moveTo(-step * 2, HOR + 6);
+    const pts = [];
+    for (let j = -2; j < n; j++) {
+      const r = ridge[((j + i0) % n + n) % n];
+      const x = j * step - off, y = HOR + 4 - r * peak;
+      pts.push([x, y, r]); ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W + step * 2, HOR + 6); ctx.fill();
+    const month = clock ? clock.now.getMonth() : 9;
+    if (month >= 10 || month <= 3) { // Sierra snowpack in winter
+      ctx.fillStyle = pal.ridgeSnow;
+      for (const [x, y, r] of pts) if (r > .72) { ctx.beginPath(); ctx.moveTo(x - step * .35, y + peak * .12); ctx.lineTo(x, y); ctx.lineTo(x + step * .35, y + peak * .12); ctx.fill(); }
+    }
+  }
+
+  /* ─── Landmarks ─── */
+  function LM(id, cx, gy, u, c) {
+    const X = v => cx + v * u, Y = v => gy - v * u;
+    const rect = (x0, y0, x1, y1, col) => { ctx.fillStyle = col; ctx.fillRect(X(x0), Y(y1), (x1 - x0) * u, (y1 - y0) * u); };
+    const poly = (pts, col) => { ctx.fillStyle = col; ctx.beginPath(); pts.forEach(([a, b], i) => i ? ctx.lineTo(X(a), Y(b)) : ctx.moveTo(X(a), Y(b))); ctx.closePath(); ctx.fill(); };
+    const line = (x0, y0, x1, y1, col, w) => { ctx.strokeStyle = col; ctx.lineWidth = Math.max(1, w * u); ctx.beginPath(); ctx.moveTo(X(x0), Y(y0)); ctx.lineTo(X(x1), Y(y1)); ctx.stroke(); };
+    const wins = (x0, x1, y, h, n, w) => { for (let i = 0; i < n; i++) rect(x0 + (x1 - x0) * (i + .5) / n - w / 2, y, x0 + (x1 - x0) * (i + .5) / n + w / 2, y + h, c.win); };
+    const label = (txt, x, y, size, col, align = 'center') => { if (size * u < 7) return; ctx.fillStyle = col; ctx.font = `800 ${size * u}px 'Big Shoulders Display', Impact, sans-serif`; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillText(txt, X(x), Y(y)); };
+    const glow = (x, y, r, col) => { if (!c.night) return; const g = ctx.createRadialGradient(X(x), Y(y), 0, X(x), Y(y), r * u); g.addColorStop(0, col); g.addColorStop(1, 'rgba(228,255,58,0)'); ctx.fillStyle = g; ctx.fillRect(X(x) - r * u, Y(y) - r * u, r * 2 * u, r * 2 * u); };
+    ctx.lineCap = 'butt';
+
+    switch (id) {
+      case 'galleria': {
+        rect(-1.1, 0, 1.1, .2, c.body);
+        rect(-.75, 0, .75, .31, c.body);
+        rect(-.75, .29, .75, .31, c.detail);
+        rect(-.27, 0, .27, .46, c.body);
+        ctx.fillStyle = c.glass; ctx.beginPath(); ctx.ellipse(cx, Y(.46), .27 * u, .21 * u, 0, Math.PI, 0); ctx.fill();
+        for (let k = -3; k <= 3; k++) { ctx.strokeStyle = c.detail; ctx.lineWidth = Math.max(1, u * .007); ctx.beginPath(); ctx.moveTo(cx + k * .085 * u, Y(.46)); ctx.quadraticCurveTo(cx + k * .05 * u, Y(.6), cx, Y(.67)); ctx.stroke(); }
+        rect(-.02, .66, .02, .72, c.body);
+        ctx.fillStyle = c.glass; ctx.beginPath(); ctx.moveTo(X(-.15), gy); ctx.lineTo(X(-.15), Y(.22)); ctx.ellipse(cx, Y(.22), .15 * u, .13 * u, 0, Math.PI, 0); ctx.lineTo(X(.15), gy); ctx.fill();
+        for (let k = -2; k <= 2; k++) line(k * .06, 0, k * .06, .3, c.detail, .006);
+        wins(-1.05, -.8, .06, .07, 3, .05); wins(.8, 1.05, .06, .07, 3, .05);
+        wins(-.7, -.32, .18, .06, 5, .045); wins(.32, .7, .18, .06, 5, .045);
+        label('GALLERIA', -.52, .08, .085, c.accent); label('ROSEVILLE', .52, .08, .06, c.vhi);
+        break;
+      }
+      case 'speedway': {
+        poly([[-1.05, 0], [-1.05, .1], [.95, .36], [.95, 0]], c.body);
+        for (let k = 1; k <= 5; k++) line(-1.05, .1 - k * .018, .95, .36 - k * .06, c.detail, .006);
+        poly([[-.35, .3], [1.02, .47], [1.02, .44], [-.35, .27]], c.body);
+        [-.2, .3, .8].forEach(v => line(v, .1 + (v + 1.05) / 2 * .26, v, .3 + (v + .35) / 1.37 * .17, c.body, .012));
+        [-.95, -.4, .42, .98].forEach((v, i) => {
+          rect(v - .01, 0, v + .01, .72, c.body);
+          rect(v - .07, .7, v + .07, .77, c.body);
+          for (let j = 0; j < 3; j++) rect(v - .06 + j * .045, .715, v - .035 + j * .045, .755, c.win);
+          glow(v, .73, .28, 'rgba(228,255,58,.35)');
+        });
+        rect(-1.15, 0, 1.15, .04, c.detail);
+        rect(-.64, 0, -.625, .52, c.body);
+        const wave = Math.sin(time * 4) * .012;
+        for (let r = 0; r < 3; r++) for (let q = 0; q < 5; q++) {
+          ctx.fillStyle = (r + q) % 2 ? c.dark : 'rgba(242,239,255,.92)';
+          const x0 = -.625 + q * .04, y0 = .5 - r * .04 + (q % 2 ? wave : -wave);
+          ctx.fillRect(X(x0), Y(y0), .04 * u + 1, .04 * u + 1);
+        }
+        label('ALL AMERICAN SPEEDWAY', -.05, .018, .05, c.accent);
+        break;
+      }
+      case 'sunsplash': {
+        ctx.fillStyle = c.water; ctx.beginPath(); ctx.ellipse(X(-.1), gy, .9 * u, .07 * u, 0, Math.PI, 0); ctx.fill();
+        rect(.3, 0, .5, .74, c.body);
+        for (let k = 0; k < 6; k++) { line(.3, k * .12, .5, k * .12 + .12, c.detail, .008); line(.5, k * .12, .3, k * .12 + .12, c.detail, .008); }
+        rect(.24, .72, .58, .76, c.body);
+        poly([[.22, .76], [.41, .88], [.6, .76]], c.body);
+        ctx.lineCap = 'round'; ctx.lineWidth = .05 * u;
+        ctx.strokeStyle = c.accent; ctx.beginPath(); ctx.moveTo(X(.3), Y(.7)); ctx.bezierCurveTo(X(-.25), Y(.7), X(.3), Y(.42), X(-.2), Y(.36)); ctx.bezierCurveTo(X(-.7), Y(.3), X(-.45), Y(.1), X(-.75), Y(.05)); ctx.stroke();
+        ctx.strokeStyle = c.vhi; ctx.beginPath(); ctx.moveTo(X(.5), Y(.6)); ctx.bezierCurveTo(X(1.05), Y(.56), X(.62), Y(.3), X(.92), Y(.2)); ctx.lineTo(X(1.05), Y(.05)); ctx.stroke();
+        ctx.strokeStyle = c.detail; ctx.lineWidth = .04 * u; ctx.beginPath(); ctx.moveTo(X(.3), Y(.48)); ctx.bezierCurveTo(X(.05), Y(.44), X(.2), Y(.2), X(-.05), Y(.06)); ctx.stroke();
+        ctx.lineCap = 'butt';
+        rect(-1.05, 0, -.72, .14, c.body); poly([[-1.1, .14], [-.885, .24], [-.67, .14]], c.detail);
+        wins(-1.0, -.77, .04, .05, 3, .04);
+        label('SUNSPLASH', .4, .8 - .02, .055, c.accent);
+        break;
+      }
+      case 'calexpo': {
+        const wx0 = .38, wy0 = .56, r = .46;
+        line(wx0, wy0, wx0 - .22, 0, c.body, .03); line(wx0, wy0, wx0 + .22, 0, c.body, .03);
+        const a0 = time * (reduce ? .02 : .12);
+        ctx.strokeStyle = c.detail; ctx.lineWidth = Math.max(1, .007 * u);
+        for (let k = 0; k < 16; k++) { const a = a0 + k * Math.PI / 8; ctx.beginPath(); ctx.moveTo(X(wx0), Y(wy0)); ctx.lineTo(X(wx0) + Math.cos(a) * r * u, Y(wy0) + Math.sin(a) * r * u); ctx.stroke(); }
+        ctx.strokeStyle = c.body; ctx.lineWidth = Math.max(1.5, .024 * u); ctx.beginPath(); ctx.arc(X(wx0), Y(wy0), r * u, 0, 7); ctx.stroke();
+        ctx.lineWidth = Math.max(1, .008 * u); ctx.beginPath(); ctx.arc(X(wx0), Y(wy0), r * .9 * u, 0, 7); ctx.stroke();
+        for (let k = 0; k < 16; k++) {
+          const a = a0 + k * Math.PI / 8, gx = X(wx0) + Math.cos(a) * r * u, gyy = Y(wy0) + Math.sin(a) * r * u;
+          ctx.fillStyle = k % 3 === 0 ? c.accent : c.body; ctx.fillRect(gx - .025 * u, gyy, .05 * u, .045 * u);
+          if (c.night) { ctx.fillStyle = k % 2 ? 'rgba(228,255,58,.9)' : 'rgba(145,115,255,.9)'; ctx.fillRect(gx - 1, gyy - 1, 2.5, 2.5); }
+        }
+        ctx.fillStyle = c.accent; ctx.beginPath(); ctx.arc(X(wx0), Y(wy0), .03 * u, 0, 7); ctx.fill();
+        rect(-1.1, 0, -.05, .15, c.body);
+        [[-1.1, -.75], [-.75, -.4], [-.4, -.05]].forEach(([a, b]) => poly([[a, .15], [(a + b) / 2, .25], [b, .15]], c.detail));
+        wins(-1.05, -.1, .04, .05, 8, .05);
+        label('CAL EXPO', -.575, .2, .065, c.dark);
+        break;
+      }
+      case 'sutter': {
+        rect(-1, 0, 1, .15, c.detail);
+        rect(-1, .14, 1, .16, c.body);
+        [-1, .78].forEach(v => {
+          rect(v - .06, 0, v + .28, .27, c.detail);
+          poly([[v - .09, .27], [v + .11, .36], [v + .31, .27]], c.body);
+          rect(v + .02, .16, v + .07, .2, c.dark); rect(v + .15, .16, v + .2, .2, c.dark);
+        });
+        rect(-.3, .12, .3, .38, c.detail);
+        poly([[-.36, .38], [0, .5], [.36, .38]], c.body);
+        wins(-.26, .26, .17, .06, 4, .05); wins(-.26, .26, .27, .06, 4, .05);
+        rect(-.08, 0, .08, .12, c.dark);
+        rect(-.006, .5, .006, .78, c.body);
+        const w = Math.sin(time * 3) * .01;
+        poly([[.006, .77], [.2, .75 + w], [.2, .66 + w], [.006, .68]], c.accent);
+        label('SUTTER’S FORT', 0, .07, .05, c.body);
+        break;
+      }
+      case 'capitol': {
+        rect(-1.08, 0, 1.08, .22, c.body);
+        rect(-1.08, .2, 1.08, .225, c.detail);
+        wins(-1.0, -.4, .05, .06, 6, .045); wins(.4, 1.0, .05, .06, 6, .045);
+        wins(-1.0, -.4, .13, .05, 6, .045); wins(.4, 1.0, .13, .05, 6, .045);
+        rect(-.32, 0, .32, .32, c.body);
+        poly([[-.36, .32], [0, .41], [.36, .32]], c.detail);
+        for (let k = 0; k < 8; k++) line(-.27 + k * .077, .02, -.27 + k * .077, .3, c.detail, .012);
+        rect(-.21, .32, .21, .52, c.body);
+        for (let k = 0; k < 7; k++) line(-.18 + k * .06, .34, -.18 + k * .06, .5, c.detail, .008);
+        rect(-.17, .52, .17, .57, c.detail);
+        ctx.fillStyle = c.body; ctx.beginPath(); ctx.ellipse(cx, Y(.57), .18 * u, .22 * u, 0, Math.PI, 0); ctx.fill();
+        for (let k = -2; k <= 2; k++) { ctx.strokeStyle = c.detail; ctx.lineWidth = Math.max(1, .005 * u); ctx.beginPath(); ctx.moveTo(cx + k * .07 * u, Y(.57)); ctx.quadraticCurveTo(cx + k * .04 * u, Y(.72), cx, Y(.79)); ctx.stroke(); }
+        rect(-.035, .78, .035, .87, c.body);
+        ctx.fillStyle = c.body; ctx.beginPath(); ctx.ellipse(cx, Y(.87), .04 * u, .035 * u, 0, Math.PI, 0); ctx.fill();
+        line(0, .9, 0, .97, c.body, .008);
+        ctx.fillStyle = c.accent; ctx.beginPath(); ctx.arc(cx, Y(.975), .014 * u, 0, 7); ctx.fill();
+        glow(0, .97, .12, 'rgba(228,255,58,.5)');
+        break;
+      }
+      case 'golden1': {
+        poly([[-1.08, 0], [-1.08, .26], [-.55, .47], [.52, .45], [1.08, .22], [1.08, 0]], c.body);
+        line(-1.08, .26, -.55, .47, c.detail, .01); line(-.55, .47, .52, .45, c.detail, .01);
+        poly([[-.5, 0], [-.5, .41], [.3, .4], [.3, 0]], c.glass);
+        if (c.night) { const g = ctx.createLinearGradient(0, Y(.4), 0, gy); g.addColorStop(0, 'rgba(145,115,255,.55)'); g.addColorStop(1, 'rgba(228,255,58,.5)'); poly([[-.5, 0], [-.5, .41], [.3, .4], [.3, 0]], g); }
+        for (let k = 0; k <= 10; k++) line(-.5 + k * .08, 0, -.5 + k * .08, .41 - k * .001, c.detail, .006);
+        for (let k = 1; k <= 5; k++) line(-.5, k * .075, .3, k * .075, c.detail, .006);
+        rect(-.62, .13, .42, .15, c.body);
+        rect(.45, .2, .98, .3, c.dark);
+        label('GOLDEN 1', .715, .25, .06, c.accent);
+        wins(.45, 1.0, .05, .06, 5, .05);
+        wins(-1.02, -.6, .08, .06, 4, .05);
+        break;
+      }
+      case 'tower': {
+        rect(-1.4, -.12, 1.4, 0, c.water);
+        for (let k = 0; k < 6; k++) { const x0 = -1.3 + ((k * .45 + time * .03) % 2.6); line(x0, -.04, x0 + .18, -.04, 'rgba(242,239,255,.25)', .006); }
+        rect(-1.4, .1, -.5, .14, c.gold); rect(.5, .1, 1.4, .14, c.gold);
+        for (let k = 0; k < 9; k++) { line(-1.4 + k * .1, .1, -1.35 + k * .1, .14, c.dark, .005); line(.5 + k * .1, .1, .55 + k * .1, .14, c.dark, .005); }
+        rect(-.4, .14, .4, .21, c.gold);
+        for (let k = 0; k < 8; k++) { line(-.4 + k * .1, .14, -.35 + k * .1, .21, c.dark, .007); line(-.35 + k * .1, .21, -.3 + k * .1, .14, c.dark, .007); }
+        [-.46, .46].forEach(v => {
+          rect(v - .065, -.04, v + .065, .9, c.gold);
+          for (let j = 0; j < 7; j++) { const y0 = .06 + j * .12; line(v - .055, y0, v + .055, y0 + .12, c.dark, .007); line(v + .055, y0, v - .055, y0 + .12, c.dark, .007); }
+          rect(v - .085, .88, v + .085, .95, c.gold);
+          poly([[v - .06, .95], [v, 1.02], [v + .06, .95]], c.gold);
+          line(v, .93, v * .15, .21, c.gold, .006);
+          glow(v, 1.0, .1, 'rgba(228,255,58,.55)');
+          if (c.night) { ctx.fillStyle = '#E4FF3A'; ctx.beginPath(); ctx.arc(X(v), Y(1.02), 2, 0, 7); ctx.fill(); }
+        });
+        break;
+      }
+    }
+  }
+
+  /* ─── Props ─── */
+  function drawProp(pr, x, y, k, fog, sac) {
+    ctx.globalAlpha = 1 - fog * .85;
+    const d = wx.day;
+    if (pr.lamp) {
+      const h = 1300 * k, w = Math.max(1, 24 * k);
+      ctx.fillStyle = css(pal.propDark); ctx.fillRect(x - w / 2, y - h, w, h);
+      ctx.fillRect(x - w / 2, y - h, -pr.side * 220 * k, w);
+      const lx = x - pr.side * 220 * k;
+      ctx.fillStyle = d ? 'rgba(242,239,255,.8)' : '#E4FF3A'; ctx.fillRect(lx - 40 * k, y - h, 80 * k, 30 * k);
+      if (!d && h > 20) { const g = ctx.createRadialGradient(lx, y - h, 0, lx, y - h, 300 * k); g.addColorStop(0, 'rgba(228,255,58,.35)'); g.addColorStop(1, 'rgba(228,255,58,0)'); ctx.fillStyle = g; ctx.fillRect(lx - 300 * k, y - h - 300 * k, 600 * k, 600 * k); }
+    } else if (sac && pr.v > .45) {
+      // palm
+      const h = (1500 + pr.v * 500) * k, lean = pr.side * 120 * k;
+      ctx.strokeStyle = css(mix(pal.propDark, [120, 100, 70], d ? .4 : 0)); ctx.lineWidth = Math.max(1, 45 * k); ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x, y - h * .6, x + lean, y - h); ctx.stroke();
+      ctx.strokeStyle = css(pal.canopy); ctx.lineWidth = Math.max(1, 38 * k);
+      const tx = x + lean, ty = y - h, sway = Math.sin(time * 1.5 + pr.v * 9) * (wx.wind / 20 + .15) * 40 * k;
+      for (let f = 0; f < 7; f++) { const a = -Math.PI + f * Math.PI / 6; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.quadraticCurveTo(tx + Math.cos(a) * 280 * k + sway, ty + Math.sin(a) * 180 * k - 60 * k, tx + Math.cos(a) * 420 * k + sway, ty + Math.sin(a) * 120 * k + 160 * k); ctx.stroke(); }
+      ctx.lineCap = 'butt';
+    } else {
+      // valley oak
+      const h = (900 + pr.v * 600) * k, r = (380 + pr.v * 260) * k;
+      const sway = Math.sin(time * 1.2 + pr.v * 9) * (wx.wind / 25) * 20 * k;
+      ctx.fillStyle = css(pal.propDark); ctx.fillRect(x - 40 * k, y - h * .6, 80 * k, h * .6);
+      ctx.fillStyle = css(pal.canopy);
+      ctx.beginPath();
+      ctx.ellipse(x + sway, y - h * .78, r * 1.25, r * .7, 0, 0, 7);
+      ctx.moveTo(x + sway, y); ctx.ellipse(x - r * .55 + sway, y - h * .9, r * .75, r * .55, 0, 0, 7);
+      ctx.moveTo(x + sway, y); ctx.ellipse(x + r * .6 + sway, y - h * .95, r * .7, r * .5, 0, 0, 7);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  function drawArch(a, k) {
+    const px = a.w * 1.18, h = 1500 * k, t = Math.max(2, 70 * k);
+    if (h < 6) return;
+    ctx.fillStyle = '#6633FF';
+    ctx.fillRect(a.x - px - t, a.y - h, t * 2, h); ctx.fillRect(a.x + px - t, a.y - h, t * 2, h);
+    const bh = 240 * k;
+    ctx.fillStyle = '#150F33'; ctx.fillRect(a.x - px - t, a.y - h - bh * .2, (px + t) * 2, bh);
+    ctx.fillStyle = '#E4FF3A'; ctx.fillRect(a.x - px - t, a.y - h - bh * .2, (px + t) * 2, Math.max(1, 20 * k));
+    const fs = bh * .62;
+    if (fs > 6) {
+      ctx.save(); ctx.translate(a.x, a.y - h + bh * .3); ctx.transform(1, 0, -.14, 1, 0, 0);
+      ctx.fillStyle = '#E4FF3A'; ctx.font = `900 ${fs}px 'Big Shoulders Display', Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('TEAM 12 · SPRINT TO ’27', 0, 0); ctx.restore();
+    }
+  }
+
+  /* ─── Runners ─── */
+  const SHIRTS = ['#6633FF', '#8A68FF', '#4B25C9'];
+  function drawRunner(x, y, h, r, idx) {
+    const ph = time * (reduce ? 3 : 10.5) + idx * 2.1;
+    const bob = -Math.abs(Math.sin(ph)) * h * .035;
+    const hip = y - h * .5 + bob, sh = y - h * .8 + bob;
+    ctx.fillStyle = 'rgba(8,6,24,.35)'; ctx.beginPath(); ctx.ellipse(x, y, h * .2, h * .045, 0, 0, 7); ctx.fill();
+    ctx.lineCap = 'round';
+    for (const s of [0, 1]) {
+      const lift = Math.max(0, Math.sin(ph + s * Math.PI));
+      const hx0 = x + (s ? 1 : -1) * h * .055;
+      const ky = hip + h * .26 - lift * h * .08, fy = y - lift * h * .2;
+      ctx.strokeStyle = '#1B1440'; ctx.lineWidth = h * .085;
+      ctx.beginPath(); ctx.moveTo(hx0, hip); ctx.lineTo(hx0 + (s ? .01 : -.01) * h, ky); ctx.lineTo(hx0, fy - h * .02); ctx.stroke();
+      ctx.fillStyle = '#E4FF3A'; ctx.beginPath(); ctx.ellipse(hx0, fy, h * .045, h * .028 + lift * h * .012, 0, 0, 7); ctx.fill();
+    }
+    // arms
+    for (const s of [0, 1]) {
+      const sw = Math.sin(ph + s * Math.PI);
+      const ax = x + (s ? 1 : -1) * h * .14;
+      ctx.strokeStyle = SHIRTS[idx]; ctx.lineWidth = h * .06;
+      ctx.beginPath(); ctx.moveTo(ax, sh + h * .03); ctx.lineTo(ax + (s ? 1 : -1) * h * .03, sh + h * .15 + sw * h * .05); ctx.lineTo(ax + (s ? -1 : 1) * h * .01, sh + h * .2 - sw * h * .09); ctx.stroke();
+    }
+    ctx.lineCap = 'butt';
+    ctx.fillStyle = '#150F33'; ctx.fillRect(x - h * .11, hip - h * .03, h * .22, h * .12);
+    ctx.fillStyle = SHIRTS[idx];
+    ctx.beginPath(); ctx.moveTo(x - h * .14, sh); ctx.lineTo(x + h * .14, sh); ctx.lineTo(x + h * .115, hip + h * .01); ctx.lineTo(x - h * .115, hip + h * .01); ctx.closePath(); ctx.fill();
+    if (h > 26) {
+      ctx.fillStyle = r.rank === 1 ? '#E4FF3A' : '#F2EFFF';
+      ctx.font = `900 ${h * .17}px 'Big Shoulders Display', Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(r.rank, x, sh + h * .14);
+    }
+    ctx.fillStyle = '#1B1440'; ctx.beginPath(); ctx.arc(x, sh - h * .09, h * .075, 0, 7); ctx.fill();
+    if (r.rank === 1) { ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .075, sh - h * .105, h * .15, h * .025); }
+    // name tag
+    const fs = clamp(h * .16, 10, 14);
+    ctx.font = `700 ${fs}px 'Hanken Grotesk', system-ui, sans-serif`;
+    const tw = ctx.measureText(r.name).width + fs * 1.1, ty = sh - h * .22 - fs * 1.5;
+    ctx.fillStyle = r.rank === 1 ? '#E4FF3A' : 'rgba(14,10,36,.82)';
+    ctx.beginPath(); ctx.moveTo(x - tw / 2 + 4, ty); ctx.lineTo(x + tw / 2 + 4, ty); ctx.lineTo(x + tw / 2 - 4, ty + fs * 1.5); ctx.lineTo(x - tw / 2 - 4, ty + fs * 1.5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = r.rank === 1 ? '#0E0A24' : '#F2EFFF'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(r.name, x, ty + fs * .78);
+  }
+
+  /* ─── Weather FX ─── */
+  function drawFx(dt) {
+    const k = wx.kind;
+    // horizon haze band
+    const g = ctx.createLinearGradient(0, HOR - H * .2, 0, HOR + H * .3);
+    g.addColorStop(0, css(pal.fogC, 0)); g.addColorStop(.42, css(pal.fogC, pal.band)); g.addColorStop(1, css(pal.fogC, 0));
+    ctx.fillStyle = g; ctx.fillRect(0, HOR - H * .2, W, H * .5);
+    if (k === 'fog') {
+      for (let i = 0; i < 5; i++) {
+        const fx = ((time * (8 + i * 3) + i * 180) % (W + 400)) - 200, fy = HOR + (i - 1) * H * .07;
+        const rg = ctx.createRadialGradient(fx, fy, 0, fx, fy, W * .45);
+        rg.addColorStop(0, css(pal.fogC, .38)); rg.addColorStop(1, css(pal.fogC, 0));
+        ctx.fillStyle = rg; ctx.fillRect(fx - W * .45, fy - W * .45, W * .9, W * .9);
+      }
+    }
+    if (drops.length) {
+      const snow = k === 'snow';
+      const slant = clamp(wx.wind / 30, .05, .6);
+      ctx.strokeStyle = wx.day ? 'rgba(236,232,255,.55)' : 'rgba(180,170,255,.5)';
+      ctx.fillStyle = 'rgba(255,255,255,.9)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (const p of drops) {
+        const sp = snow ? .12 : (k === 'drizzle' ? .9 : 1.6);
+        p.y += dt * sp * p.z * (reduce ? .3 : 1);
+        p.x += dt * (snow ? Math.sin(time + p.z * 9) * .02 : slant * .5) * p.z;
+        if (p.y > 1) { p.y -= 1; p.x = Math.random(); }
+        if (p.x > 1) p.x -= 1;
+        const x = p.x * W, y = p.y * H;
+        if (snow) { ctx.moveTo(x, y); ctx.arc(x, y, 1 + p.z * 1.6, 0, 7); }
+        else { const len = (k === 'drizzle' ? 7 : 14) * p.z; ctx.moveTo(x, y); ctx.lineTo(x - slant * len, y + len); }
+      }
+      snow ? ctx.fill() : ctx.stroke();
+    }
+    if (k === 'storm' && !reduce) {
+      nextFlash -= dt;
+      if (nextFlash <= 0) { flash = 1; nextFlash = 3 + Math.random() * 6; bolt = makeBolt(); }
+      if (flash > 0) {
+        ctx.fillStyle = `rgba(230,225,255,${flash * .5})`; ctx.fillRect(0, 0, W, H);
+        if (flash > .5 && bolt) { ctx.strokeStyle = `rgba(255,255,240,${flash})`; ctx.lineWidth = 2.5; ctx.beginPath(); bolt.forEach(([bx, by], i) => i ? ctx.lineTo(bx * W, by * HOR) : ctx.moveTo(bx * W, by * HOR)); ctx.stroke(); }
+        flash -= dt * 2.6;
+      }
+    }
+  }
+  let bolt = null;
+  function makeBolt() { let x = .2 + Math.random() * .6, y = 0; const pts = [[x, y]]; while (y < .9) { y += .08 + Math.random() * .1; x += (Math.random() - .5) * .08; pts.push([x, y]); } return pts; }
+
+  /* ─── Frame ─── */
+  const P = new Array(DRAW + 1);
+  let last = 0, running = true;
+  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], clock: null, setWeather(w) { wx = w; buildPal(); } };
+
+  function frame(ts) {
+    if (!running) return;
+    const dt = Math.min(.05, (ts - last) / 1000 || 0); last = ts; time += dt;
+    if (!W) resize();
+    if (!pal) buildPal();
+    const clock = api.clock;
+    const sac = clock ? clock.showIdx >= 4 : false;
+
+    pos = (pos + dt * (reduce ? 900 : 3400)) % (N * SEG);
+    const base = Math.floor(pos / SEG), frac = pos % SEG, pct = frac / SEG;
+    const yAt = i => segs[i % N].y;
+    const camY = CAMH + lerp(yAt(base + 4), yAt(base + 5), pct);
+    let x = 0, dx = -segs[base].curve * pct;
+    for (let n = 0; n <= DRAW; n++) {
+      const i = (base + n) % N, zc = n * SEG - frac + CAMBACK, sc = CD / zc;
+      P[n] = { x: W / 2 + sc * x * S, y: HOR - sc * (yAt(base + n) - camY) * S, w: sc * RW * S, sc, i, zc };
+      x += dx; dx += segs[i].curve;
+    }
+    bgOff += segs[base].curve * dt * 60;
+
+    ctx.clearRect(0, 0, W, H);
+    drawSky();
+    drawRidge(clock);
+
+    // landmark sits where the road vanishes
+    let far = DRAW; for (let n = DRAW; n > 0; n--) { if (P[n].y < P[n - 1].y) { far = n; break; } }
+    const tx = clamp(P[far].x, W * .3, W * .7), ty = Math.min(P[far].y, HOR + H * .04);
+    lmX = lmX == null ? tx : lerp(lmX, tx, Math.min(1, dt * 1.5));
+    lmY = lmY == null ? ty : lerp(lmY, ty, Math.min(1, dt * 1.5));
+    if (clock) {
+      const ap = clock.approach;
+      const u = Math.min(W * .46, H * .5) * (.42 + .58 * ap * ap);
+      LM(STOPS[clock.showIdx].id, lmX, lmY + 2, u, pal.lm);
+    }
+
+    // runners → which slice they occupy
+    const buckets = new Map();
+    const lanes = [0, -.55, .55];
+    api.runners.forEach((r, idx) => {
+      const zc = 1300 + 1500 * clamp(r.ratio, 0, 1) - (api.runners.length > 1 && r.ratio === 1 && idx > 0 ? idx * 220 : 0);
+      const rel = zc - CAMBACK + frac, n = Math.floor(rel / SEG), loc = (rel % SEG) / SEG;
+      if (n < 0 || n >= DRAW) return;
+      if (!buckets.has(n)) buckets.set(n, []);
+      buckets.get(n).push({ r, idx, zc, loc });
+    });
+
+    for (let n = DRAW - 1; n >= 0; n--) {
+      const a = P[n], b = P[n + 1];
+      if (b.y < a.y && b.y < H) {
+        const ft = 1 - Math.exp(-(n / DRAW) * pal.dens);
+        const alt = Math.floor(a.i / 3) % 2;
+        const top = Math.max(b.y, 0), bot = Math.min(a.y, H);
+        ctx.fillStyle = css(mix(pal.g[alt], pal.fogC, ft)); ctx.fillRect(0, top, W, bot - top + 1);
+        const quad = (w1, w2, col, o1 = 0, o2 = 0) => { ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(a.x + o1 - w1, a.y + 1); ctx.lineTo(b.x + o2 - w2, b.y); ctx.lineTo(b.x + o2 + w2, b.y); ctx.lineTo(a.x + o1 + w1, a.y + 1); ctx.fill(); };
+        quad(a.w * 1.1, b.w * 1.1, css(mix(pal.rumble[alt], pal.fogC, ft)));
+        quad(a.w, b.w, css(mix(pal.road[alt], pal.fogC, ft)));
+        if (alt) {
+          const lc = css(mix(pal.lane, pal.fogC, ft));
+          quad(a.w / 60, b.w / 60, lc, -a.w / 3, -b.w / 3);
+          quad(a.w / 60, b.w / 60, lc, a.w / 3, b.w / 3);
+        }
+      }
+      const seg = segs[a.i];
+      const k = a.sc * S;
+      if (seg.prop && a.y > HOR - 40 && a.y < H + 200) drawProp(seg.prop, a.x + a.sc * seg.prop.side * seg.prop.off * RW * S, a.y, k, 1 - Math.exp(-(n / DRAW) * pal.dens), sac);
+      if (seg.arch && n > 2) drawArch(a, k);
+      const rs = buckets.get(n);
+      if (rs) rs.sort((p, q) => q.zc - p.zc).forEach(({ r, idx, zc, loc }) => {
+        const sc = CD / zc;
+        const rx = lerp(a.x, b.x, loc) + sc * lanes[idx] * RW * S;
+        const ry = lerp(a.y, b.y, loc);
+        drawRunner(rx, ry, sc * 720 * S, r, idx);
+      });
+    }
+    drawFx(dt);
+    requestAnimationFrame(frame);
+  }
+
+  new ResizeObserver(() => resize()).observe(cv);
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) { last = performance.now(); requestAnimationFrame(frame); } });
+  requestAnimationFrame(frame);
+  return api;
+})();
+
+/* ───────────── Boot ───────────── */
+if (owner) { document.body.classList.add('owner'); $('#dock').hidden = false; }
+renderHud();
+renderBoard();
+applyWeather();
+fetchWx();
+loadData();
+setInterval(fetchWx, 15 * 60 * 1000);
+setInterval(() => { if (!document.hidden) loadData(); }, 60 * 1000);
+setInterval(renderHud, 60 * 1000);
+if (document.fonts) document.fonts.ready.then(() => renderHud());
+})();
+</script>
+</body>
+</html>
