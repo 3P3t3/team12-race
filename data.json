@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T20:28:03.540Z",
+  "updatedAt": "2026-09-14T20:28:21.114Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -107,6 +107,16 @@
       "id": "mu1p3590d5fh",
       "name": "Wolf Pack",
       "color": "#00D1C1",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "customers": [],
+      "sales": []
+    },
+    {
+      "id": "mu1p3it6oo8k",
+      "name": "Free Chicken",
+      "color": "#FF4D4D",
       "ds": 0,
       "nc": 0,
       "usd": 0,
