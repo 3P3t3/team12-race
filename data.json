@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T20:28:43.739Z",
+  "updatedAt": "2026-09-14T20:28:48.588Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -105,7 +105,7 @@
     },
     {
       "id": "mu1p3590d5fh",
-      "name": "Wolf Pack",
+      "name": "Wolf-Pack",
       "color": "#00D1C1",
       "ds": 3,
       "nc": 0,
