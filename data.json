@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T19:10:06.645Z",
+  "updatedAt": "2026-09-14T19:10:17.695Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -77,6 +77,16 @@
       "id": "mu1m8d44nkjz",
       "name": "Steven & Perla",
       "color": "#4D7CFF",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "customers": [],
+      "sales": []
+    },
+    {
+      "id": "mu1mb527c7cs",
+      "name": "Anthony & Jess",
+      "color": "#B06BFF",
       "ds": 0,
       "nc": 0,
       "usd": 0,
