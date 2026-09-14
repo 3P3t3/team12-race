@@ -202,6 +202,7 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .e-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .e-name.muted{color:var(--dim);font-style:italic}
 .e-amt{font:800 17px/1 var(--display);font-variant-numeric:tabular-nums}
+.e-sub{flex:none;max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--mute);font-size:13.5px}
 .e-del{appearance:none;flex:none;width:32px;height:32px;border:1px solid var(--line2);background:none;color:var(--mute);font-size:18px;line-height:1}
 .e-del:active{background:var(--night3)}
 .entries .empty-e{color:var(--dim);font-size:13px}
@@ -323,8 +324,15 @@ body:not(.owner) .row.has-more{cursor:pointer}
       <button class="btn-line close" value="cancel" formnovalidate>Close</button>
     </div>
     <div class="field">
-      <span class="lbl">First sample in CWF</span>
-      <div class="step"><button type="button" data-step="ds" data-by="-1" aria-label="Minus one">−</button><input id="edDs" type="number" inputmode="numeric" min="0" step="1" aria-label="First sample in CWF"><button type="button" data-step="ds" data-by="1" aria-label="Plus one">+</button></div>
+      <span class="lbl">First sample in CWF <b class="lbl-val" id="edDsCount">0</b></span>
+      <div class="adder">
+        <label class="sr" for="edSampName">Customer name</label>
+        <input class="text-input" id="edSampName" maxlength="60" placeholder="Customer name" autocomplete="off" enterkeyhint="next">
+        <label class="sr" for="edSampProd">Product</label>
+        <input class="text-input" id="edSampProd" maxlength="60" placeholder="Product" autocomplete="off" enterkeyhint="done">
+        <button type="button" class="btn-add" id="edSampAdd">Add</button>
+      </div>
+      <ul class="entries" id="edSampList"></ul>
     </div>
     <div class="field">
       <span class="lbl">New customers <b class="lbl-val" id="edNcCount">0</b></span>
@@ -479,10 +487,13 @@ const ls = {
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const money = v => Math.max(0, Math.round((+v || 0) * 100) / 100);
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-// Each runner keeps a log of new customers and sales; the totals (nc, usd) are always derived from those logs
+// Each runner keeps logs of first samples, new customers and sales; the totals (ds, nc, usd) are always derived from those logs
 function clean(d) {
   d = d && typeof d === 'object' ? d : {};
   const people = (Array.isArray(d.people) ? d.people : []).filter(p => p && p.name).map((p, i) => {
+    const samples = Array.isArray(p.samples)
+      ? p.samples.filter(s => s && typeof s === 'object').map((s, j) => ({ id: String(s.id || `f${i}-${j}`), name: String(s.name || '').slice(0, 60), product: String(s.product || '').slice(0, 60), at: DATE_RE.test(s.at) ? s.at : null }))
+      : Array.from({ length: Math.max(0, Math.round(+p.ds || 0)) }, (_, j) => ({ id: `f${i}-${j}`, name: '', product: '', at: null }));
     const customers = Array.isArray(p.customers)
       ? p.customers.filter(c => c && typeof c === 'object').map((c, j) => ({ id: String(c.id || `c${i}-${j}`), name: String(c.name || '').slice(0, 60), at: DATE_RE.test(c.at) ? c.at : null }))
       : Array.from({ length: Math.max(0, Math.round(+p.nc || 0)) }, (_, j) => ({ id: `c${i}-${j}`, name: '', at: null }));
@@ -492,10 +503,10 @@ function clean(d) {
     return {
       id: String(p.id || 'r' + i), name: String(p.name).slice(0, 40),
       color: HEXES.includes(String(p.color).toUpperCase()) ? String(p.color).toUpperCase() : null,
-      ds: Math.max(0, Math.round(+p.ds || 0)),
+      ds: samples.length,
       nc: customers.length,
       usd: money(sales.reduce((s, x) => s + x.usd, 0)),
-      customers, sales,
+      samples, customers, sales,
     };
   });
   people.forEach(p => { if (!p.color) p.color = nextColor(people); });
@@ -711,6 +722,7 @@ const rowsEl = $('#rows');
 const expanded = new Set();
 // What shows under a runner's name: their newest customers, or their products by dollars sold
 function detailItems(p, key) {
+  if (key === 'ds') return p.samples.filter(s => s.name || s.product).reverse().map(s => s.name && s.product ? `${s.name} (${s.product})` : s.name || s.product);
   if (key === 'nc') return p.customers.filter(c => c.name).reverse().map(c => c.name);
   if (key === 'usd') {
     const g = new Map();
@@ -856,7 +868,7 @@ $('#addForm').addEventListener('submit', e => {
   const name = $('#addName').value.trim().replace(/\s+/g, ' ');
   if (!name) return;
   if (state.people.some(p => p.name.toLowerCase() === name.toLowerCase())) return toast(`${name} is already running`);
-  state.people.push({ id: uid(), name, color: nextColor(state.people), ds:0, nc:0, usd:0, customers:[], sales:[] });
+  state.people.push({ id: uid(), name, color: nextColor(state.people), ds:0, nc:0, usd:0, samples:[], customers:[], sales:[] });
   saveSoon(`Add ${name}`); $('#addName').value = ''; renderBoard(); toast(`${shortName(name)} is on the course`);
 });
 
@@ -872,21 +884,26 @@ rowsEl.addEventListener('click', e => {
   }
   editing = state.people.find(p => p.id === row.dataset.id); if (!editing) return;
   draft = JSON.parse(JSON.stringify(editing));
-  $('#edName').value = draft.name; $('#edDs').value = draft.ds;
-  $('#edCust').value = $('#edProd').value = $('#edAmt').value = '';
+  $('#edName').value = draft.name;
+  $('#edSampName').value = $('#edSampProd').value = $('#edCust').value = $('#edProd').value = $('#edAmt').value = '';
   paintEditor();
   $('#editor').showModal();
 });
-function entryRow(label, muted, amount, kind, id) {
+function entryRow(label, muted, amount, kind, id, sub) {
   const li = document.createElement('li');
-  li.innerHTML = `<span class="e-name${muted ? ' muted' : ''}"></span>${amount ? '<span class="e-amt"></span>' : ''}<button type="button" class="e-del">×</button>`;
+  li.innerHTML = `<span class="e-name${muted ? ' muted' : ''}"></span>${sub ? '<span class="e-sub"></span>' : ''}${amount ? '<span class="e-amt"></span>' : ''}<button type="button" class="e-del">×</button>`;
   li.querySelector('.e-name').textContent = label;
+  if (sub) li.querySelector('.e-sub').textContent = sub;
   if (amount) li.querySelector('.e-amt').textContent = amount;
   const del = li.querySelector('.e-del');
   del.dataset.del = kind; del.dataset.id = id; del.setAttribute('aria-label', 'Remove ' + label);
   return li;
 }
 function paintEditor() {
+  $('#edDsCount').textContent = NF.format(draft.samples.length);
+  const fl = $('#edSampList'); fl.textContent = '';
+  if (!draft.samples.length) fl.innerHTML = '<li class="empty-e">No first samples yet</li>';
+  draft.samples.slice().reverse().forEach(s => fl.appendChild(entryRow(s.name || 'Customer (no name)', !s.name, null, 'samp', s.id, s.product)));
   $('#edNcCount').textContent = NF.format(draft.customers.length);
   $('#edUsdTotal').textContent = USD.format(draft.sales.reduce((s, x) => s + x.usd, 0));
   const cl = $('#edCustList'); cl.textContent = '';
@@ -910,12 +927,21 @@ function applyDraft(msg) {
   if (!editing || !draft || !state.people.includes(editing)) return;
   const name = $('#edName').value.trim().replace(/\s+/g, ' ');
   if (name) draft.name = name;
-  draft.ds = Math.max(0, Math.round(+$('#edDs').value || 0));
   const next = clean({ people: [draft] }).people[0];
   if (JSON.stringify(next) === JSON.stringify(editing)) return;
   Object.assign(editing, next);
   saveSoon(msg || `Update ${editing.name}`);
   renderBoard();
+}
+// Every first sample counts +1 for this runner: the customer's name, then the product (both optional)
+function addSample({ allowBlank = true } = {}) {
+  const name = $('#edSampName').value.trim().replace(/\s+/g, ' ');
+  const product = $('#edSampProd').value.trim().replace(/\s+/g, ' ');
+  if (!name && !product && !allowBlank) return;
+  draft.samples.push({ id: uid(), name, product, at: isoOf(new Date()) });
+  $('#edSampName').value = $('#edSampProd').value = '';
+  paintEditor();
+  applyDraft(`First sample for ${draft.name}`);
 }
 // Every new customer counts +1 for this runner; the name is optional
 function addCustomer({ allowBlank = true } = {}) {
@@ -936,13 +962,12 @@ function addSale() {
 }
 $('#editForm').addEventListener('click', e => {
   if (!draft) return;
-  const st = e.target.closest('[data-step]');
-  if (st) { const inp = $('#edDs'); inp.value = Math.max(0, Math.round((+inp.value || 0) + +st.dataset.by)); applyDraft(); }
+  if (e.target.closest('#edSampAdd')) addSample();
   if (e.target.closest('#edCustAdd')) addCustomer();
   if (e.target.closest('#edSaleAdd')) addSale();
   const del = e.target.closest('[data-del]');
   if (del) {
-    const list = del.dataset.del === 'cust' ? draft.customers : draft.sales;
+    const list = { samp: draft.samples, cust: draft.customers, sale: draft.sales }[del.dataset.del];
     const i = list.findIndex(x => x.id === del.dataset.id);
     if (i > -1) list.splice(i, 1);
     paintEditor(); applyDraft();
@@ -951,12 +976,13 @@ $('#editForm').addEventListener('click', e => {
   if (sw) { draft.color = sw.dataset.color; paintEditor(); applyDraft(); }
 });
 $('#edName').addEventListener('change', () => applyDraft());
-$('#edDs').addEventListener('change', () => applyDraft());
 // Enter adds to a list instead of submitting (or closing) the sheet
 $('#editForm').addEventListener('keydown', e => {
   if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
   e.preventDefault();
-  if (e.target.id === 'edCust') addCustomer({ allowBlank: false });
+  if (e.target.id === 'edSampName') $('#edSampProd').focus();
+  else if (e.target.id === 'edSampProd') addSample({ allowBlank: false });
+  else if (e.target.id === 'edCust') addCustomer({ allowBlank: false });
   else if (e.target.id === 'edProd') $('#edAmt').focus();
   else if (e.target.id === 'edAmt') addSale();
   else { e.target.blur(); applyDraft(); }
@@ -964,6 +990,7 @@ $('#editForm').addEventListener('keydown', e => {
 // However the sheet closes (Done, Close, Esc), keep everything — including anything typed but not yet added
 $('#editor').addEventListener('close', () => {
   if (!draft || !editing || !state.people.includes(editing)) return;
+  if ($('#edSampName').value.trim() || $('#edSampProd').value.trim()) addSample({ allowBlank: false });
   if ($('#edCust').value.trim()) addCustomer({ allowBlank: false });
   if (money($('#edAmt').value)) addSale();
   applyDraft();
