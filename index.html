@@ -98,13 +98,12 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .name{display:block;font-weight:600;font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gap{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
 .bar{display:block;height:3px;margin-top:9px;background:rgba(236,232,255,.07);overflow:hidden}
-.bar b{display:block;height:100%;width:0;background:var(--violet-hi);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.bar b{display:block;height:100%;width:0;background:var(--c,var(--violet-hi));transition:width .7s cubic-bezier(.2,.8,.2,1)}
 .val{font:800 30px/.9 var(--display);font-variant-numeric:tabular-nums;text-align:right;letter-spacing:.01em}
 .row.first{margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);padding-block:20px;background:linear-gradient(100deg,rgba(102,51,255,.34),rgba(102,51,255,.06) 60%,transparent);border-bottom-color:var(--line2)}
 .row.first .pos{font-size:62px;color:var(--acid)}
 .row.first .name{font-size:21px;font-weight:700}
 .row.first .gap{color:var(--acid)}
-.row.first .bar b{background:var(--acid)}
 .row.first .val{font-size:44px}
 .row.first{grid-template-columns:56px 1fr auto}
 .row .edit{display:none}
@@ -182,6 +181,38 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]{color:#FF8FA3;cursor:pointer}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
+/* Runner colors */
+.chip{display:inline-block;width:9px;height:15px;margin-right:9px;background:var(--c);transform:skewX(var(--skew));vertical-align:-2px}
+.swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.swatches button{appearance:none;height:40px;border:0;background:var(--c);transform:skewX(var(--skew))}
+.swatches button[aria-checked="true"]{box-shadow:inset 0 0 0 3px var(--night2);outline:2px solid var(--ink);outline-offset:0}
+.swatches button:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+/* Customer + sale logs */
+.lbl-val{color:var(--ink);font-weight:900;letter-spacing:.04em}
+.adder{display:flex}
+.adder .text-input{flex:1;min-width:0;border-right:0}
+.amt{display:flex;align-items:center;flex:none;width:104px;border:1px solid var(--line2);border-right:0;background:var(--night);padding-left:10px;color:var(--mute)}
+.amt input{width:100%;min-width:0;height:46px;border:0;background:none;padding:0 6px;font-size:16px;outline:none;font-variant-numeric:tabular-nums}
+.amt:focus-within{border-color:var(--acid)}
+.btn-add{appearance:none;flex:none;height:48px;padding:0 16px;border:0;background:var(--violet);color:#fff;font:900 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.btn-add:active{background:var(--violet-hi)}
+.entries{list-style:none;margin:10px 0 0;padding:0;max-height:230px;overflow:auto}
+.entries li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.entries li:last-child{border-bottom:0}
+.e-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.e-name.muted{color:var(--dim);font-style:italic}
+.e-amt{font:800 17px/1 var(--display);font-variant-numeric:tabular-nums}
+.e-del{appearance:none;flex:none;width:32px;height:32px;border:1px solid var(--line2);background:none;color:var(--mute);font-size:18px;line-height:1}
+.e-del:active{background:var(--night3)}
+.entries .empty-e{color:var(--dim);font-size:13px}
+.detail{display:block;margin-top:4px;font-size:12.5px;line-height:1.4;color:var(--ink);opacity:.9}
+.d-short{display:flex;min-width:0}
+.d-txt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.more{flex:none;margin-left:5px;color:var(--acid);font-weight:600;white-space:nowrap}
+.d-full{display:none}
+.row.open .d-short{display:none}
+.row.open .d-full{display:block}
+body:not(.owner) .row.has-more{cursor:pointer}
 
 /* ───── Desktop adaptation ───── */
 @media (min-width:700px){
@@ -249,7 +280,7 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
         <div class="total" id="teamTotal"></div>
       </div>
       <div class="tabs" role="tablist" id="tabs">
-        <button class="tab" role="tab" data-i="0" aria-selected="true">Double<br>Sampled<small>workflow</small></button>
+        <button class="tab" role="tab" data-i="0" aria-selected="true">First<br>Sample<small>in CWF</small></button>
         <button class="tab" role="tab" data-i="1" aria-selected="false">New<br>Customers<small>closed</small></button>
         <button class="tab" role="tab" data-i="2" aria-selected="false">Sales<br>Dollars<small>total $</small></button>
         <span class="tab-ink" aria-hidden="true"></span>
@@ -292,17 +323,31 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
       <button class="btn-line close" value="cancel" formnovalidate>Close</button>
     </div>
     <div class="field">
-      <span class="lbl">Double sampled <span id="edDsHint"></span></span>
-      <div class="step"><button type="button" data-step="ds" data-by="-1" aria-label="Minus one">−</button><input id="edDs" type="number" inputmode="numeric" min="0" step="1" aria-label="Double sampled"><button type="button" data-step="ds" data-by="1" aria-label="Plus one">+</button></div>
+      <span class="lbl">First sample in CWF</span>
+      <div class="step"><button type="button" data-step="ds" data-by="-1" aria-label="Minus one">−</button><input id="edDs" type="number" inputmode="numeric" min="0" step="1" aria-label="First sample in CWF"><button type="button" data-step="ds" data-by="1" aria-label="Plus one">+</button></div>
     </div>
     <div class="field">
-      <span class="lbl">New customers</span>
-      <div class="step"><button type="button" data-step="nc" data-by="-1" aria-label="Minus one">−</button><input id="edNc" type="number" inputmode="numeric" min="0" step="1" aria-label="New customers"><button type="button" data-step="nc" data-by="1" aria-label="Plus one">+</button></div>
+      <span class="lbl">New customers <b class="lbl-val" id="edNcCount">0</b></span>
+      <div class="adder">
+        <label class="sr" for="edCust">Customer name</label>
+        <input class="text-input" id="edCust" maxlength="60" placeholder="Customer name" autocomplete="off" enterkeyhint="done">
+        <button type="button" class="btn-add" id="edCustAdd">Add</button>
+      </div>
+      <ul class="entries" id="edCustList"></ul>
     </div>
     <div class="field">
-      <span class="lbl">Sales dollars</span>
-      <div class="step"><button type="button" data-step="usd" data-by="-100" aria-label="Minus 100 dollars">−</button><div class="money"><span>$</span><input id="edUsd" type="number" inputmode="decimal" min="0" step="0.01" aria-label="Sales dollars"></div><button type="button" data-step="usd" data-by="100" aria-label="Plus 100 dollars">+</button></div>
-      <div class="chips"><button type="button" data-add="100">+$100</button><button type="button" data-add="500">+$500</button><button type="button" data-add="1000">+$1K</button><button type="button" data-add="5000">+$5K</button></div>
+      <span class="lbl">Sales dollars <b class="lbl-val" id="edUsdTotal">$0</b></span>
+      <div class="adder">
+        <label class="sr" for="edProd">Product</label>
+        <input class="text-input" id="edProd" maxlength="60" placeholder="Product" autocomplete="off" enterkeyhint="next">
+        <div class="amt"><span aria-hidden="true">$</span><label class="sr" for="edAmt">Amount</label><input id="edAmt" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0" enterkeyhint="done"></div>
+        <button type="button" class="btn-add" id="edSaleAdd">Add</button>
+      </div>
+      <ul class="entries" id="edSaleList"></ul>
+    </div>
+    <div class="field">
+      <span class="lbl" id="edColorLbl">Runner color <span id="edColorName"></span></span>
+      <div class="swatches" id="edColors" role="radiogroup" aria-labelledby="edColorLbl"></div>
     </div>
     <div class="sheet-actions">
       <button type="button" class="link-danger" id="edDelete">Remove runner</button>
@@ -400,10 +445,23 @@ const LEGS = STOPS.length - 1;
 const NF = new Intl.NumberFormat('en-US');
 const USD = new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
 const METRICS = [
-  { key:'ds',  label:'Double Sampled', unit:'double samples', desc:'Customers taken all the way through the workflow — both samples.', fmt:v => NF.format(v) },
+  { key:'ds',  label:'First Sample in CWF', unit:'first samples', desc:'Customers who got their first sample in the customer workflow (CWF).', fmt:v => NF.format(v) },
   { key:'nc',  label:'New Customers',  unit:'new customers',  desc:'Brand-new customer sales closed.', fmt:v => NF.format(v) },
   { key:'usd', label:'Sales Dollars',  unit:'in sales',       desc:'Total dollars sold during the sprint.', fmt:v => USD.format(v) },
 ];
+
+// Runner colors — bright enough to read on the night course; acid yellow stays reserved for the leader
+const COLORS = [
+  ['#FF5C8A', 'Pink'], ['#FF8A3D', 'Orange'], ['#FFC53D', 'Gold'], ['#3DDC97', 'Mint'],
+  ['#2EC4F1', 'Sky'], ['#4D7CFF', 'Blue'], ['#B06BFF', 'Purple'], ['#FF6BD6', 'Magenta'],
+  ['#00D1C1', 'Teal'], ['#FF4D4D', 'Red'], ['#9BE15D', 'Green'], ['#C9A6FF', 'Lavender'],
+];
+const HEXES = COLORS.map(c => c[0]);
+function nextColor(people) {
+  const used = new Map(HEXES.map(h => [h, 0]));
+  people.forEach(p => { if (used.has(p.color)) used.set(p.color, used.get(p.color) + 1); });
+  return HEXES.reduce((best, h) => used.get(h) < used.get(best) ? h : best, HEXES[0]);
+}
 
 /* ───────────── State ───────────── */
 const hashParams = new URLSearchParams(location.hash.slice(1));
@@ -419,17 +477,33 @@ const ls = {
   set(k, v) { try { v == null ? localStorage.removeItem(KEY + ':' + k) : localStorage.setItem(KEY + ':' + k, JSON.stringify(v)); } catch (e) {} },
 };
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const money = v => Math.max(0, Math.round((+v || 0) * 100) / 100);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+// Each runner keeps a log of new customers and sales; the totals (nc, usd) are always derived from those logs
 function clean(d) {
   d = d && typeof d === 'object' ? d : {};
+  const people = (Array.isArray(d.people) ? d.people : []).filter(p => p && p.name).map((p, i) => {
+    const customers = Array.isArray(p.customers)
+      ? p.customers.filter(c => c && typeof c === 'object').map((c, j) => ({ id: String(c.id || `c${i}-${j}`), name: String(c.name || '').slice(0, 60), at: DATE_RE.test(c.at) ? c.at : null }))
+      : Array.from({ length: Math.max(0, Math.round(+p.nc || 0)) }, (_, j) => ({ id: `c${i}-${j}`, name: '', at: null }));
+    const sales = Array.isArray(p.sales)
+      ? p.sales.filter(s => s && typeof s === 'object').map((s, j) => ({ id: String(s.id || `s${i}-${j}`), product: String(s.product || '').slice(0, 60), usd: money(s.usd), at: DATE_RE.test(s.at) ? s.at : null })).filter(s => s.usd > 0)
+      : money(p.usd) > 0 ? [{ id: `s${i}-0`, product: '', usd: money(p.usd), at: null }] : [];
+    return {
+      id: String(p.id || 'r' + i), name: String(p.name).slice(0, 40),
+      color: HEXES.includes(String(p.color).toUpperCase()) ? String(p.color).toUpperCase() : null,
+      ds: Math.max(0, Math.round(+p.ds || 0)),
+      nc: customers.length,
+      usd: money(sales.reduce((s, x) => s + x.usd, 0)),
+      customers, sales,
+    };
+  });
+  people.forEach(p => { if (!p.color) p.color = nextColor(people); });
   return {
     start: DATE_RE.test(d.start) ? d.start : '2026-09-14',
     end: DATE_RE.test(d.end) ? d.end : '2027-01-01',
     updatedAt: typeof d.updatedAt === 'string' ? d.updatedAt : null,
-    people: (Array.isArray(d.people) ? d.people : []).filter(p => p && p.name).map((p, i) => ({
-      id: String(p.id || 'r' + i), name: String(p.name).slice(0, 40),
-      ds: Math.max(0, Math.round(+p.ds || 0)), nc: Math.max(0, Math.round(+p.nc || 0)),
-      usd: Math.max(0, Math.round((+p.usd || 0) * 100) / 100),
-    })),
+    people,
   };
 }
 let state = DEMO ? clean({
@@ -634,6 +708,21 @@ function applyWeather() {
 
 /* ───────────── Standings ───────────── */
 const rowsEl = $('#rows');
+const expanded = new Set();
+// What shows under a runner's name: their newest customers, or their products by dollars sold
+function detailItems(p, key) {
+  if (key === 'nc') return p.customers.filter(c => c.name).reverse().map(c => c.name);
+  if (key === 'usd') {
+    const g = new Map();
+    p.sales.forEach(s => {
+      if (!s.product) return;
+      const k = s.product.toLowerCase(), cur = g.get(k) || { label: s.product, n: 0, usd: 0 };
+      cur.n++; cur.usd += s.usd; g.set(k, cur);
+    });
+    return [...g.values()].sort((a, b) => b.usd - a.usd).map(x => `${x.label}${x.n > 1 ? ' ×' + x.n : ''} ${USD.format(x.usd)}`);
+  }
+  return [];
+}
 const shortName = n => { const p = n.trim().split(/\s+/); const s = p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0]; return s.length > 13 ? s.slice(0, 12) + '…' : s; };
 function renderBoard() {
   const m = METRICS[cur];
@@ -661,10 +750,26 @@ function renderBoard() {
     if (max === 0) gap = 'Warming up';
     else if (rank === 1) gap = leaders > 1 ? 'Tied for the lead' : `Leading by ${m.fmt(v - (list.find(q => q[m.key] < v)?.[m.key] ?? 0))}`;
     else gap = `${m.fmt(max - v)} behind the leader`;
-    li.innerHTML = `<span class="pos"></span><span class="who"><span class="name"></span><span class="gap"></span><i class="bar"><b></b></i></span><span class="val"></span><span class="edit">Edit</span>`;
+    li.innerHTML = `<span class="pos"></span><span class="who"><span class="name"><i class="chip" aria-hidden="true"></i><span class="nm"></span></span><span class="gap"></span><i class="bar"><b></b></i></span><span class="val"></span><span class="edit">Edit</span>`;
+    li.style.setProperty('--c', p.color);
     li.querySelector('.pos').textContent = rank;
-    li.querySelector('.name').textContent = p.name;
+    li.querySelector('.nm').textContent = p.name;
     li.querySelector('.gap').textContent = gap;
+    const items = detailItems(p, m.key);
+    if (items.length) {
+      const d = document.createElement('span'); d.className = 'detail';
+      const short = document.createElement('span'); short.className = 'd-short';
+      const txt = document.createElement('span'); txt.className = 'd-txt'; txt.textContent = items.slice(0, 2).join(' · ');
+      short.appendChild(txt);
+      if (items.length > 2) {
+        const more = document.createElement('span'); more.className = 'more'; more.textContent = `+${items.length - 2} more`;
+        short.appendChild(more); li.classList.add('has-more');
+        if (expanded.has(p.id)) li.classList.add('open');
+      }
+      const full = document.createElement('span'); full.className = 'd-full'; full.textContent = items.join(' · ');
+      d.append(short, full);
+      li.querySelector('.gap').after(d);
+    }
     li.querySelector('.val').textContent = m.fmt(v);
     const bar = li.querySelector('.bar b');
     rowsEl.appendChild(li);
@@ -679,6 +784,7 @@ function renderBoard() {
 
   scene.runners = (list.length ? list.slice(0, 3) : [null]).map((p, i) => ({
     name: p ? shortName(p.name) : 'Team 12',
+    color: p ? p.color : '#6633FF',
     rank: p ? 1 + list.filter(q => q[m.key] > p[m.key]).length : 1,
     ratio: p ? (max > 0 ? p[m.key] / max : 1 - i * 0.12) : 1,
   }));
@@ -750,34 +856,100 @@ $('#addForm').addEventListener('submit', e => {
   const name = $('#addName').value.trim().replace(/\s+/g, ' ');
   if (!name) return;
   if (state.people.some(p => p.name.toLowerCase() === name.toLowerCase())) return toast(`${name} is already running`);
-  state.people.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, ds:0, nc:0, usd:0 });
+  state.people.push({ id: uid(), name, color: nextColor(state.people), ds:0, nc:0, usd:0, customers:[], sales:[] });
   saveSoon(`Add ${name}`); $('#addName').value = ''; renderBoard(); toast(`${shortName(name)} is on the course`);
 });
 
 /* Editor */
-let editing = null;
+let editing = null, draft = null; // edits happen on a draft; Save copies it back
 rowsEl.addEventListener('click', e => {
-  if (!owner) return;
   const row = e.target.closest('.row'); if (!row) return;
+  if (!owner) {
+    if (!row.classList.contains('has-more')) return;
+    row.classList.toggle('open');
+    row.classList.contains('open') ? expanded.add(row.dataset.id) : expanded.delete(row.dataset.id);
+    return;
+  }
   editing = state.people.find(p => p.id === row.dataset.id); if (!editing) return;
-  $('#edName').value = editing.name;
-  $('#edDs').value = editing.ds; $('#edNc').value = editing.nc; $('#edUsd').value = editing.usd;
+  draft = JSON.parse(JSON.stringify(editing));
+  $('#edName').value = draft.name; $('#edDs').value = draft.ds;
+  $('#edCust').value = $('#edProd').value = $('#edAmt').value = '';
+  paintEditor();
   $('#editor').showModal();
 });
-const edInput = k => ({ ds:'#edDs', nc:'#edNc', usd:'#edUsd' })[k];
+function entryRow(label, muted, amount, kind, id) {
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="e-name${muted ? ' muted' : ''}"></span>${amount ? '<span class="e-amt"></span>' : ''}<button type="button" class="e-del">×</button>`;
+  li.querySelector('.e-name').textContent = label;
+  if (amount) li.querySelector('.e-amt').textContent = amount;
+  const del = li.querySelector('.e-del');
+  del.dataset.del = kind; del.dataset.id = id; del.setAttribute('aria-label', 'Remove ' + label);
+  return li;
+}
+function paintEditor() {
+  $('#edNcCount').textContent = NF.format(draft.customers.length);
+  $('#edUsdTotal').textContent = USD.format(draft.sales.reduce((s, x) => s + x.usd, 0));
+  const cl = $('#edCustList'); cl.textContent = '';
+  if (!draft.customers.length) cl.innerHTML = '<li class="empty-e">No new customers yet</li>';
+  draft.customers.slice().reverse().forEach(c => cl.appendChild(entryRow(c.name || 'Customer (no name)', !c.name, null, 'cust', c.id)));
+  const sl = $('#edSaleList'); sl.textContent = '';
+  if (!draft.sales.length) sl.innerHTML = '<li class="empty-e">No sales yet</li>';
+  draft.sales.slice().reverse().forEach(s => sl.appendChild(entryRow(s.product || 'Earlier sales (no product)', !s.product, USD.format(s.usd), 'sale', s.id)));
+  const wrap = $('#edColors');
+  if (!wrap.children.length) COLORS.forEach(([hex, name]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('role', 'radio'); b.dataset.color = hex; b.title = name;
+    b.setAttribute('aria-label', name); b.style.setProperty('--c', hex);
+    wrap.appendChild(b);
+  });
+  [...wrap.children].forEach(b => b.setAttribute('aria-checked', String(b.dataset.color === draft.color)));
+  $('#edColorName').textContent = (COLORS.find(c => c[0] === draft.color) || [null, ''])[1];
+}
+function addCustomer() {
+  const name = $('#edCust').value.trim().replace(/\s+/g, ' ');
+  if (!name) { $('#edCust').focus(); return; }
+  draft.customers.push({ id: uid(), name, at: isoOf(new Date()) });
+  $('#edCust').value = ''; paintEditor(); $('#edCust').focus();
+}
+function addSale() {
+  const usd = money($('#edAmt').value), product = $('#edProd').value.trim().replace(/\s+/g, ' ');
+  if (!usd) { $(product ? '#edAmt' : '#edProd').focus(); return; }
+  draft.sales.push({ id: uid(), product, usd, at: isoOf(new Date()) });
+  $('#edProd').value = $('#edAmt').value = ''; paintEditor(); $('#edProd').focus();
+}
 $('#editForm').addEventListener('click', e => {
+  if (!draft) return;
   const st = e.target.closest('[data-step]');
-  if (st) { const inp = $(edInput(st.dataset.step)); inp.value = Math.max(0, Math.round(((+inp.value || 0) + +st.dataset.by) * 100) / 100); }
-  const add = e.target.closest('[data-add]');
-  if (add) { const inp = $('#edUsd'); inp.value = Math.round(((+inp.value || 0) + +add.dataset.add) * 100) / 100; }
+  if (st) { const inp = $('#edDs'); inp.value = Math.max(0, Math.round((+inp.value || 0) + +st.dataset.by)); }
+  if (e.target.closest('#edCustAdd')) addCustomer();
+  if (e.target.closest('#edSaleAdd')) addSale();
+  const del = e.target.closest('[data-del]');
+  if (del) {
+    const list = del.dataset.del === 'cust' ? draft.customers : draft.sales;
+    const i = list.findIndex(x => x.id === del.dataset.id);
+    if (i > -1) list.splice(i, 1);
+    paintEditor();
+  }
+  const sw = e.target.closest('[data-color]');
+  if (sw) { draft.color = sw.dataset.color; paintEditor(); }
+});
+// Enter adds to a list instead of submitting (or closing) the sheet
+$('#editForm').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+  e.preventDefault();
+  if (e.target.id === 'edCust') addCustomer();
+  else if (e.target.id === 'edProd') $('#edAmt').focus();
+  else if (e.target.id === 'edAmt') addSale();
+  else e.target.blur();
 });
 $('#editForm').addEventListener('submit', e => {
   if (!e.submitter || e.submitter.value !== 'save' || !editing) return;
+  if ($('#edCust').value.trim()) addCustomer();   // don't lose something typed but not yet added
+  if (money($('#edAmt').value)) addSale();
   const name = $('#edName').value.trim().replace(/\s+/g, ' ');
-  if (name) editing.name = name;
-  editing.ds = Math.max(0, Math.round(+$('#edDs').value || 0));
-  editing.nc = Math.max(0, Math.round(+$('#edNc').value || 0));
-  editing.usd = Math.max(0, Math.round((+$('#edUsd').value || 0) * 100) / 100);
+  if (name) draft.name = name;
+  draft.ds = Math.max(0, Math.round(+$('#edDs').value || 0));
+  Object.assign(editing, clean({ people: [draft] }).people[0]);
   saveSoon(`Update ${editing.name}`); renderBoard();
 });
 $('#edDelete').addEventListener('click', () => {
@@ -1219,6 +1391,9 @@ const scene = (() => {
   const SHIRTS = ['#6633FF', '#8A68FF', '#4B25C9'];
   function drawRunner(x, y, h, r, idx) {
     const ph = time * (reduce ? 3 : 10.5) + idx * 2.1;
+    const shirt = r.color || SHIRTS[idx];
+    const n = parseInt(shirt.slice(1), 16);
+    const darkShirt = ((n >> 16 & 255) * .299 + (n >> 8 & 255) * .587 + (n & 255) * .114) / 255 < .6;
     const bob = -Math.abs(Math.sin(ph)) * h * .035;
     const hip = y - h * .5 + bob, sh = y - h * .8 + bob;
     ctx.fillStyle = 'rgba(8,6,24,.35)'; ctx.beginPath(); ctx.ellipse(x, y, h * .2, h * .045, 0, 0, 7); ctx.fill();
@@ -1235,15 +1410,15 @@ const scene = (() => {
     for (const s of [0, 1]) {
       const sw = Math.sin(ph + s * Math.PI);
       const ax = x + (s ? 1 : -1) * h * .14;
-      ctx.strokeStyle = SHIRTS[idx]; ctx.lineWidth = h * .06;
+      ctx.strokeStyle = shirt; ctx.lineWidth = h * .06;
       ctx.beginPath(); ctx.moveTo(ax, sh + h * .03); ctx.lineTo(ax + (s ? 1 : -1) * h * .03, sh + h * .15 + sw * h * .05); ctx.lineTo(ax + (s ? -1 : 1) * h * .01, sh + h * .2 - sw * h * .09); ctx.stroke();
     }
     ctx.lineCap = 'butt';
     ctx.fillStyle = '#150F33'; ctx.fillRect(x - h * .11, hip - h * .03, h * .22, h * .12);
-    ctx.fillStyle = SHIRTS[idx];
+    ctx.fillStyle = shirt;
     ctx.beginPath(); ctx.moveTo(x - h * .14, sh); ctx.lineTo(x + h * .14, sh); ctx.lineTo(x + h * .115, hip + h * .01); ctx.lineTo(x - h * .115, hip + h * .01); ctx.closePath(); ctx.fill();
     if (h > 26) {
-      ctx.fillStyle = r.rank === 1 ? '#E4FF3A' : '#F2EFFF';
+      ctx.fillStyle = darkShirt ? (r.rank === 1 ? '#E4FF3A' : '#F2EFFF') : '#0E0A24';
       ctx.font = `900 ${h * .17}px 'Big Shoulders Display', Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(r.rank, x, sh + h * .14);
     }
@@ -1257,6 +1432,7 @@ const scene = (() => {
     ctx.beginPath(); ctx.moveTo(x - tw / 2 + 4, ty); ctx.lineTo(x + tw / 2 + 4, ty); ctx.lineTo(x + tw / 2 - 4, ty + fs * 1.5); ctx.lineTo(x - tw / 2 - 4, ty + fs * 1.5); ctx.closePath(); ctx.fill();
     ctx.fillStyle = r.rank === 1 ? '#0E0A24' : '#F2EFFF'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(r.name, x, ty + fs * .78);
+    ctx.fillStyle = shirt; ctx.fillRect(x - tw / 2 - 2, ty + fs * 1.5, tw, 3);
   }
 
   /* ─── Weather FX ─── */
