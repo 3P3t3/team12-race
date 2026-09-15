@@ -182,6 +182,20 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
 /* Runner colors */
+/* Weekly winners */
+.week{padding-top:24px}
+.week-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.week-head h2{margin:0;font:900 28px/.88 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left bottom}
+.week-nav{display:flex;align-items:center;gap:6px;font:800 13px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.week-nav button{appearance:none;width:34px;height:34px;border:1px solid var(--line2);background:none;color:var(--ink);font:500 22px/1 var(--text)}
+.week-nav button:disabled{opacity:.28;cursor:default}
+.week-note{margin:10px 0 8px;font-size:12.5px;color:var(--mute)}
+.winners{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.winners li{display:grid;grid-template-columns:96px minmax(0,1fr) auto;align-items:center;column-gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.w-cat{font:800 12px/1.05 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.w-who{min-width:0;font-weight:600;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-who.none{color:var(--dim);font-weight:500;font-style:italic}
+.w-val{font:800 24px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--acid)}
 .crown{display:inline-block;width:21px;height:15px;margin-right:7px;vertical-align:-1px}
 .chip{display:inline-block;width:9px;height:15px;margin-right:9px;background:var(--c);transform:skewX(var(--skew));vertical-align:-2px}
 .swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
@@ -274,6 +288,19 @@ body:not(.owner) .row.has-more{cursor:pointer}
         <ol class="stops" id="stops"></ol>
         <span class="runner-dot" id="runnerDot"></span>
       </div>
+    </section>
+
+    <section class="week" aria-label="Weekly winners">
+      <div class="week-head">
+        <h2>Week’s winners</h2>
+        <div class="week-nav">
+          <button type="button" id="weekPrev" aria-label="Previous week">‹</button>
+          <span id="weekLabel"></span>
+          <button type="button" id="weekNext" aria-label="Next week">›</button>
+        </div>
+      </div>
+      <p class="week-note" id="weekNote"></p>
+      <ol class="winners" id="winners"></ol>
     </section>
 
     <section class="board" aria-label="Standings">
@@ -799,6 +826,8 @@ function renderBoard() {
     if (Math.abs(dy) > 1 && r.animate) r.animate([{ transform:`translateY(${dy}px)` }, { transform:'none' }], { duration:520, easing:'cubic-bezier(.2,.8,.2,1)' });
   });
 
+  renderWeek();
+
   scene.runners = (list.length ? list.slice(0, 3) : [null]).map((p, i) => ({
     name: p ? shortName(p.name) : 'Team 12',
     color: p ? p.color : '#6633FF',
@@ -807,6 +836,49 @@ function renderBoard() {
     ratio: p ? (max > 0 ? p[m.key] / max : 1 - i * 0.12) : 1,
   }));
 }
+
+/* ───────────── Weekly winners ───────────── */
+// Weeks run Monday–Sunday; an entry counts toward the week of the day it was added (its `at` date)
+const mondayOf = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
+let weekOffset = 0; // 0 = this week, -1 = last week, …
+function weekRange(off) {
+  const s = mondayOf(new Date()); s.setDate(s.getDate() + off * 7);
+  const e = new Date(s); e.setDate(e.getDate() + 6);
+  return { s, e, sISO: isoOf(s), eISO: isoOf(e) };
+}
+function weeklyScores(p, key, sISO, eISO) {
+  const inWeek = x => x.at && x.at >= sISO && x.at <= eISO;
+  if (key === 'ds') return p.samples.filter(inWeek).length;
+  if (key === 'nc') return p.customers.filter(inWeek).length;
+  return money(p.sales.filter(inWeek).reduce((t, x) => t + x.usd, 0));
+}
+function renderWeek() {
+  const { s, e, sISO, eISO } = weekRange(weekOffset);
+  $('#weekPrev').disabled = s <= mondayOf(parseISO(state.start));
+  $('#weekNext').disabled = weekOffset >= 0;
+  $('#weekLabel').textContent = `${shortDate(s)} – ${s.getMonth() === e.getMonth() ? e.getDate() : shortDate(e)}`;
+  $('#weekNote').textContent = weekOffset === 0 ? 'This week so far. Weeks run Monday to Sunday.' : 'Final results for that week.';
+  const ol = $('#winners'); ol.textContent = '';
+  METRICS.forEach(m => {
+    const scores = state.people.map(p => ({ p, v: weeklyScores(p, m.key, sISO, eISO) }));
+    const top = Math.max(0, ...scores.map(x => x.v));
+    const wins = top > 0 ? scores.filter(x => x.v === top) : [];
+    const li = document.createElement('li');
+    li.innerHTML = '<span class="w-cat"></span><span class="w-who"></span><span class="w-val"></span>';
+    li.querySelector('.w-cat').textContent = m.label;
+    const who = li.querySelector('.w-who');
+    if (!wins.length) { who.classList.add('none'); who.textContent = 'No entries yet'; }
+    else {
+      li.style.setProperty('--c', wins[0].p.color);
+      who.innerHTML = '<i class="chip" aria-hidden="true"></i><span></span>';
+      who.lastChild.textContent = wins.length > 2 ? `${wins.length} tied` : wins.map(x => shortName(x.p.name)).join(' & ');
+      li.querySelector('.w-val').textContent = m.fmt(top);
+    }
+    ol.appendChild(li);
+  });
+}
+$('#weekPrev').addEventListener('click', () => { weekOffset--; renderWeek(); });
+$('#weekNext').addEventListener('click', () => { if (weekOffset < 0) { weekOffset++; renderWeek(); } });
 
 $('#tabs').addEventListener('click', e => {
   const b = e.target.closest('.tab'); if (!b) return;
