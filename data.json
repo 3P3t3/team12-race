@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-15T18:59:22.160Z",
+  "updatedAt": "2026-09-15T18:59:39.052Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -39,10 +39,10 @@
       ],
       "sales": [
         {
-          "id": "s0-0",
-          "product": "",
+          "id": "mu31day3q7li",
+          "product": "Protein",
           "usd": 60,
-          "at": null
+          "at": "2026-09-15"
         }
       ]
     },
