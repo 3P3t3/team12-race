@@ -1,16 +1,23 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-15T18:58:25.704Z",
+  "updatedAt": "2026-09-15T18:58:37.902Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
       "name": "Riley Jackson",
       "color": "#FF5C8A",
-      "ds": 0,
+      "ds": 1,
       "nc": 1,
       "usd": 60,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mu31bzrivssi",
+          "name": "Clifton",
+          "product": "Protein",
+          "at": "2026-09-15"
+        }
+      ],
       "customers": [
         {
           "id": "mu31bkgzf838",
