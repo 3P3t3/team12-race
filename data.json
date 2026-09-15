@@ -1,13 +1,13 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-15T18:58:56.510Z",
+  "updatedAt": "2026-09-15T18:59:22.160Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
       "name": "Riley Jackson",
       "color": "#FF5C8A",
-      "ds": 2,
+      "ds": 3,
       "nc": 1,
       "usd": 60,
       "samples": [
@@ -21,6 +21,12 @@
           "id": "mu31ce4duets",
           "name": "Auntie",
           "product": "Vitamin Gummies + Cleanser",
+          "at": "2026-09-15"
+        },
+        {
+          "id": "mu31cxwv0lu3",
+          "name": "Dante",
+          "product": "GI Primer",
           "at": "2026-09-15"
         }
       ],
