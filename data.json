@@ -1,13 +1,13 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-15T18:58:37.902Z",
+  "updatedAt": "2026-09-15T18:58:56.510Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
       "name": "Riley Jackson",
       "color": "#FF5C8A",
-      "ds": 1,
+      "ds": 2,
       "nc": 1,
       "usd": 60,
       "samples": [
@@ -15,6 +15,12 @@
           "id": "mu31bzrivssi",
           "name": "Clifton",
           "product": "Protein",
+          "at": "2026-09-15"
+        },
+        {
+          "id": "mu31ce4duets",
+          "name": "Auntie",
+          "product": "Vitamin Gummies + Cleanser",
           "at": "2026-09-15"
         }
       ],
