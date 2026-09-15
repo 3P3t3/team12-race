@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-15T18:59:39.052Z",
+  "updatedAt": "2026-09-15T22:00:03.741Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -52,17 +52,10 @@
       "color": "#FF8A3D",
       "ds": 0,
       "nc": 0,
-      "usd": 100,
+      "usd": 0,
       "samples": [],
       "customers": [],
-      "sales": [
-        {
-          "id": "mu1mav3y7uf7",
-          "product": "",
-          "usd": 100,
-          "at": "2026-09-14"
-        }
-      ]
+      "sales": []
     },
     {
       "id": "mu1lvjbwm4po",
