@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-14T20:29:00.163Z",
+  "updatedAt": "2026-09-15T18:58:25.704Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -10,11 +10,12 @@
       "ds": 0,
       "nc": 1,
       "usd": 60,
+      "samples": [],
       "customers": [
         {
-          "id": "c0-0",
-          "name": "",
-          "at": null
+          "id": "mu31bkgzf838",
+          "name": "Roy - Protein",
+          "at": "2026-09-15"
         }
       ],
       "sales": [
@@ -33,6 +34,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 100,
+      "samples": [],
       "customers": [],
       "sales": [
         {
@@ -50,6 +52,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     },
@@ -60,6 +63,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     },
@@ -70,6 +74,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     },
@@ -80,6 +85,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     },
@@ -90,6 +96,14 @@
       "ds": 1,
       "nc": 0,
       "usd": 0,
+      "samples": [
+        {
+          "id": "f6-0",
+          "name": "",
+          "product": "",
+          "at": null
+        }
+      ],
       "customers": [],
       "sales": []
     },
@@ -100,6 +114,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     },
@@ -110,6 +125,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     },
@@ -120,6 +136,7 @@
       "ds": 0,
       "nc": 0,
       "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     }
