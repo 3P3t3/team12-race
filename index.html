@@ -182,6 +182,7 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
 /* Runner colors */
+.crown{display:inline-block;width:21px;height:15px;margin-right:7px;vertical-align:-1px}
 .chip{display:inline-block;width:9px;height:15px;margin-right:9px;background:var(--c);transform:skewX(var(--skew));vertical-align:-2px}
 .swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
 .swatches button{appearance:none;height:40px;border:0;background:var(--c);transform:skewX(var(--skew))}
@@ -583,14 +584,16 @@ function setStatus(kind, msg) {
   const el = $('#saveStatus'); el.dataset.kind = kind;
   el.textContent = kind === 'saving' ? 'Saving to your site…' : kind === 'saved' ? 'Saved. Your team will see it in about a minute.' : msg;
 }
-function saveSoon(msg) {
+// delay: short for one-off edits; longer while a runner's sheet is open so a burst of adds becomes one save
+function saveSoon(msg, delay = 900) {
   if (DEMO) return;
   state.updatedAt = new Date().toISOString();
   ls.set('cache', state);
   pending = true; dirty.push(msg);
   setStatus('saving');
-  clearTimeout(saveTimer); saveTimer = setTimeout(flush, 900);
+  clearTimeout(saveTimer); saveTimer = setTimeout(flush, delay);
 }
+function saveNow() { if (dirty.length) { clearTimeout(saveTimer); flush(); } }
 async function flush() {
   if (saving) await saving.catch(() => {});
   if (!dirty.length) return;
@@ -720,6 +723,7 @@ function applyWeather() {
 /* ───────────── Standings ───────────── */
 const rowsEl = $('#rows');
 const expanded = new Set();
+const CROWN_SVG = '<svg class="crown" viewBox="0 0 26 18" role="img" aria-label="Leader"><path d="M2 16.5V5l6 5.2L13 1.5l5 8.7L24 5v11.5z" fill="#FFD23F" stroke="#0E0A24" stroke-width="1.6" stroke-linejoin="round"/><circle cx="13" cy="12.5" r="1.8" fill="#FF5C8A"/></svg>';
 // What shows under a runner's name: their newest customers, or their products by dollars sold
 function detailItems(p, key) {
   if (key === 'ds') return p.samples.filter(s => s.name || s.product).reverse().map(s => s.name && s.product ? `${s.name} (${s.product})` : s.name || s.product);
@@ -756,13 +760,14 @@ function renderBoard() {
     const v = +p[m.key] || 0;
     const rank = 1 + list.filter(q => q[m.key] > v).length;
     const li = document.createElement('li');
-    li.className = 'row' + (rank === 1 && v > 0 ? ' first' : '');
+    const lead = rank === 1 && v > 0;
+    li.className = 'row' + (lead ? ' first' : '');
     li.dataset.id = p.id;
     let gap;
     if (max === 0) gap = 'Warming up';
     else if (rank === 1) gap = leaders > 1 ? 'Tied for the lead' : `Leading by ${m.fmt(v - (list.find(q => q[m.key] < v)?.[m.key] ?? 0))}`;
     else gap = `${m.fmt(max - v)} behind the leader`;
-    li.innerHTML = `<span class="pos"></span><span class="who"><span class="name"><i class="chip" aria-hidden="true"></i><span class="nm"></span></span><span class="gap"></span><i class="bar"><b></b></i></span><span class="val"></span><span class="edit">Edit</span>`;
+    li.innerHTML = `<span class="pos"></span><span class="who"><span class="name">${lead ? CROWN_SVG : ''}<i class="chip" aria-hidden="true"></i><span class="nm"></span></span><span class="gap"></span><i class="bar"><b></b></i></span><span class="val"></span><span class="edit">Edit</span>`;
     li.style.setProperty('--c', p.color);
     li.querySelector('.pos').textContent = rank;
     li.querySelector('.nm').textContent = p.name;
@@ -798,6 +803,7 @@ function renderBoard() {
     name: p ? shortName(p.name) : 'Team 12',
     color: p ? p.color : '#6633FF',
     rank: p ? 1 + list.filter(q => q[m.key] > p[m.key]).length : 1,
+    lead: !!p && p[m.key] > 0 && p[m.key] === max,
     ratio: p ? (max > 0 ? p[m.key] / max : 1 - i * 0.12) : 1,
   }));
 }
@@ -930,7 +936,7 @@ function applyDraft(msg) {
   const next = clean({ people: [draft] }).people[0];
   if (JSON.stringify(next) === JSON.stringify(editing)) return;
   Object.assign(editing, next);
-  saveSoon(msg || `Update ${editing.name}`);
+  saveSoon(msg || `Update ${editing.name}`, 8000);
   renderBoard();
 }
 // Every first sample counts +1 for this runner: the customer's name, then the product (both optional)
@@ -994,6 +1000,7 @@ $('#editor').addEventListener('close', () => {
   if ($('#edCust').value.trim()) addCustomer({ allowBlank: false });
   if (money($('#edAmt').value)) addSale();
   applyDraft();
+  saveNow();
   editing = draft = null;
 });
 $('#edDelete').addEventListener('click', () => {
@@ -1468,10 +1475,32 @@ const scene = (() => {
     }
     ctx.fillStyle = '#1B1440'; ctx.beginPath(); ctx.arc(x, sh - h * .09, h * .075, 0, 7); ctx.fill();
     if (r.rank === 1) { ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .075, sh - h * .105, h * .15, h * .025); }
+    // crown for the leader of this category
+    let lift = 0;
+    if (r.lead) {
+      const cw = Math.max(h * .42, 22), ch = cw * .64;
+      const base = sh - h * .17 - 1 + Math.sin(time * 3 + idx) * cw * .04;
+      const g = ctx.createRadialGradient(x, base - ch * .5, 0, x, base - ch * .5, cw * 1.1);
+      g.addColorStop(0, 'rgba(255,210,63,.45)'); g.addColorStop(1, 'rgba(255,210,63,0)');
+      ctx.fillStyle = g; ctx.fillRect(x - cw * 1.1, base - ch * .5 - cw * 1.1, cw * 2.2, cw * 2.2);
+      ctx.beginPath();
+      ctx.moveTo(x - cw / 2, base);
+      ctx.lineTo(x - cw / 2, base - ch * .7);
+      ctx.lineTo(x - cw / 4, base - ch * .32);
+      ctx.lineTo(x, base - ch);
+      ctx.lineTo(x + cw / 4, base - ch * .32);
+      ctx.lineTo(x + cw / 2, base - ch * .7);
+      ctx.lineTo(x + cw / 2, base);
+      ctx.closePath();
+      ctx.fillStyle = '#FFD23F'; ctx.fill();
+      ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(1.2, cw * .07); ctx.strokeStyle = '#0E0A24'; ctx.stroke();
+      ctx.fillStyle = '#FF5C8A'; ctx.beginPath(); ctx.arc(x, base - ch * .28, Math.max(1.2, cw * .07), 0, 7); ctx.fill();
+      lift = ch + 3;
+    }
     // name tag
     const fs = clamp(h * .16, 10, 14);
     ctx.font = `700 ${fs}px 'Hanken Grotesk', system-ui, sans-serif`;
-    const tw = ctx.measureText(r.name).width + fs * 1.1, ty = sh - h * .22 - fs * 1.5;
+    const tw = ctx.measureText(r.name).width + fs * 1.1, ty = sh - h * .22 - fs * 1.5 - lift;
     ctx.fillStyle = r.rank === 1 ? '#E4FF3A' : 'rgba(14,10,36,.82)';
     ctx.beginPath(); ctx.moveTo(x - tw / 2 + 4, ty); ctx.lineTo(x + tw / 2 + 4, ty); ctx.lineTo(x + tw / 2 - 4, ty + fs * 1.5); ctx.lineTo(x - tw / 2 - 4, ty + fs * 1.5); ctx.closePath(); ctx.fill();
     ctx.fillStyle = r.rank === 1 ? '#0E0A24' : '#F2EFFF'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
