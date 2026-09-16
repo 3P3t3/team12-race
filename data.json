@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-16T16:54:20.536Z",
+  "updatedAt": "2026-09-16T16:54:38.192Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -163,10 +163,17 @@
       "id": "mu4cc0agu5ns",
       "name": "Elijah & Autumn",
       "color": "#9BE15D",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 0,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mu4ccdwv6lx2",
+          "name": "Colin",
+          "product": "Protein",
+          "at": "2026-09-16"
+        }
+      ],
       "customers": [],
       "sales": []
     }
