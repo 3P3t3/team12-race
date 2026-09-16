@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-16T16:54:38.192Z",
+  "updatedAt": "2026-09-16T16:55:19.766Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -165,7 +165,7 @@
       "color": "#9BE15D",
       "ds": 1,
       "nc": 0,
-      "usd": 0,
+      "usd": 65,
       "samples": [
         {
           "id": "mu4ccdwv6lx2",
@@ -175,7 +175,20 @@
         }
       ],
       "customers": [],
-      "sales": []
+      "sales": [
+        {
+          "id": "mu4cd4vxco1b",
+          "product": "Elizabeth",
+          "usd": 40,
+          "at": "2026-09-16"
+        },
+        {
+          "id": "mu4cd9zp13nw",
+          "product": "Jess",
+          "usd": 25,
+          "at": "2026-09-16"
+        }
+      ]
     }
   ]
 }
