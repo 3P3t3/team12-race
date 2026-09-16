@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-16T17:23:24.014Z",
+  "updatedAt": "2026-09-16T22:54:30.774Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -195,6 +195,17 @@
           "at": "2026-09-16"
         }
       ]
+    },
+    {
+      "id": "mu4p76uu45b0",
+      "name": "Taylor",
+      "color": "#C9A6FF",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "samples": [],
+      "customers": [],
+      "sales": []
     }
   ]
 }
