@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-17T16:49:34.910Z",
+  "updatedAt": "2026-09-17T17:45:04.011Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -226,16 +226,10 @@
       "name": "Tianna",
       "color": "#FF5C8A",
       "ds": 0,
-      "nc": 1,
+      "nc": 0,
       "usd": 0,
       "samples": [],
-      "customers": [
-        {
-          "id": "mu5rjz3j4u2r",
-          "name": "Friend's Hubby",
-          "at": "2026-09-17"
-        }
-      ],
+      "customers": [],
       "sales": []
     }
   ]
