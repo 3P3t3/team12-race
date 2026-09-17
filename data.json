@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-17T17:45:46.262Z",
+  "updatedAt": "2026-09-17T17:46:50.768Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -106,8 +106,8 @@
       "usd": 0,
       "samples": [
         {
-          "id": "mu5rlqke6j9p",
-          "name": "Coworker",
+          "id": "mu5tncqvsn4d",
+          "name": "Edna",
           "product": "Pre + Muscle Multiplier",
           "at": "2026-09-17"
         }
