@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-17T16:48:12.656Z",
+  "updatedAt": "2026-09-17T16:49:34.910Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -101,10 +101,17 @@
       "id": "mu1m8d44nkjz",
       "name": "Steven & Perla",
       "color": "#4D7CFF",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 0,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mu5rlqke6j9p",
+          "name": "Coworker",
+          "product": "Pre + Muscle Multiplier",
+          "at": "2026-09-17"
+        }
+      ],
       "customers": [],
       "sales": []
     },
