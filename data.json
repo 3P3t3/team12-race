@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-17T17:45:18.094Z",
+  "updatedAt": "2026-09-17T17:45:46.262Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -227,7 +227,7 @@
       "color": "#FF5C8A",
       "ds": 0,
       "nc": 1,
-      "usd": 0,
+      "usd": 109,
       "samples": [],
       "customers": [
         {
@@ -236,7 +236,14 @@
           "at": "2026-09-17"
         }
       ],
-      "sales": []
+      "sales": [
+        {
+          "id": "mu5tlzx2k4o0",
+          "product": "Digestive Enzyme, Metabolic Pre + Post",
+          "usd": 109,
+          "at": "2026-09-17"
+        }
+      ]
     }
   ]
 }
