@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-16T22:54:58.274Z",
+  "updatedAt": "2026-09-17T16:47:50.913Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -211,6 +211,17 @@
           "at": "2026-09-16"
         }
       ],
+      "customers": [],
+      "sales": []
+    },
+    {
+      "id": "mu5rjibl8qlo",
+      "name": "Tianna",
+      "color": "#FF5C8A",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     }
