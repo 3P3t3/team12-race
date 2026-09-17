@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-17T17:45:04.011Z",
+  "updatedAt": "2026-09-17T17:45:18.094Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -226,10 +226,16 @@
       "name": "Tianna",
       "color": "#FF5C8A",
       "ds": 0,
-      "nc": 0,
+      "nc": 1,
       "usd": 0,
       "samples": [],
-      "customers": [],
+      "customers": [
+        {
+          "id": "mu5tle6mtgv2",
+          "name": "Richard Randolph",
+          "at": "2026-09-17"
+        }
+      ],
       "sales": []
     }
   ]
