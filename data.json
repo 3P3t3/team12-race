@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-18T03:04:45.040Z",
+  "updatedAt": "2026-09-18T03:05:12.799Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -179,7 +179,7 @@
       "color": "#9BE15D",
       "ds": 1,
       "nc": 1,
-      "usd": 45.5,
+      "usd": 60.5,
       "samples": [
         {
           "id": "mu4ccdwv6lx2",
@@ -197,15 +197,15 @@
       ],
       "sales": [
         {
-          "id": "mu4cd9zp13nw",
-          "product": "Jess",
-          "usd": 25,
-          "at": "2026-09-16"
-        },
-        {
           "id": "mu6dkcyonxwa",
           "product": "Glass Cleaner",
           "usd": 20.5,
+          "at": "2026-09-17"
+        },
+        {
+          "id": "mu6dlez30ti6",
+          "product": "Shampoo + Conditioner",
+          "usd": 40,
           "at": "2026-09-17"
         }
       ]
