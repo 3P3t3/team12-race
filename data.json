@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-18T17:18:40.184Z",
+  "updatedAt": "2026-09-18T17:18:48.709Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -264,7 +264,7 @@
       "color": "#FF8A3D",
       "ds": 0,
       "nc": 1,
-      "usd": 0,
+      "usd": 500,
       "samples": [],
       "customers": [
         {
@@ -273,7 +273,14 @@
           "at": "2026-09-18"
         }
       ],
-      "sales": []
+      "sales": [
+        {
+          "id": "mu7836h1ra80",
+          "product": "GI, Vitamins, All in 1, CBD, Bars",
+          "usd": 500,
+          "at": "2026-09-18"
+        }
+      ]
     }
   ]
 }
