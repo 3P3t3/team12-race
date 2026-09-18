@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-18T17:15:20.001Z",
+  "updatedAt": "2026-09-18T17:18:40.184Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -263,10 +263,16 @@
       "name": "Anna",
       "color": "#FF8A3D",
       "ds": 0,
-      "nc": 0,
+      "nc": 1,
       "usd": 0,
       "samples": [],
-      "customers": [],
+      "customers": [
+        {
+          "id": "mu782zw7hxw0",
+          "name": "Mom's Hubby - GI, Vitamins, All in 1, CBD, Bars",
+          "at": "2026-09-18"
+        }
+      ],
       "sales": []
     }
   ]
