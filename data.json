@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-17T17:46:50.768Z",
+  "updatedAt": "2026-09-18T02:26:55.463Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -68,10 +68,17 @@
       "id": "mu1lvjbwm4po",
       "name": "Dylan Young",
       "color": "#FFC53D",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 0,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mu6c87dzb4sn",
+          "name": "Anthony",
+          "product": "PB Bar",
+          "at": "2026-09-17"
+        }
+      ],
       "customers": [],
       "sales": []
     },
