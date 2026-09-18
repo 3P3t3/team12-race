@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-18T19:01:11.440Z",
+  "updatedAt": "2026-09-18T19:02:47.982Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -286,10 +286,17 @@
       "id": "mu7bqu8gmv0w",
       "name": "Emerson",
       "color": "#FFC53D",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 0,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mu7bswq6dkmb",
+          "name": "Efren",
+          "product": "Focus Pack",
+          "at": "2026-09-18"
+        }
+      ],
       "customers": [],
       "sales": []
     }
