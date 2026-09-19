@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-19T05:29:28.282Z",
+  "updatedAt": "2026-09-19T05:29:56.090Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -320,10 +320,17 @@
       "name": "Peter & Yenni",
       "coach": true,
       "color": "#3DDC97",
-      "ds": 0,
+      "ds": 1,
       "nc": 1,
       "usd": 85,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mu7y7ere32i4",
+          "name": "Porter",
+          "product": "XS",
+          "at": "2026-09-18"
+        }
+      ],
       "customers": [
         {
           "id": "mu7y6kkd4nir",
