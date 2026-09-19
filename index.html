@@ -182,6 +182,16 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
 /* Runner colors */
+/* Coach (runs alongside, not ranked) */
+.coach-rows{margin-top:4px}
+.coach-row{border-top:1px dashed var(--line2)}
+.coach-row .pos{display:flex;align-items:center}
+.whistle{width:36px;height:24px}
+.coach-row .gap{color:var(--acid)}
+.coach-row .val{color:var(--mute)}
+body.owner .coach-row{cursor:pointer}
+.add-coach{appearance:none;display:block;width:100%;height:46px;margin-top:14px;border:1px dashed var(--line2);background:none;color:var(--mute);font:800 14px/1 var(--display);letter-spacing:.12em;text-transform:uppercase}
+.add-coach:hover{color:var(--ink);border-color:var(--ink)}
 /* Weekly winners */
 .week{padding-top:24px}
 .week-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -316,6 +326,15 @@ body:not(.owner) .row.has-more{cursor:pointer}
       </div>
       <p class="metric-desc" id="metricDesc"></p>
       <ol class="rows" id="rows"></ol>
+      <ol class="rows coach-rows" aria-label="Coach">
+        <li class="row coach-row" id="coachRow" hidden>
+          <span class="pos" aria-hidden="true"><svg class="whistle" viewBox="0 0 34 22"><path d="M2.5 11.5a7.5 7.5 0 1 0 14.6 2.4H31V6.5H12.4A7.5 7.5 0 0 0 2.5 11.5z" fill="#E4FF3A" stroke="#0E0A24" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="12.5" r="2.6" fill="#0E0A24"/></svg></span>
+          <span class="who"><span class="name"><i class="chip" aria-hidden="true"></i><span class="nm"></span></span><span class="gap">Coach · runs alongside, not ranked</span></span>
+          <span class="val"></span>
+          <span class="edit">Edit</span>
+        </li>
+      </ol>
+      <button type="button" class="add-coach" id="addCoach" hidden>+ Add a coach</button>
       <div class="empty" id="empty" hidden>
         <p>No runners on<br>the course yet</p>
         <span id="emptyHint">The race director hasn't added anyone. Check back soon.</span>
@@ -530,6 +549,7 @@ function clean(d) {
       : money(p.usd) > 0 ? [{ id: `s${i}-0`, product: '', usd: money(p.usd), at: null }] : [];
     return {
       id: String(p.id || 'r' + i), name: String(p.name).slice(0, 40),
+      coach: p.coach === true,
       color: HEXES.includes(String(p.color).toUpperCase()) ? String(p.color).toUpperCase() : null,
       ds: samples.length,
       nc: customers.length,
@@ -538,6 +558,8 @@ function clean(d) {
     };
   });
   people.forEach(p => { if (!p.color) p.color = nextColor(people); });
+  let hasCoach = false; // only one coach
+  people.forEach(p => { if (p.coach) { if (hasCoach) p.coach = false; hasCoach = true; } });
   return {
     start: DATE_RE.test(d.start) ? d.start : '2026-09-14',
     end: DATE_RE.test(d.end) ? d.end : '2027-01-01',
@@ -549,7 +571,7 @@ let state = DEMO ? clean({
   people: [
     ['Maya R.', 41, 12, 18450], ['Devon K.', 37, 15, 21300], ['Priya S.', 44, 9, 16120],
     ['Luis M.', 29, 11, 14980], ['Jordan T.', 33, 7, 9870], ['Aisha B.', 22, 13, 19240], ['Chris P.', 18, 5, 7420],
-  ].map(([name, ds, nc, usd], i) => ({ id: 'd' + i, name, ds, nc, usd })),
+  ].map(([name, ds, nc, usd], i) => ({ id: 'd' + i, name, ds, nc, usd })).concat([{ id: 'dc', name: 'Coach Mike', coach: true, ds: 12, nc: 4, usd: 3200 }]),
 }) : clean(ls.get('cache'));
 const view = { wx: DEMO && hashParams.get('wx') ? hashParams.get('wx') : ls.get('wx', 'live') };
 
@@ -769,9 +791,12 @@ function detailItems(p, key) {
 const shortName = n => { const p = n.trim().split(/\s+/); const s = p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0]; return s.length > 13 ? s.slice(0, 12) + '…' : s; };
 function renderBoard() {
   const m = METRICS[cur];
-  const list = [...state.people].sort((a, b) => (b[m.key] - a[m.key]) || a.name.localeCompare(b.name));
+  // The coach runs alongside but never counts: not ranked, not in team totals, weekly winners or the crown
+  const racers = state.people.filter(p => !p.coach);
+  const coach = state.people.find(p => p.coach);
+  const list = [...racers].sort((a, b) => (b[m.key] - a[m.key]) || a.name.localeCompare(b.name));
   const max = list.length ? list[0][m.key] : 0;
-  const total = state.people.reduce((s, p) => s + (+p[m.key] || 0), 0);
+  const total = racers.reduce((s, p) => s + (+p[m.key] || 0), 0);
 
   $('#metricDesc').textContent = m.desc;
   $('#teamTotal').innerHTML = list.length ? `Team total<b>${m.fmt(total)}</b>` : '';
@@ -826,6 +851,17 @@ function renderBoard() {
     if (Math.abs(dy) > 1 && r.animate) r.animate([{ transform:`translateY(${dy}px)` }, { transform:'none' }], { duration:520, easing:'cubic-bezier(.2,.8,.2,1)' });
   });
 
+  const cr = $('#coachRow');
+  cr.hidden = !coach;
+  if (coach) {
+    cr.dataset.id = coach.id;
+    cr.style.setProperty('--c', coach.color);
+    cr.querySelector('.nm').textContent = coach.name;
+    cr.querySelector('.val').textContent = m.fmt(+coach[m.key] || 0);
+  }
+  $('#addCoach').hidden = !owner || !!coach;
+  scene.coach = coach ? { name: /^coach\b/i.test(coach.name) ? coach.name : `Coach ${coach.name.trim().split(/\s+/)[0]}`, color: coach.color, rank: 'C', coach: true } : null;
+
   renderWeek();
 
   scene.runners = (list.length ? list.slice(0, 3) : [null]).map((p, i) => ({
@@ -860,7 +896,7 @@ function renderWeek() {
   $('#weekNote').textContent = weekOffset === 0 ? 'This week so far. Weeks run Monday to Sunday.' : 'Final results for that week.';
   const ol = $('#winners'); ol.textContent = '';
   METRICS.forEach(m => {
-    const scores = state.people.map(p => ({ p, v: weeklyScores(p, m.key, sISO, eISO) }));
+    const scores = state.people.filter(p => !p.coach).map(p => ({ p, v: weeklyScores(p, m.key, sISO, eISO) }));
     const top = Math.max(0, ...scores.map(x => x.v));
     const wins = top > 0 ? scores.filter(x => x.v === top) : [];
     const li = document.createElement('li');
@@ -960,12 +996,25 @@ rowsEl.addEventListener('click', e => {
     row.classList.contains('open') ? expanded.add(row.dataset.id) : expanded.delete(row.dataset.id);
     return;
   }
-  editing = state.people.find(p => p.id === row.dataset.id); if (!editing) return;
+  openEditor(row.dataset.id);
+});
+function openEditor(id, { focusName = false } = {}) {
+  editing = state.people.find(p => p.id === id); if (!editing) return;
   draft = JSON.parse(JSON.stringify(editing));
   $('#edName').value = draft.name;
   $('#edSampName').value = $('#edSampProd').value = $('#edCust').value = $('#edProd').value = $('#edAmt').value = '';
+  $('#edDelete').textContent = editing.coach ? 'Remove coach' : 'Remove runner';
   paintEditor();
   $('#editor').showModal();
+  if (focusName) setTimeout(() => $('#edName').select(), 60);
+}
+$('#coachRow').addEventListener('click', () => { if (owner) openEditor($('#coachRow').dataset.id); });
+$('#addCoach').addEventListener('click', () => {
+  if (!owner || state.people.some(p => p.coach)) return;
+  const c = { id: uid(), name: 'Coach', coach: true, color: nextColor(state.people), ds: 0, nc: 0, usd: 0, samples: [], customers: [], sales: [] };
+  state.people.push(c);
+  saveSoon('Add coach'); renderBoard();
+  openEditor(c.id, { focusName: true }); // type the coach's name right away
 });
 function entryRow(label, muted, amount, kind, id, sub) {
   const li = document.createElement('li');
@@ -1077,9 +1126,9 @@ $('#editor').addEventListener('close', () => {
 });
 $('#edDelete').addEventListener('click', () => {
   if (!editing || !confirm(`Remove ${editing.name} from the race? Their stats will be deleted.`)) return;
-  const gone = editing.name;
+  const gone = editing.name, wasCoach = editing.coach;
   state.people = state.people.filter(p => p !== editing);
-  saveSoon(`Remove ${gone}`); $('#editor').close(); renderBoard(); toast('Runner removed');
+  saveSoon(`Remove ${gone}`); $('#editor').close(); renderBoard(); toast(wasCoach ? 'Coach removed' : 'Runner removed');
 });
 
 /* Settings */
@@ -1547,6 +1596,24 @@ const scene = (() => {
     }
     ctx.fillStyle = '#1B1440'; ctx.beginPath(); ctx.arc(x, sh - h * .09, h * .075, 0, 7); ctx.fill();
     if (r.rank === 1) { ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .075, sh - h * .105, h * .15, h * .025); }
+    if (r.coach) {
+      // ball cap + whistle lanyard, and a "TWEET!" every few seconds, blown toward the pack
+      ctx.fillStyle = '#0E0A24'; ctx.beginPath(); ctx.arc(x, sh - h * .1, h * .082, Math.PI, 0); ctx.fill();
+      ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .085, sh - h * .11, h * .17, h * .022);
+      ctx.strokeStyle = '#F2EFFF'; ctx.lineWidth = Math.max(1, h * .012);
+      ctx.beginPath(); ctx.moveTo(x - h * .06, sh - h * .02); ctx.lineTo(x, sh + h * .07); ctx.lineTo(x + h * .06, sh - h * .02); ctx.stroke();
+      const cyc = (time + 1.3) % 3.4;
+      if (cyc < 1 && !reduce) {
+        const a = 1 - cyc, hx = x - h * .1, hy = sh - h * .1;
+        ctx.strokeStyle = `rgba(228,255,58,${a})`; ctx.lineWidth = Math.max(1.5, h * .022); ctx.lineCap = 'round';
+        for (let k = 1; k <= 3; k++) { ctx.beginPath(); ctx.arc(hx, hy, h * (.06 + k * .065 + cyc * .05), Math.PI * .85, Math.PI * 1.35); ctx.stroke(); }
+        ctx.lineCap = 'butt';
+        const fs2 = clamp(h * .2, 11, 20);
+        ctx.save(); ctx.translate(hx - h * .32, hy - h * .2 - cyc * h * .08); ctx.transform(1, 0, -.14, 1, 0, 0);
+        ctx.globalAlpha = a; ctx.fillStyle = '#E4FF3A'; ctx.font = `900 ${fs2}px 'Big Shoulders Display', Impact, sans-serif`;
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText('TWEET!', 0, 0); ctx.restore();
+      }
+    }
     // crown for the leader of this category
     let lift = 0;
     if (r.lead) {
@@ -1630,7 +1697,7 @@ const scene = (() => {
   /* ─── Frame ─── */
   const P = new Array(DRAW + 1);
   let last = 0, running = true;
-  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], clock: null, setWeather(w) { wx = w; buildPal(); } };
+  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], coach: null, clock: null, setWeather(w) { wx = w; buildPal(); } };
 
   function frame(ts) {
     if (!running) return;
@@ -1675,8 +1742,17 @@ const scene = (() => {
       const rel = zc - CAMBACK + frac, n = Math.floor(rel / SEG), loc = (rel % SEG) / SEG;
       if (n < 0 || n >= DRAW) return;
       if (!buckets.has(n)) buckets.set(n, []);
-      buckets.get(n).push({ r, idx, zc, loc });
+      buckets.get(n).push({ r, idx, zc, loc, lane: lanes[idx] });
     });
+    // the coach jogs on the right shoulder, drifting up and back alongside the pack
+    if (api.coach) {
+      const zc = 2150 + Math.sin(time * .35) * 180;
+      const rel = zc - CAMBACK + frac, n = Math.floor(rel / SEG), loc = (rel % SEG) / SEG;
+      if (n >= 0 && n < DRAW) {
+        if (!buckets.has(n)) buckets.set(n, []);
+        buckets.get(n).push({ r: api.coach, idx: 3, zc, loc, lane: 1.22 });
+      }
+    }
 
     for (let n = DRAW - 1; n >= 0; n--) {
       const a = P[n], b = P[n + 1];
@@ -1699,9 +1775,9 @@ const scene = (() => {
       if (seg.prop && a.y > HOR - 40 && a.y < H + 200) drawProp(seg.prop, a.x + a.sc * seg.prop.side * seg.prop.off * RW * S, a.y, k, 1 - Math.exp(-(n / DRAW) * pal.dens), sac);
       if (seg.arch && n > 2) drawArch(a, k);
       const rs = buckets.get(n);
-      if (rs) rs.sort((p, q) => q.zc - p.zc).forEach(({ r, idx, zc, loc }) => {
+      if (rs) rs.sort((p, q) => q.zc - p.zc).forEach(({ r, idx, zc, loc, lane }) => {
         const sc = CD / zc;
-        const rx = lerp(a.x, b.x, loc) + sc * lanes[idx] * RW * S;
+        const rx = lerp(a.x, b.x, loc) + sc * lane * RW * S;
         const ry = lerp(a.y, b.y, loc);
         drawRunner(rx, ry, sc * 720 * S, r, idx);
       });
