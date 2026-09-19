@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-19T05:28:46.498Z",
+  "updatedAt": "2026-09-19T05:28:57.266Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -312,17 +312,6 @@
           "at": "2026-09-18"
         }
       ],
-      "customers": [],
-      "sales": []
-    },
-    {
-      "id": "mu7y5x2ao65a",
-      "name": "Peter & Yenni",
-      "color": "#3DDC97",
-      "ds": 0,
-      "nc": 0,
-      "usd": 0,
-      "samples": [],
       "customers": [],
       "sales": []
     }
