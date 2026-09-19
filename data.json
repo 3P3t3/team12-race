@@ -1,11 +1,12 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-18T19:02:47.982Z",
+  "updatedAt": "2026-09-19T05:28:46.498Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
       "name": "Riley Jackson",
+      "coach": false,
       "color": "#FF5C8A",
       "ds": 3,
       "nc": 1,
@@ -49,6 +50,7 @@
     {
       "id": "mu1lvfpiixdt",
       "name": "Ester & Michael",
+      "coach": false,
       "color": "#FF8A3D",
       "ds": 0,
       "nc": 0,
@@ -67,6 +69,7 @@
     {
       "id": "mu1lvjbwm4po",
       "name": "Dylan Young",
+      "coach": false,
       "color": "#FFC53D",
       "ds": 1,
       "nc": 0,
@@ -85,6 +88,7 @@
     {
       "id": "mu1lvmnxgi4o",
       "name": "Josh Ludwig",
+      "coach": false,
       "color": "#3DDC97",
       "ds": 0,
       "nc": 0,
@@ -96,6 +100,7 @@
     {
       "id": "mu1m81ng8ih2",
       "name": "Joshua Smith",
+      "coach": false,
       "color": "#2EC4F1",
       "ds": 0,
       "nc": 0,
@@ -107,6 +112,7 @@
     {
       "id": "mu1m8d44nkjz",
       "name": "Steven & Perla",
+      "coach": false,
       "color": "#4D7CFF",
       "ds": 1,
       "nc": 0,
@@ -125,6 +131,7 @@
     {
       "id": "mu1mb527c7cs",
       "name": "Anthony & Jess",
+      "coach": false,
       "color": "#B06BFF",
       "ds": 1,
       "nc": 0,
@@ -143,6 +150,7 @@
     {
       "id": "mu1n0wyurnqr",
       "name": "Francisco",
+      "coach": false,
       "color": "#FF6BD6",
       "ds": 0,
       "nc": 0,
@@ -154,6 +162,7 @@
     {
       "id": "mu1p3590d5fh",
       "name": "Wolf-Pack",
+      "coach": false,
       "color": "#00D1C1",
       "ds": 0,
       "nc": 0,
@@ -165,6 +174,7 @@
     {
       "id": "mu1p3it6oo8k",
       "name": "Free-Chicken",
+      "coach": false,
       "color": "#FF4D4D",
       "ds": 0,
       "nc": 0,
@@ -176,6 +186,7 @@
     {
       "id": "mu4cc0agu5ns",
       "name": "Elijah & Autumn",
+      "coach": false,
       "color": "#9BE15D",
       "ds": 1,
       "nc": 1,
@@ -219,6 +230,7 @@
     {
       "id": "mu4p76uu45b0",
       "name": "Taylor",
+      "coach": false,
       "color": "#C9A6FF",
       "ds": 1,
       "nc": 0,
@@ -237,6 +249,7 @@
     {
       "id": "mu5rjibl8qlo",
       "name": "Tianna",
+      "coach": false,
       "color": "#FF5C8A",
       "ds": 0,
       "nc": 1,
@@ -261,6 +274,7 @@
     {
       "id": "mu77ypfk7iol",
       "name": "Anna",
+      "coach": false,
       "color": "#FF8A3D",
       "ds": 0,
       "nc": 1,
@@ -285,6 +299,7 @@
     {
       "id": "mu7bqu8gmv0w",
       "name": "Emerson",
+      "coach": false,
       "color": "#FFC53D",
       "ds": 1,
       "nc": 0,
@@ -297,6 +312,17 @@
           "at": "2026-09-18"
         }
       ],
+      "customers": [],
+      "sales": []
+    },
+    {
+      "id": "mu7y5x2ao65a",
+      "name": "Peter & Yenni",
+      "color": "#3DDC97",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     }
