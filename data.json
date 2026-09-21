@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-21T07:15:44.238Z",
+  "updatedAt": "2026-09-21T07:16:56.703Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -326,7 +326,7 @@
       "name": "Peter & Yenni",
       "coach": true,
       "color": "#3DDC97",
-      "ds": 2,
+      "ds": 3,
       "nc": 1,
       "usd": 85,
       "samples": [
@@ -341,6 +341,12 @@
           "name": "Angel Barber",
           "product": "XS",
           "at": "2026-09-18"
+        },
+        {
+          "id": "muawwq9qdkac",
+          "name": "Brandon",
+          "product": "Lions Mane",
+          "at": "2026-09-21"
         }
       ],
       "customers": [
