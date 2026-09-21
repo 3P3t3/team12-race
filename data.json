@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-21T07:16:56.703Z",
+  "updatedAt": "2026-09-21T07:17:15.411Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -326,7 +326,7 @@
       "name": "Peter & Yenni",
       "coach": true,
       "color": "#3DDC97",
-      "ds": 3,
+      "ds": 4,
       "nc": 1,
       "usd": 85,
       "samples": [
@@ -346,6 +346,12 @@
           "id": "muawwq9qdkac",
           "name": "Brandon",
           "product": "Lions Mane",
+          "at": "2026-09-21"
+        },
+        {
+          "id": "muawx4pfoqel",
+          "name": "Mike",
+          "product": "Protein + Creatine",
           "at": "2026-09-21"
         }
       ],
