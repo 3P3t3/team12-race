@@ -788,6 +788,50 @@ function detailItems(p, key) {
   }
   return [];
 }
+/* Coach's speech bubble: shoutouts built from the newest entries, mixed with pep talk */
+const PEP_TALK = [
+  'Every sample gets us closer to Tower Bridge. Keep it up, Team 12!',
+  'One more customer, one more mile. Let’s go!',
+  'Pace yourselves, then sprint. New Year’s is coming!',
+  'Smiles on, shoulders back. Let’s get after it!',
+  'Hydrate and dominate, team!',
+  'Nobody wins a race standing still. Next customer!',
+  'Great teams cheer each other on. High-fives all around!',
+  'Consistency wins races. Stack those small wins!',
+  'You’re not just making sales, you’re making regulars!',
+  'Finish strong. January 1st will be here before you know it!',
+];
+function buildQuotes(racers) {
+  const who = p => p.name.length <= 18 ? p.name : shortName(p.name);
+  const events = []; let seq = 0;
+  racers.forEach(p => {
+    const n = who(p);
+    p.samples.forEach(s => {
+      if (!s.name && !s.product) return;
+      const text = s.name && s.product ? `Way to go ${n} on your ${s.product} sample with ${s.name}!`
+        : s.product ? `Way to go ${n} on your ${s.product} sample!` : `Way to go ${n} on your sample with ${s.name}!`;
+      events.push({ at: s.at || '', seq: seq++, text });
+    });
+    p.customers.forEach(c => { if (c.name) events.push({ at: c.at || '', seq: seq++, text: `Welcome to the family, ${c.name}! Great close, ${n}!` }); });
+    p.sales.forEach(s => { if (s.product) events.push({ at: s.at || '', seq: seq++, text: `${n} just sold ${s.product} for ${USD.format(s.usd)}. Let’s go!` }); });
+  });
+  const recent = events.sort((a, b) => b.at.localeCompare(a.at) || b.seq - a.seq).slice(0, 14).map(e => e.text);
+  const leaders = METRICS.map(m => {
+    const top = Math.max(0, ...racers.map(p => +p[m.key] || 0));
+    const lead = top > 0 ? racers.filter(p => p[m.key] === top) : [];
+    return lead.length === 1 ? `${who(lead[0])} is leading ${m.label}. Who’s catching them?` : null;
+  }).filter(Boolean);
+  // Weave: two shoutouts, then a pep talk or a leader callout, repeat
+  const extra = [...leaders]; let pep = new Date().getDate() % PEP_TALK.length;
+  const out = [];
+  recent.forEach((t, i) => {
+    out.push(t);
+    if (i % 2 === 1) out.push(extra.length ? extra.shift() : PEP_TALK[pep++ % PEP_TALK.length]);
+  });
+  out.push(...extra);
+  if (out.length < 3) for (let i = 0; i < 3; i++) out.push(PEP_TALK[pep++ % PEP_TALK.length]);
+  return out;
+}
 const shortName = n => { const p = n.trim().split(/\s+/); const s = p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0]; return s.length > 13 ? s.slice(0, 12) + '…' : s; };
 function renderBoard() {
   const m = METRICS[cur];
@@ -861,6 +905,7 @@ function renderBoard() {
   }
   $('#addCoach').hidden = !owner || !!coach;
   scene.coach = coach ? { name: /^coach\b/i.test(coach.name) ? coach.name : `Coach ${coach.name.trim().split(/\s+/)[0]}`, color: coach.color, rank: 'C', coach: true } : null;
+  scene.quotes = coach ? buildQuotes(racers) : [];
 
   renderWeek();
 
@@ -1602,7 +1647,7 @@ const scene = (() => {
       ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .085, sh - h * .11, h * .17, h * .022);
       ctx.strokeStyle = '#F2EFFF'; ctx.lineWidth = Math.max(1, h * .012);
       ctx.beginPath(); ctx.moveTo(x - h * .06, sh - h * .02); ctx.lineTo(x, sh + h * .07); ctx.lineTo(x + h * .06, sh - h * .02); ctx.stroke();
-      const cyc = (time + 1.3) % 3.4;
+      const cyc = r.qt != null ? r.qt : (time + 1.3) % 3.4; // whistle blows as each new quote starts
       if (cyc < 1 && !reduce) {
         const a = 1 - cyc, hx = x - h * .1, hy = sh - h * .1;
         ctx.strokeStyle = `rgba(228,255,58,${a})`; ctx.lineWidth = Math.max(1.5, h * .022); ctx.lineCap = 'round';
@@ -1645,6 +1690,60 @@ const scene = (() => {
     ctx.fillStyle = r.rank === 1 ? '#0E0A24' : '#F2EFFF'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(r.name, x, ty + fs * .78);
     ctx.fillStyle = shirt; ctx.fillRect(x - tw / 2 - 2, ty + fs * 1.5, tw, 3);
+    if (r.coach) coachAnchor = { x, y: ty - 4 };
+  }
+
+  // Coach's speech bubble, drawn last so nothing covers it
+  let coachAnchor = null, qIdx = 0, qT = 0;
+  const Q_LEN = 7; // seconds per quote
+  function drawBubble(text, ax, ay, alpha) {
+    const fs = W < 500 ? 13 : 15, lh = fs * 1.35, pad = fs * .75;
+    ctx.font = `700 ${fs}px 'Hanken Grotesk', system-ui, sans-serif`; // bold so it reads on the see-through bubble
+    const maxW = Math.min(W * .64, 360) - pad * 2;
+    const lines = []; let line = '';
+    text.split(' ').forEach(w => { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+    if (line) lines.push(line);
+    const bw = Math.max(...lines.map(l => ctx.measureText(l).width)) + pad * 2, bh = lines.length * lh + pad * 2;
+    // float high in the sky (just under the weather readout), with a long tail down to the coach
+    const skyTop = Math.max(H * .25, W < 700 ? 128 : 205);
+    const bx = clamp(ax - bw + 34, 10, W - bw - 10), by = Math.min(skyTop, Math.max(ay - bh - 12, 12));
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = 'rgba(242,239,255,.5)'; // half see-through so the runners behind it stay visible
+
+    // Swirly tail: a tapered S-curve from the bubble down to the coach that gently wiggles while he talks
+    const sx = clamp(ax - 30, bx + 24, bx + bw - 24), sy = by + bh;
+    const ey = Math.max(ay, sy + 20), dy = ey - sy;
+    const c1x = sx - 60, c1y = sy + dy * .3, c2x = ax + 60, c2y = sy + dy * .7;
+    const bez = (t, a, b, c, d) => { const u = 1 - t; return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d; };
+    const left = [], right = [], N = 40;
+    for (let i = 0; i <= N; i++) {
+      const t = i / N;
+      const px = bez(t, sx, c1x, c2x, ax), py = bez(t, sy, c1y, c2y, ey);
+      const t2 = Math.min(1, t + .01);
+      let nx = -(bez(t2, sy, c1y, c2y, ey) - py), ny = bez(t2, sx, c1x, c2x, ax) - px;
+      const nl = Math.hypot(nx, ny) || 1; nx /= nl; ny /= nl;
+      const wig = Math.sin(t * Math.PI * 2 + time * 2.2) * 7 * Math.sin(Math.PI * t) * (reduce ? 0 : 1);
+      const hw = 8 * (1 - t) + .6;
+      left.push([px + nx * (wig + hw), py + ny * (wig + hw)]);
+      right.push([px + nx * (wig - hw), py + ny * (wig - hw)]);
+    }
+    ctx.beginPath();
+    left.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+    right.reverse().forEach(([x, y]) => ctx.lineTo(x, y));
+    ctx.closePath(); ctx.fill();
+
+    // Rounded bubble with an acid stripe down the left edge
+    const rad = Math.min(16, bh / 2);
+    const bubble = () => {
+      ctx.beginPath();
+      ctx.moveTo(bx + rad, by); ctx.arcTo(bx + bw, by, bx + bw, by + bh, rad); ctx.arcTo(bx + bw, by + bh, bx, by + bh, rad);
+      ctx.arcTo(bx, by + bh, bx, by, rad); ctx.arcTo(bx, by, bx + bw, by, rad); ctx.closePath();
+    };
+    bubble(); ctx.fill();
+    ctx.save(); bubble(); ctx.clip(); ctx.fillStyle = '#E4FF3A'; ctx.fillRect(bx, by, 5, bh); ctx.restore();
+    ctx.fillStyle = '#0E0A24'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    lines.forEach((l, i) => ctx.fillText(l, bx + pad + 2, by + pad + lh * (i + .5)));
+    ctx.restore();
   }
 
   /* ─── Weather FX ─── */
@@ -1697,7 +1796,7 @@ const scene = (() => {
   /* ─── Frame ─── */
   const P = new Array(DRAW + 1);
   let last = 0, running = true;
-  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], coach: null, clock: null, setWeather(w) { wx = w; buildPal(); } };
+  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], coach: null, quotes: [], clock: null, setWeather(w) { wx = w; buildPal(); } };
 
   function frame(ts) {
     if (!running) return;
@@ -1736,21 +1835,26 @@ const scene = (() => {
 
     // runners → which slice they occupy
     const buckets = new Map();
-    const lanes = [0, -.55, .55];
+    const lanes = [-.12, -.62, .3]; // racers lean left so the coach has the right shoulder
+    let backZ = Infinity; // depth of the runner furthest back
     api.runners.forEach((r, idx) => {
       const zc = 1300 + 1500 * clamp(r.ratio, 0, 1) - (api.runners.length > 1 && r.ratio === 1 && idx > 0 ? idx * 220 : 0);
+      backZ = Math.min(backZ, zc);
       const rel = zc - CAMBACK + frac, n = Math.floor(rel / SEG), loc = (rel % SEG) / SEG;
       if (n < 0 || n >= DRAW) return;
       if (!buckets.has(n)) buckets.set(n, []);
       buckets.get(n).push({ r, idx, zc, loc, lane: lanes[idx] });
     });
-    // the coach jogs on the right shoulder, drifting up and back alongside the pack
+    // the coach jogs behind the whole pack, off to the right side, cycling through his quotes
+    coachAnchor = null;
     if (api.coach) {
-      const zc = 2150 + Math.sin(time * .35) * 180;
+      if (api.quotes.length) { qT += dt; if (qT > Q_LEN) { qT = 0; qIdx++; } api.coach.qt = qT; }
+      const zc = clamp(backZ - 380, 1250, 2300) + Math.sin(time * .35) * 60;
+      const sc = CD / zc, lane = Math.min(1.22, (W * .4) / (sc * RW * S)); // stay on screen on narrow phones
       const rel = zc - CAMBACK + frac, n = Math.floor(rel / SEG), loc = (rel % SEG) / SEG;
       if (n >= 0 && n < DRAW) {
         if (!buckets.has(n)) buckets.set(n, []);
-        buckets.get(n).push({ r: api.coach, idx: 3, zc, loc, lane: 1.22 });
+        buckets.get(n).push({ r: api.coach, idx: 3, zc, loc, lane });
       }
     }
 
@@ -1783,6 +1887,10 @@ const scene = (() => {
       });
     }
     drawFx(dt);
+    if (coachAnchor && api.quotes.length && qT > .6) {
+      const fade = Math.min(1, (qT - .6) / .35, (Q_LEN - .4 - qT) / .35);
+      if (fade > 0) drawBubble(api.quotes[qIdx % api.quotes.length], coachAnchor.x, coachAnchor.y, fade);
+    }
     requestAnimationFrame(frame);
   }
 
