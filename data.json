@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-21T18:09:55.097Z",
+  "updatedAt": "2026-09-21T18:10:32.173Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -102,7 +102,7 @@
       "name": "Joshua Smith",
       "coach": false,
       "color": "#2EC4F1",
-      "ds": 6,
+      "ds": 5,
       "nc": 0,
       "usd": 0,
       "samples": [
@@ -128,12 +128,6 @@
           "id": "mubk7z1u2zj8",
           "name": "Sean",
           "product": "XS",
-          "at": "2026-09-21"
-        },
-        {
-          "id": "mubk8aspl34w",
-          "name": "Olivia",
-          "product": "Toothpaste + Hand Soap",
           "at": "2026-09-21"
         },
         {
