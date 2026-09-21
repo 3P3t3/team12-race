@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-19T05:30:05.515Z",
+  "updatedAt": "2026-09-21T07:15:44.238Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -232,7 +232,7 @@
       "name": "Taylor",
       "coach": false,
       "color": "#C9A6FF",
-      "ds": 1,
+      "ds": 2,
       "nc": 0,
       "usd": 0,
       "samples": [
@@ -241,6 +241,12 @@
           "name": "Zach",
           "product": "Classic XS",
           "at": "2026-09-16"
+        },
+        {
+          "id": "muawv6ct8gqq",
+          "name": "Addie",
+          "product": "Watermelon XS",
+          "at": "2026-09-21"
         }
       ],
       "customers": [],
