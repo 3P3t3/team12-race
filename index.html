@@ -833,6 +833,25 @@ function buildQuotes(racers) {
   return out;
 }
 const shortName = n => { const p = n.trim().split(/\s+/); const s = p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0]; return s.length > 13 ? s.slice(0, 12) + '…' : s; };
+// The line of entries under a name (newest customers, samples or products); tap to see them all
+function appendDetail(li, p, key) {
+  li.querySelector('.detail')?.remove();
+  li.classList.remove('has-more', 'open');
+  const items = detailItems(p, key);
+  if (!items.length) return;
+  const d = document.createElement('span'); d.className = 'detail';
+  const short = document.createElement('span'); short.className = 'd-short';
+  const txt = document.createElement('span'); txt.className = 'd-txt'; txt.textContent = items.slice(0, 2).join(' · ');
+  short.appendChild(txt);
+  if (items.length > 2) {
+    const more = document.createElement('span'); more.className = 'more'; more.textContent = `+${items.length - 2} more`;
+    short.appendChild(more); li.classList.add('has-more');
+    if (expanded.has(p.id)) li.classList.add('open');
+  }
+  const full = document.createElement('span'); full.className = 'd-full'; full.textContent = items.join(' · ');
+  d.append(short, full);
+  li.querySelector('.gap').after(d);
+}
 function renderBoard() {
   const m = METRICS[cur];
   // The coach runs alongside but never counts: not ranked, not in team totals, weekly winners or the crown
@@ -868,21 +887,7 @@ function renderBoard() {
     li.querySelector('.pos').textContent = rank;
     li.querySelector('.nm').textContent = p.name;
     li.querySelector('.gap').textContent = gap;
-    const items = detailItems(p, m.key);
-    if (items.length) {
-      const d = document.createElement('span'); d.className = 'detail';
-      const short = document.createElement('span'); short.className = 'd-short';
-      const txt = document.createElement('span'); txt.className = 'd-txt'; txt.textContent = items.slice(0, 2).join(' · ');
-      short.appendChild(txt);
-      if (items.length > 2) {
-        const more = document.createElement('span'); more.className = 'more'; more.textContent = `+${items.length - 2} more`;
-        short.appendChild(more); li.classList.add('has-more');
-        if (expanded.has(p.id)) li.classList.add('open');
-      }
-      const full = document.createElement('span'); full.className = 'd-full'; full.textContent = items.join(' · ');
-      d.append(short, full);
-      li.querySelector('.gap').after(d);
-    }
+    appendDetail(li, p, m.key);
     li.querySelector('.val').textContent = m.fmt(v);
     const bar = li.querySelector('.bar b');
     rowsEl.appendChild(li);
@@ -902,6 +907,7 @@ function renderBoard() {
     cr.style.setProperty('--c', coach.color);
     cr.querySelector('.nm').textContent = coach.name;
     cr.querySelector('.val').textContent = m.fmt(+coach[m.key] || 0);
+    appendDetail(cr, coach, m.key);
   }
   $('#addCoach').hidden = !owner || !!coach;
   scene.coach = coach ? { name: /^coach\b/i.test(coach.name) ? coach.name : `Coach ${coach.name.trim().split(/\s+/)[0]}`, color: coach.color, rank: 'C', coach: true } : null;
@@ -1053,7 +1059,13 @@ function openEditor(id, { focusName = false } = {}) {
   $('#editor').showModal();
   if (focusName) setTimeout(() => $('#edName').select(), 60);
 }
-$('#coachRow').addEventListener('click', () => { if (owner) openEditor($('#coachRow').dataset.id); });
+$('#coachRow').addEventListener('click', () => {
+  const cr = $('#coachRow');
+  if (owner) return openEditor(cr.dataset.id);
+  if (!cr.classList.contains('has-more')) return;
+  cr.classList.toggle('open');
+  cr.classList.contains('open') ? expanded.add(cr.dataset.id) : expanded.delete(cr.dataset.id);
+});
 $('#addCoach').addEventListener('click', () => {
   if (!owner || state.people.some(p => p.coach)) return;
   const c = { id: uid(), name: 'Coach', coach: true, color: nextColor(state.people), ds: 0, nc: 0, usd: 0, samples: [], customers: [], sales: [] };
