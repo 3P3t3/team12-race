@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T04:34:44.244Z",
+  "updatedAt": "2026-09-22T18:35:12.273Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -371,7 +371,7 @@
       "color": "#3DDC97",
       "ds": 4,
       "nc": 1,
-      "usd": 85,
+      "usd": 95,
       "samples": [
         {
           "id": "mu7y7ere32i4",
@@ -407,16 +407,23 @@
       ],
       "sales": [
         {
-          "id": "mu7y6taynpkc",
-          "product": "",
-          "usd": 85,
-          "at": "2026-09-18"
+          "id": "mud0kn4ft0bk",
+          "product": "Lion's Mane",
+          "usd": 35,
+          "at": "2026-09-22"
+        },
+        {
+          "id": "mud0ktu98gmv",
+          "product": "Protein",
+          "usd": 60,
+          "at": "2026-09-22"
         }
       ]
     },
     {
       "id": "muc6j0hek0ov",
       "name": "Amor",
+      "coach": false,
       "color": "#2EC4F1",
       "ds": 1,
       "nc": 0,
@@ -430,8 +437,7 @@
         }
       ],
       "customers": [],
-      "sales": [],
-      "coach": false
+      "sales": []
     }
   ]
 }
