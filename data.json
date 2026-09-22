@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T18:36:25.185Z",
+  "updatedAt": "2026-09-22T18:36:36.835Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -102,7 +102,7 @@
       "name": "Joshua Smith",
       "coach": false,
       "color": "#2EC4F1",
-      "ds": 8,
+      "ds": 9,
       "nc": 0,
       "usd": 20,
       "samples": [
@@ -151,6 +151,12 @@
         {
           "id": "mud0me3l8gb1",
           "name": "Ethan",
+          "product": "XS",
+          "at": "2026-09-22"
+        },
+        {
+          "id": "mud0mn37i60i",
+          "name": "Anthony",
           "product": "XS",
           "at": "2026-09-22"
         }
