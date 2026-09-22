@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T18:35:59.524Z",
+  "updatedAt": "2026-09-22T18:36:16.294Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -104,7 +104,7 @@
       "color": "#2EC4F1",
       "ds": 7,
       "nc": 0,
-      "usd": 0,
+      "usd": 20,
       "samples": [
         {
           "id": "mubk7ab1q5o5",
@@ -150,7 +150,14 @@
         }
       ],
       "customers": [],
-      "sales": []
+      "sales": [
+        {
+          "id": "mud0m78lwtpb",
+          "product": "XS (half case)",
+          "usd": 20,
+          "at": "2026-09-22"
+        }
+      ]
     },
     {
       "id": "mu1m8d44nkjz",
