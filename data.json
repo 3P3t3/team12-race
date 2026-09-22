@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-21T18:11:49.830Z",
+  "updatedAt": "2026-09-22T04:33:59.090Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -413,6 +413,17 @@
           "at": "2026-09-18"
         }
       ]
+    },
+    {
+      "id": "muc6j0hek0ov",
+      "name": "Amor",
+      "color": "#2EC4F1",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "samples": [],
+      "customers": [],
+      "sales": []
     }
   ]
 }
