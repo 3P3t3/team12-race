@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T19:17:36.803Z",
+  "updatedAt": "2026-09-22T19:17:45.903Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -462,7 +462,7 @@
       "name": "Amor",
       "coach": false,
       "color": "#2EC4F1",
-      "ds": 2,
+      "ds": 3,
       "nc": 0,
       "usd": 0,
       "samples": [
@@ -476,6 +476,12 @@
           "id": "mud23d7no2ek",
           "name": "Brandon",
           "product": "Pre-Workout",
+          "at": "2026-09-22"
+        },
+        {
+          "id": "mud23k8fzshj",
+          "name": "Derrick",
+          "product": "Focus Pack",
           "at": "2026-09-22"
         }
       ],
