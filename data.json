@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T18:35:29.417Z",
+  "updatedAt": "2026-09-22T18:35:59.524Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -143,10 +143,10 @@
           "at": "2026-09-21"
         },
         {
-          "id": "mubkax1i8bk4",
+          "id": "mud0luar1jhr",
           "name": "Dad",
-          "product": "Handsoap",
-          "at": "2026-09-21"
+          "product": "XS",
+          "at": "2026-09-22"
         }
       ],
       "customers": [],
