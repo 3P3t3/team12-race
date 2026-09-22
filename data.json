@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T18:35:12.273Z",
+  "updatedAt": "2026-09-22T18:35:29.417Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -371,7 +371,7 @@
       "color": "#3DDC97",
       "ds": 4,
       "nc": 1,
-      "usd": 95,
+      "usd": 180,
       "samples": [
         {
           "id": "mu7y7ere32i4",
@@ -416,6 +416,12 @@
           "id": "mud0ktu98gmv",
           "product": "Protein",
           "usd": 60,
+          "at": "2026-09-22"
+        },
+        {
+          "id": "mud0l72hb1kf",
+          "product": "Fiber + Protein",
+          "usd": 85,
           "at": "2026-09-22"
         }
       ]
