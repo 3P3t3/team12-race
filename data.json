@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T18:36:36.835Z",
+  "updatedAt": "2026-09-22T18:37:00.443Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -137,12 +137,6 @@
           "at": "2026-09-21"
         },
         {
-          "id": "mubk9khdpb8o",
-          "name": "Olivia",
-          "product": "Double X + Toothpaste",
-          "at": "2026-09-21"
-        },
-        {
           "id": "mud0luar1jhr",
           "name": "Dad",
           "product": "XS",
@@ -158,6 +152,12 @@
           "id": "mud0mn37i60i",
           "name": "Anthony",
           "product": "XS",
+          "at": "2026-09-22"
+        },
+        {
+          "id": "mud0n5az5wpx",
+          "name": "Olivia",
+          "product": "Double X",
           "at": "2026-09-22"
         }
       ],
