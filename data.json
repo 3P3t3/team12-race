@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T04:33:59.090Z",
+  "updatedAt": "2026-09-22T04:34:44.244Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -418,12 +418,20 @@
       "id": "muc6j0hek0ov",
       "name": "Amor",
       "color": "#2EC4F1",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 0,
-      "samples": [],
+      "samples": [
+        {
+          "id": "muc6jwt9059a",
+          "name": "Phil",
+          "product": "Focus Pack",
+          "at": "2026-09-21"
+        }
+      ],
       "customers": [],
-      "sales": []
+      "sales": [],
+      "coach": false
     }
   ]
 }
