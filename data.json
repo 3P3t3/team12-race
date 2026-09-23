@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-23T05:32:42.501Z",
+  "updatedAt": "2026-09-23T05:32:52.718Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -401,7 +401,7 @@
       "coach": true,
       "color": "#3DDC97",
       "ds": 5,
-      "nc": 1,
+      "nc": 2,
       "usd": 180,
       "samples": [
         {
@@ -440,6 +440,11 @@
           "id": "mu7y6kkd4nir",
           "name": "Brandon",
           "at": "2026-09-18"
+        },
+        {
+          "id": "mudo2lppm4pz",
+          "name": "Kiersten",
+          "at": "2026-09-22"
         }
       ],
       "sales": [
