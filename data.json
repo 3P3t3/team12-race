@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-23T19:28:15.712Z",
+  "updatedAt": "2026-09-23T23:15:40.179Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -521,6 +521,17 @@
           "at": "2026-09-22"
         }
       ],
+      "customers": [],
+      "sales": []
+    },
+    {
+      "id": "mueq1d03aixz",
+      "name": "Alex Matthiesen",
+      "color": "#4D7CFF",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "samples": [],
       "customers": [],
       "sales": []
     }
