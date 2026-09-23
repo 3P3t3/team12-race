@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-23T05:38:14.981Z",
+  "updatedAt": "2026-09-23T19:28:15.712Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -382,8 +382,8 @@
       "coach": false,
       "color": "#FFC53D",
       "ds": 3,
-      "nc": 0,
-      "usd": 0,
+      "nc": 1,
+      "usd": 33,
       "samples": [
         {
           "id": "mu7bswq6dkmb",
@@ -404,8 +404,21 @@
           "at": "2026-09-22"
         }
       ],
-      "customers": [],
-      "sales": []
+      "customers": [
+        {
+          "id": "muehwtjjw5td",
+          "name": "Efren - Focus Pack",
+          "at": "2026-09-23"
+        }
+      ],
+      "sales": [
+        {
+          "id": "muehwwv3ki4x",
+          "product": "Focus Pack",
+          "usd": 33,
+          "at": "2026-09-23"
+        }
+      ]
     },
     {
       "id": "mu7y66j1kui1",
