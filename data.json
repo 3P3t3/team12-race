@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-22T19:17:45.903Z",
+  "updatedAt": "2026-09-23T05:32:42.501Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -400,7 +400,7 @@
       "name": "Peter & Yenni",
       "coach": true,
       "color": "#3DDC97",
-      "ds": 4,
+      "ds": 5,
       "nc": 1,
       "usd": 180,
       "samples": [
@@ -427,6 +427,12 @@
           "name": "Mike",
           "product": "Protein + Creatine",
           "at": "2026-09-21"
+        },
+        {
+          "id": "mudo2dtw8tgr",
+          "name": "Wilson",
+          "product": "XS",
+          "at": "2026-09-22"
         }
       ],
       "customers": [
