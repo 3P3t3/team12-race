@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-24T03:38:58.444Z",
+  "updatedAt": "2026-09-24T17:27:20.881Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -544,7 +544,7 @@
       "color": "#4D7CFF",
       "ds": 0,
       "nc": 0,
-      "usd": 82,
+      "usd": 112,
       "samples": [],
       "customers": [],
       "sales": [
@@ -553,6 +553,12 @@
           "product": "Cal Mag D + Magnesium",
           "usd": 82,
           "at": "2026-09-23"
+        },
+        {
+          "id": "muft19o09a62",
+          "product": "Double X - 10 day supply",
+          "usd": 30,
+          "at": "2026-09-24"
         }
       ]
     }
