@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-23T23:16:12.104Z",
+  "updatedAt": "2026-09-24T03:38:58.444Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -72,8 +72,8 @@
       "coach": false,
       "color": "#FFC53D",
       "ds": 1,
-      "nc": 0,
-      "usd": 0,
+      "nc": 1,
+      "usd": 52,
       "samples": [
         {
           "id": "mu6c87dzb4sn",
@@ -82,8 +82,21 @@
           "at": "2026-09-17"
         }
       ],
-      "customers": [],
-      "sales": []
+      "customers": [
+        {
+          "id": "muezfz0r6xew",
+          "name": "Anthony - PB Bars",
+          "at": "2026-09-23"
+        }
+      ],
+      "sales": [
+        {
+          "id": "muezfxgqyl11",
+          "product": "PB Bars",
+          "usd": 52,
+          "at": "2026-09-23"
+        }
+      ]
     },
     {
       "id": "mu1lvmnxgi4o",
@@ -527,6 +540,7 @@
     {
       "id": "mueq1d03aixz",
       "name": "Alex Matthiesen",
+      "coach": false,
       "color": "#4D7CFF",
       "ds": 0,
       "nc": 0,
@@ -540,8 +554,7 @@
           "usd": 82,
           "at": "2026-09-23"
         }
-      ],
-      "coach": false
+      ]
     }
   ]
 }
