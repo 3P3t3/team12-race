@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T17:33:38.470Z",
+  "updatedAt": "2026-09-28T17:33:55.078Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -208,8 +208,8 @@
       "coach": false,
       "color": "#4D7CFF",
       "ds": 2,
-      "nc": 0,
-      "usd": 40,
+      "nc": 1,
+      "usd": 72,
       "samples": [
         {
           "id": "mu5tncqvsn4d",
@@ -224,12 +224,24 @@
           "at": "2026-09-27"
         }
       ],
-      "customers": [],
+      "customers": [
+        {
+          "id": "mulj14hy417b",
+          "name": "Sandy Morris",
+          "at": "2026-09-28"
+        }
+      ],
       "sales": [
         {
           "id": "mulj0rolkas0",
           "product": "Magnesium",
           "usd": 40,
+          "at": "2026-09-28"
+        },
+        {
+          "id": "mulj0z6affgt",
+          "product": "Hari, Skin & Nails",
+          "usd": 32,
           "at": "2026-09-28"
         }
       ]
