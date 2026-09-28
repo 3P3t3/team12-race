@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T17:33:55.078Z",
+  "updatedAt": "2026-09-28T17:51:29.474Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -350,7 +350,7 @@
       "name": "Taylor",
       "coach": false,
       "color": "#C9A6FF",
-      "ds": 2,
+      "ds": 3,
       "nc": 0,
       "usd": 0,
       "samples": [
@@ -365,6 +365,12 @@
           "name": "Addie",
           "product": "Watermelon XS",
           "at": "2026-09-21"
+        },
+        {
+          "id": "muljnq2p44al",
+          "name": "Cousin",
+          "product": "GI Primer",
+          "at": "2026-09-28"
         }
       ],
       "customers": [],
