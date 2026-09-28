@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T02:45:47.397Z",
+  "updatedAt": "2026-09-28T17:33:38.470Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -209,7 +209,7 @@
       "color": "#4D7CFF",
       "ds": 2,
       "nc": 0,
-      "usd": 0,
+      "usd": 40,
       "samples": [
         {
           "id": "mu5tncqvsn4d",
@@ -225,7 +225,14 @@
         }
       ],
       "customers": [],
-      "sales": []
+      "sales": [
+        {
+          "id": "mulj0rolkas0",
+          "product": "Magnesium",
+          "usd": 40,
+          "at": "2026-09-28"
+        }
+      ]
     },
     {
       "id": "mu1mb527c7cs",
