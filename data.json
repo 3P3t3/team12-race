@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-24T17:27:20.881Z",
+  "updatedAt": "2026-09-28T02:11:05.926Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -73,7 +73,7 @@
       "color": "#FFC53D",
       "ds": 1,
       "nc": 1,
-      "usd": 52,
+      "usd": 137,
       "samples": [
         {
           "id": "mu6c87dzb4sn",
@@ -95,6 +95,12 @@
           "product": "PB Bars",
           "usd": 52,
           "at": "2026-09-23"
+        },
+        {
+          "id": "mukm2ddxwups",
+          "product": "GI Primer",
+          "usd": 85,
+          "at": "2026-09-27"
         }
       ]
     },
