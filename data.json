@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T17:51:29.474Z",
+  "updatedAt": "2026-09-28T20:51:10.499Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -476,7 +476,7 @@
       "coach": true,
       "color": "#3DDC97",
       "ds": 5,
-      "nc": 2,
+      "nc": 3,
       "usd": 180,
       "samples": [
         {
@@ -520,6 +520,11 @@
           "id": "mudo2lppm4pz",
           "name": "Kiersten",
           "at": "2026-09-22"
+        },
+        {
+          "id": "mulq2srmyfsy",
+          "name": "Leslie & Don",
+          "at": "2026-09-28"
         }
       ],
       "sales": [
