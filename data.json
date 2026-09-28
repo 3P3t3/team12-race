@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T02:11:05.926Z",
+  "updatedAt": "2026-09-28T02:30:36.613Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -567,6 +567,52 @@
           "at": "2026-09-24"
         }
       ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev-sep29",
+      "date": "2026-09-29",
+      "time": "8 PM",
+      "title": "Team board plan",
+      "place": "Lincoln"
+    },
+    {
+      "id": "ev-fed",
+      "date": "2026-10-02",
+      "end": "2026-10-04",
+      "title": "FED",
+      "place": "Las Vegas",
+      "big": true
+    },
+    {
+      "id": "ev-oct6",
+      "date": "2026-10-06",
+      "time": "8 PM",
+      "title": "Team board plan",
+      "place": "Peter & Yenni’s house",
+      "note": "Everyone except Elijah & Autumn’s team"
+    },
+    {
+      "id": "ev-oct12",
+      "date": "2026-10-12",
+      "title": "Org open",
+      "place": "Roseville"
+    },
+    {
+      "id": "ev-oct21",
+      "date": "2026-10-21",
+      "time": "8 PM",
+      "title": "Team board plan",
+      "place": "Elijah & Erica’s, Roseville",
+      "note": "Elijah & Autumn’s team"
+    },
+    {
+      "id": "ev-oct29",
+      "date": "2026-10-29",
+      "title": "Org open",
+      "place": "Dublin",
+      "note": "Bay Area teams"
     }
   ]
 }
