@@ -182,6 +182,30 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
 /* Runner colors */
+/* Upcoming events */
+.events{padding:20px var(--gutter) 8px;border-top:1px solid var(--line)}
+.ev-list{list-style:none;margin:12px 0 0;padding:0}
+.ev{position:relative;display:grid;grid-template-columns:54px minmax(0,1fr);column-gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid var(--line)}
+.ev-date{text-align:center;padding-top:2px}
+.ev-date b{display:block;font:800 11px/1 var(--display);letter-spacing:.14em;color:var(--acid)}
+.ev-date span{display:block;font:900 26px/1 var(--display);margin-top:3px}
+.ev-date span.rng{font-size:19px;letter-spacing:-.01em}
+.ev-title{display:block;font-weight:600;font-size:15.5px;line-height:1.25}
+.ev-meta{display:block;margin-top:3px;font-size:12.5px;color:var(--mute)}
+.ev-note{display:block;margin-top:3px;font-size:12px;color:var(--dim);line-height:1.35}
+.ev.big{margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);background:linear-gradient(100deg,rgba(228,255,58,.16),rgba(228,255,58,0) 72%);box-shadow:inset 3px 0 0 var(--acid)}
+.ev.big .ev-title{font-weight:700}
+.ev.big .ev-date span{color:var(--acid)}
+.crown-sm{width:17px;height:12px;margin-right:6px;vertical-align:0}
+.ev.past{opacity:.45}
+.ev-empty{padding:14px 0;color:var(--dim);font-size:13.5px}
+.ev .edit{display:none}
+body.owner .ev{cursor:pointer}
+body.owner .ev .edit{display:block;position:absolute;right:0;top:12px;font:700 10px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+body.owner .ev.big .edit{right:var(--gutter)}
+body.owner .ev:active{background-color:rgba(145,115,255,.08)}
+.check{display:flex;align-items:center;gap:10px;font-size:15px}
+.check input{width:20px;height:20px;accent-color:var(--acid)}
 /* Coach (runs alongside, not ranked) */
 .coach-rows{margin-top:4px}
 .coach-row{border-top:1px dashed var(--line2)}
@@ -247,8 +271,10 @@ body:not(.owner) .row.has-more{cursor:pointer}
 }
 @media (min-width:1000px){
   :root{--gutter:28px}
-  .app{display:grid;grid-template-columns:minmax(0,1fr) 500px;min-height:100vh}
-  .stage{position:sticky;top:0;height:100vh}
+  .app{display:grid;grid-template-columns:minmax(230px,280px) minmax(0,1fr) minmax(380px,470px);min-height:100vh}
+  .events{grid-column:1;grid-row:1;height:100vh;overflow:auto;border-top:0;border-right:1px solid var(--line);padding-top:30px}
+  .stage{grid-column:2;grid-row:1;position:sticky;top:0;height:100vh}
+  .panel{grid-column:3;grid-row:1}
   .hud{padding:28px 36px 34px}
   .shade-bot{height:40%;background:linear-gradient(rgba(14,10,36,0),rgba(14,10,36,.7))}
   .mark-12{width:52px;height:46px;font-size:36px}
@@ -289,6 +315,12 @@ body:not(.owner) .row.has-more{cursor:pointer}
       </div>
     </div>
   </section>
+
+  <aside class="events" id="events" aria-label="Upcoming events">
+    <div class="eyebrow"><span>Upcoming</span><b id="evCount"></b></div>
+    <ol class="ev-list" id="evList"></ol>
+    <button type="button" class="add-coach" id="addEvent" hidden>+ Add an event</button>
+  </aside>
 
   <main class="panel">
     <section class="route" aria-label="Course progress">
@@ -406,6 +438,40 @@ body:not(.owner) .row.has-more{cursor:pointer}
     </div>
     <div class="sheet-actions">
       <button type="button" class="link-danger" id="edDelete">Remove runner</button>
+      <button class="btn-acid" value="save">Done</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Event editor -->
+<dialog class="sheet" id="evSheet">
+  <form class="sheet-in" id="evForm" method="dialog">
+    <div class="sheet-top"><h3>Event</h3><button class="btn-line close" value="cancel" formnovalidate>Done</button></div>
+    <div class="field">
+      <label for="evTitle">What</label>
+      <input class="text-input" id="evTitle" maxlength="60" placeholder="Team board plan" autocomplete="off">
+    </div>
+    <div class="field">
+      <div class="set-row">
+        <div><label for="evDate">Date</label><input type="date" id="evDate"></div>
+        <div><label for="evEnd">Last day (optional)</label><input type="date" id="evEnd"></div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="set-row">
+        <div><label for="evTime">Time</label><input class="text-input" id="evTime" maxlength="20" placeholder="8 PM" autocomplete="off"></div>
+        <div><label for="evPlace">Where</label><input class="text-input" id="evPlace" maxlength="40" placeholder="Lincoln" autocomplete="off"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="evNote">Note (optional)</label>
+      <input class="text-input" id="evNote" maxlength="90" placeholder="Bay Area teams" autocomplete="off">
+    </div>
+    <div class="field" style="border:0">
+      <label class="check"><input type="checkbox" id="evBig"> Big event (crown and highlight)</label>
+    </div>
+    <div class="sheet-actions">
+      <button type="button" class="link-danger" id="evDelete">Remove event</button>
       <button class="btn-acid" value="save">Done</button>
     </div>
   </form>
@@ -560,11 +626,21 @@ function clean(d) {
   people.forEach(p => { if (!p.color) p.color = nextColor(people); });
   let hasCoach = false; // only one coach
   people.forEach(p => { if (p.coach) { if (hasCoach) p.coach = false; hasCoach = true; } });
+  const events = (Array.isArray(d.events) ? d.events : []).filter(e => e && typeof e === 'object' && DATE_RE.test(e.date)).map((e, i) => ({
+    id: String(e.id || 'e' + i),
+    date: e.date,
+    end: DATE_RE.test(e.end) && e.end > e.date ? e.end : '',
+    time: String(e.time || '').slice(0, 20),
+    title: String(e.title || 'Event').slice(0, 60),
+    place: String(e.place || '').slice(0, 40),
+    note: String(e.note || '').slice(0, 90),
+    big: e.big === true,
+  })).sort((a, b) => a.date.localeCompare(b.date));
   return {
     start: DATE_RE.test(d.start) ? d.start : '2026-09-14',
     end: DATE_RE.test(d.end) ? d.end : '2027-01-01',
     updatedAt: typeof d.updatedAt === 'string' ? d.updatedAt : null,
-    people,
+    people, events,
   };
 }
 let state = DEMO ? clean({
@@ -914,6 +990,7 @@ function renderBoard() {
   scene.quotes = coach ? buildQuotes(racers) : [];
 
   renderWeek();
+  renderEvents();
 
   scene.runners = (list.length ? list.slice(0, 3) : [null]).map((p, i) => ({
     name: p ? shortName(p.name) : 'Team 12',
@@ -923,6 +1000,84 @@ function renderBoard() {
     ratio: p ? (max > 0 ? p[m.key] / max : 1 - i * 0.12) : 1,
   }));
 }
+
+/* ───────────── Upcoming events ───────────── */
+const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+function renderEvents() {
+  const today = isoOf(new Date());
+  const list = state.events.filter(e => owner || (e.end || e.date) >= today);
+  const ol = $('#evList'); ol.textContent = '';
+  const upcoming = state.events.filter(e => (e.end || e.date) >= today).length;
+  $('#evCount').textContent = upcoming ? `${upcoming} ahead` : '';
+  $('#addEvent').hidden = !owner;
+  if (!list.length) {
+    const li = document.createElement('li'); li.className = 'ev-empty';
+    li.textContent = owner ? 'No events yet. Add the next one below.' : 'Nothing on the calendar right now.';
+    ol.appendChild(li);
+    return;
+  }
+  list.forEach(e => {
+    const s = parseISO(e.date), en = e.end ? parseISO(e.end) : null;
+    const li = document.createElement('li');
+    li.className = 'ev' + (e.big ? ' big' : '') + ((e.end || e.date) < today ? ' past' : '');
+    li.dataset.id = e.id;
+    const days = en && en.getMonth() === s.getMonth() ? `${s.getDate()}–${en.getDate()}` : en ? `${s.getDate()}–${MONTHS[en.getMonth()]} ${en.getDate()}` : String(s.getDate());
+    li.innerHTML = `<span class="ev-date"><b></b><span class="${days.length > 2 ? 'rng' : ''}"></span></span>`
+      + `<span class="ev-body"><span class="ev-title">${e.big ? CROWN_SVG.replace('class="crown"', 'class="crown crown-sm"') : ''}<span class="t"></span></span>`
+      + `<span class="ev-meta"></span><span class="ev-note"></span></span><span class="edit">Edit</span>`;
+    li.querySelector('.ev-date b').textContent = MONTHS[s.getMonth()];
+    li.querySelector('.ev-date span').textContent = days;
+    li.querySelector('.ev-title .t').textContent = e.title;
+    const meta = [e.time, e.place].filter(Boolean).join(' · ');
+    li.querySelector('.ev-meta').textContent = meta;
+    li.querySelector('.ev-meta').hidden = !meta;
+    li.querySelector('.ev-note').textContent = e.note;
+    li.querySelector('.ev-note').hidden = !e.note;
+    ol.appendChild(li);
+  });
+}
+let editingEv = null;
+function openEvent(id) {
+  editingEv = state.events.find(e => e.id === id); if (!editingEv) return;
+  $('#evTitle').value = editingEv.title === 'Event' ? '' : editingEv.title;
+  $('#evDate').value = editingEv.date; $('#evEnd').value = editingEv.end;
+  $('#evTime').value = editingEv.time; $('#evPlace').value = editingEv.place;
+  $('#evNote').value = editingEv.note; $('#evBig').checked = editingEv.big;
+  $('#evSheet').showModal();
+  setTimeout(() => $('#evTitle').focus(), 60);
+}
+$('#evList').addEventListener('click', e => {
+  const li = e.target.closest('.ev'); if (li && owner) openEvent(li.dataset.id);
+});
+$('#addEvent').addEventListener('click', () => {
+  if (!owner) return;
+  const ev = { id: uid(), date: isoOf(new Date()), end: '', time: '', title: 'Event', place: '', note: '', big: false };
+  state.events.push(ev); openEvent(ev.id);
+});
+// However the sheet closes, keep what was typed
+$('#evSheet').addEventListener('close', () => {
+  if (!editingEv || !state.events.includes(editingEv)) { editingEv = null; return; }
+  const next = {
+    ...editingEv,
+    title: $('#evTitle').value.trim().slice(0, 60) || 'Event',
+    date: DATE_RE.test($('#evDate').value) ? $('#evDate').value : editingEv.date,
+    end: $('#evEnd').value, time: $('#evTime').value.trim(),
+    place: $('#evPlace').value.trim(), note: $('#evNote').value.trim(), big: $('#evBig').checked,
+  };
+  const changed = JSON.stringify(next) !== JSON.stringify(editingEv);
+  Object.assign(editingEv, next);
+  state.events = clean(state).events;
+  if (changed) saveSoon(`Update event: ${next.title}`);
+  editingEv = null;
+  renderEvents();
+});
+$('#evDelete').addEventListener('click', () => {
+  if (!editingEv || !confirm(`Remove “${editingEv.title}” from the calendar?`)) return;
+  const gone = editingEv.title;
+  state.events = state.events.filter(e => e !== editingEv);
+  editingEv = null;
+  $('#evSheet').close(); saveSoon(`Remove event: ${gone}`); renderEvents(); toast('Event removed');
+});
 
 /* ───────────── Weekly winners ───────────── */
 // Weeks run Monday–Sunday; an entry counts toward the week of the day it was added (its `at` date)
