@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T02:30:36.613Z",
+  "updatedAt": "2026-09-28T02:45:47.397Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -207,7 +207,7 @@
       "name": "Steven & Perla",
       "coach": false,
       "color": "#4D7CFF",
-      "ds": 1,
+      "ds": 2,
       "nc": 0,
       "usd": 0,
       "samples": [
@@ -216,6 +216,12 @@
           "name": "Edna",
           "product": "Pre + Muscle Multiplier",
           "at": "2026-09-17"
+        },
+        {
+          "id": "muknazgh0a2p",
+          "name": "Abby",
+          "product": "XS",
+          "at": "2026-09-27"
         }
       ],
       "customers": [],
@@ -573,46 +579,62 @@
     {
       "id": "ev-sep29",
       "date": "2026-09-29",
+      "end": "",
       "time": "8 PM",
       "title": "Team board plan",
-      "place": "Lincoln"
+      "place": "Lincoln",
+      "note": "",
+      "big": false
     },
     {
       "id": "ev-fed",
       "date": "2026-10-02",
       "end": "2026-10-04",
+      "time": "",
       "title": "FED",
       "place": "Las Vegas",
+      "note": "",
       "big": true
     },
     {
       "id": "ev-oct6",
       "date": "2026-10-06",
+      "end": "",
       "time": "8 PM",
       "title": "Team board plan",
       "place": "Peter & Yenni’s house",
-      "note": "Everyone except Elijah & Autumn’s team"
+      "note": "Everyone except Elijah & Autumn’s team",
+      "big": false
     },
     {
       "id": "ev-oct12",
       "date": "2026-10-12",
+      "end": "",
+      "time": "",
       "title": "Org open",
-      "place": "Roseville"
+      "place": "Roseville",
+      "note": "",
+      "big": false
     },
     {
       "id": "ev-oct21",
       "date": "2026-10-21",
+      "end": "",
       "time": "8 PM",
       "title": "Team board plan",
       "place": "Elijah & Erica’s, Roseville",
-      "note": "Elijah & Autumn’s team"
+      "note": "Elijah & Autumn’s team",
+      "big": false
     },
     {
       "id": "ev-oct29",
       "date": "2026-10-29",
+      "end": "",
+      "time": "",
       "title": "Org open",
       "place": "Dublin",
-      "note": "Bay Area teams"
+      "note": "Bay Area teams",
+      "big": false
     }
   ]
 }
