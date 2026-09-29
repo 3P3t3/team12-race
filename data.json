@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-29T19:09:07.537Z",
+  "updatedAt": "2026-09-29T19:09:22.120Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -591,7 +591,7 @@
       "coach": false,
       "color": "#4D7CFF",
       "ds": 1,
-      "nc": 0,
+      "nc": 2,
       "usd": 112,
       "samples": [
         {
@@ -601,7 +601,18 @@
           "at": "2026-09-29"
         }
       ],
-      "customers": [],
+      "customers": [
+        {
+          "id": "mun1vofqtelo",
+          "name": "Juan",
+          "at": "2026-09-29"
+        },
+        {
+          "id": "mun1vq6gn0ok",
+          "name": "Mike",
+          "at": "2026-09-29"
+        }
+      ],
       "sales": [
         {
           "id": "mueq1pcfkxw4",
