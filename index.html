@@ -481,18 +481,23 @@ body:not(.owner) .row.has-more{cursor:pointer}
 <dialog class="sheet" id="keySheet">
   <form class="sheet-in" id="keyForm" method="dialog">
     <div class="sheet-top"><h3>Owner sign-in</h3><button class="btn-line close" value="cancel" formnovalidate>Close</button></div>
-    <p class="note">Paste your GitHub access key. It stays in this browser only, and it’s what lets this device save standings to the site.</p>
-    <div class="field">
-      <label for="keyRepo">GitHub project</label>
-      <input class="text-input" id="keyRepo" placeholder="your-username/team12-race" autocomplete="off" autocapitalize="off" spellcheck="false">
-    </div>
-    <div class="field" style="border:0">
-      <label for="keyToken">Access key</label>
-      <input class="text-input" id="keyToken" type="password" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <a class="help" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Make a key on GitHub ↗</a>
+    <p class="note" id="keyNote">Enter your owner PIN to add runners, update stats and manage events.</p>
+    <label class="sr" for="keyPin">Owner PIN</label>
+    <input class="pin-input" id="keyPin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" maxlength="12">
+    <div id="keyExtra" hidden>
+      <p class="note" style="margin-top:16px">This device also needs your GitHub key once, so it can save to the site. It stays in this browser.</p>
+      <div class="field">
+        <label for="keyRepo">GitHub project</label>
+        <input class="text-input" id="keyRepo" placeholder="your-username/team12-race" autocomplete="off" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="field" style="border:0">
+        <label for="keyToken">Access key</label>
+        <input class="text-input" id="keyToken" type="password" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <a class="help" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Make a key on GitHub ↗</a>
+      </div>
     </div>
     <div class="err" id="keyErr"></div>
-    <div class="sheet-actions"><button class="btn-acid" value="ok" id="keyGo">Sign in</button></div>
+    <div class="sheet-actions"><button class="btn-acid" value="ok" id="keyGo">Unlock</button></div>
   </form>
 </dialog>
 
@@ -1147,39 +1152,61 @@ async function verify() {
     if (!pending) { state = clean(JSON.parse(unb64(f.content))); ls.set('cache', state); loaded = true; renderHud(); renderBoard(); }
   } catch (e) { if (e.status !== 404) throw e; }
 }
-function openKey(msg) {
-  $('#keyRepo').value = conn.repo;
-  $('#keyToken').value = conn.token;
-  $('#keyErr').textContent = msg || '';
-  $('#keySheet').showModal();
-  setTimeout(() => $(conn.repo ? '#keyToken' : '#keyRepo').focus(), 50);
+// The PIN unlocks owner mode on a device that already holds the GitHub key.
+// The key itself is what authorizes saving — it never ships inside this page, only in your own browser.
+const PIN_HASH = '1b31a4fb195a834eb49b5c4fa40eabc0e5e614edb7fad7dec9ecc225be339a9c', PIN_FALLBACK = 'd3ffe457';
+async function pinOk(v) {
+  const msg = 't12pin:' + v.trim();
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+    return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('') === PIN_HASH;
+  } catch (e) {
+    let h = 5381; for (const ch of msg) h = ((h << 5) + h + ch.charCodeAt(0)) | 0;
+    return (h >>> 0).toString(16) === PIN_FALLBACK;
+  }
 }
-$('#ownerBtn').addEventListener('click', async () => {
+function openKey(msg, needKey) {
+  const extra = needKey || !conn.repo || !conn.token;
+  $('#keyExtra').hidden = !extra;
+  $('#keyRepo').value = conn.repo || guessRepo();
+  $('#keyToken').value = '';
+  $('#keyPin').value = '';
+  $('#keyErr').textContent = msg || '';
+  $('#keyNote').textContent = extra
+    ? 'Enter your owner PIN. This device needs your GitHub key once, too.'
+    : 'Enter your owner PIN to add runners, update stats and manage events.';
+  $('#keySheet').showModal();
+  setTimeout(() => $('#keyPin').focus(), 50);
+}
+$('#ownerBtn').addEventListener('click', () => {
   if (DEMO) return toast('Preview mode — remove #demo from the address');
-  if (!conn.repo || !conn.token) return openKey();
-  const b = $('#ownerBtn'); b.disabled = true; b.textContent = 'Checking…';
-  try { await verify(); setOwner(true); toast('Owner mode on'); }
-  catch (e) { openKey(ghMessage(e)); }
-  finally { b.disabled = false; b.textContent = 'Owner sign-in'; }
+  openKey();
 });
 $('#keyForm').addEventListener('submit', async e => {
   if (e.submitter && e.submitter.value === 'cancel') return;
   e.preventDefault();
-  const repo = $('#keyRepo').value.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\.git$/i, '').replace(/\/+$/, '');
-  const token = $('#keyToken').value.trim();
-  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) { $('#keyErr').textContent = 'Type the project like this: your-username/team12-race'; return; }
-  if (!token) { $('#keyErr').textContent = 'Paste your access key.'; return; }
-  const prev = { ...conn };
-  Object.assign(conn, { repo, token });
   const go = $('#keyGo'); go.disabled = true; go.textContent = 'Checking…'; $('#keyErr').textContent = '';
   try {
-    await verify();
-    ls.set('repo', repo); ls.set('token', token);
-    $('#keySheet').close(); setOwner(true); toast('Owner mode on');
-  } catch (err) {
-    Object.assign(conn, prev);
-    $('#keyErr').textContent = ghMessage(err);
-  } finally { go.disabled = false; go.textContent = 'Sign in'; }
+    if (!await pinOk($('#keyPin').value)) { $('#keyErr').textContent = 'That PIN doesn’t match.'; $('#keyPin').select(); return; }
+    const typedToken = $('#keyToken').value.trim();
+    const needKey = !$('#keyExtra').hidden;
+    const prev = { ...conn };
+    if (needKey) {
+      const repo = $('#keyRepo').value.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\.git$/i, '').replace(/\/+$/, '');
+      if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) { $('#keyErr').textContent = 'Type the project like this: your-username/team12-race'; return; }
+      if (!typedToken) { $('#keyErr').textContent = 'Paste your access key (this device needs it once).'; return; }
+      Object.assign(conn, { repo, token: typedToken });
+    }
+    try {
+      await verify();
+      ls.set('repo', conn.repo); ls.set('token', conn.token);
+      $('#keySheet').close(); setOwner(true); toast('Owner mode on');
+    } catch (err) {
+      Object.assign(conn, prev);
+      $('#keyErr').textContent = ghMessage(err);
+      if (!needKey) openKey(ghMessage(err), true); // key stopped working: ask for a fresh one
+    }
+  } finally { go.disabled = false; go.textContent = 'Unlock'; }
 });
 $('#lockBtn').addEventListener('click', () => { setOwner(false); toast('Owner mode off'); });
 
