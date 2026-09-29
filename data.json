@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-28T20:52:04.641Z",
+  "updatedAt": "2026-09-29T19:09:07.537Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -590,10 +590,17 @@
       "name": "Alex Matthiesen",
       "coach": false,
       "color": "#4D7CFF",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 112,
-      "samples": [],
+      "samples": [
+        {
+          "id": "mun1vexc0b25",
+          "name": "Isaac",
+          "product": "XS",
+          "at": "2026-09-29"
+        }
+      ],
       "customers": [],
       "sales": [
         {
