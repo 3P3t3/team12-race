@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-29T19:09:22.120Z",
+  "updatedAt": "2026-09-30T00:59:09.198Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -477,7 +477,7 @@
       "color": "#3DDC97",
       "ds": 5,
       "nc": 3,
-      "usd": 252,
+      "usd": 342,
       "samples": [
         {
           "id": "mu7y7ere32i4",
@@ -551,6 +551,12 @@
           "product": "Energy + Focus & Vitamins",
           "usd": 72,
           "at": "2026-09-28"
+        },
+        {
+          "id": "munedjwti1er",
+          "product": "XS + PB Bars",
+          "usd": 90,
+          "at": "2026-09-29"
         }
       ]
     },
