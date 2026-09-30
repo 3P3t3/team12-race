@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-30T21:06:26.208Z",
+  "updatedAt": "2026-09-30T21:11:47.506Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -645,6 +645,17 @@
           "at": "2026-09-24"
         }
       ]
+    },
+    {
+      "id": "muolp0kx5bqw",
+      "name": "Mariah",
+      "color": "#B06BFF",
+      "ds": 0,
+      "nc": 0,
+      "usd": 0,
+      "samples": [],
+      "customers": [],
+      "sales": []
     }
   ],
   "events": [
