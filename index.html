@@ -81,8 +81,14 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .board{padding-top:22px}
 .board-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
 .board-head h2{margin:0;font:900 40px/.85 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left bottom}
-.total{text-align:right;font-size:12px;color:var(--mute);line-height:1.2}
-.total b{display:block;font:800 22px/1 var(--display);color:var(--ink);letter-spacing:.01em}
+.total-kicker{font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);padding-bottom:4px}
+.totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.totals div{padding:12px 10px 13px;border-left:1px solid var(--line)}
+.totals div:first-child{padding-left:0;border-left:0}
+.totals b{display:block;font:900 clamp(24px,7vw,34px)/.9 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.totals span{display:block;margin-top:6px;font-size:11px;line-height:1.25;color:var(--mute)}
+.totals div.on b{color:var(--acid)}
+.totals div.on span{color:var(--ink)}
 .tabs{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(3,1fr);margin:16px calc(var(--gutter) * -1) 0;padding:0 var(--gutter);background:rgba(14,10,36,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .tab{position:relative;appearance:none;border:0;background:none;padding:14px 4px 13px;text-align:left;font:800 15px/.95 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);transition:color .2s}
 .tab small{display:block;font:600 11px/1 var(--text);letter-spacing:0;text-transform:none;margin-top:5px;color:inherit;opacity:.8}
@@ -348,7 +354,12 @@ body:not(.owner) .row.has-more{cursor:pointer}
     <section class="board" aria-label="Standings">
       <div class="board-head">
         <h2>Standings</h2>
-        <div class="total" id="teamTotal"></div>
+        <span class="total-kicker">Team so far · coach included</span>
+      </div>
+      <div class="totals" id="totals" hidden>
+        <div data-k="ds"><b id="totDs">0</b><span>First samples</span></div>
+        <div data-k="nc"><b id="totNc">0</b><span>New customers</span></div>
+        <div data-k="usd"><b id="totUsd">$0</b><span>Sales dollars</span></div>
       </div>
       <div class="tabs" role="tablist" id="tabs">
         <button class="tab" role="tab" data-i="0" aria-selected="true">First<br>Sample<small>in CWF</small></button>
@@ -940,10 +951,16 @@ function renderBoard() {
   const coach = state.people.find(p => p.coach);
   const list = [...racers].sort((a, b) => (b[m.key] - a[m.key]) || a.name.localeCompare(b.name));
   const max = list.length ? list[0][m.key] : 0;
-  const total = racers.reduce((s, p) => s + (+p[m.key] || 0), 0);
+  // Team totals count everyone, coach included (rankings and weekly winners still leave him out)
+  const totals = { ds: 0, nc: 0, usd: 0 };
+  state.people.forEach(p => { totals.ds += +p.ds || 0; totals.nc += +p.nc || 0; totals.usd += +p.usd || 0; });
 
   $('#metricDesc').textContent = m.desc;
-  $('#teamTotal').innerHTML = list.length ? `Team total<b>${m.fmt(total)}</b>` : '';
+  $('#totals').hidden = !state.people.length;
+  $('#totDs').textContent = NF.format(totals.ds);
+  $('#totNc').textContent = NF.format(totals.nc);
+  $('#totUsd').textContent = USD.format(totals.usd);
+  $('#totals').querySelectorAll('div').forEach(d => d.classList.toggle('on', d.dataset.k === m.key));
   $('#empty').hidden = list.length > 0;
   $('#empty p').innerHTML = loaded ? 'No runners on<br>the course yet' : 'Loading<br>standings…';
   $('#emptyHint').textContent = !loaded ? '' : owner ? 'Add your first runner with the bar below.' : 'The race director hasn’t added anyone yet.';
