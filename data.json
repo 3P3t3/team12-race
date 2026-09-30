@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-30T00:59:09.198Z",
+  "updatedAt": "2026-09-30T06:23:37.695Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -593,7 +593,7 @@
     },
     {
       "id": "mueq1d03aixz",
-      "name": "Alex Matthiesen",
+      "name": "Alex Mathiesen",
       "coach": false,
       "color": "#4D7CFF",
       "ds": 1,
