@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-30T21:11:47.506Z",
+  "updatedAt": "2026-09-30T21:12:09.213Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -650,12 +650,32 @@
       "id": "muolp0kx5bqw",
       "name": "Mariah",
       "color": "#B06BFF",
-      "ds": 0,
+      "ds": 3,
       "nc": 0,
       "usd": 0,
-      "samples": [],
+      "samples": [
+        {
+          "id": "muolp7x2xluk",
+          "name": "Morgan",
+          "product": "Hair Mask",
+          "at": "2026-09-30"
+        },
+        {
+          "id": "muolpbqcxs8a",
+          "name": "Rita",
+          "product": "GI Primer",
+          "at": "2026-09-30"
+        },
+        {
+          "id": "muolpgujrut4",
+          "name": "Jackie",
+          "product": "Sleep Mask",
+          "at": "2026-09-30"
+        }
+      ],
       "customers": [],
-      "sales": []
+      "sales": [],
+      "coach": false
     }
   ],
   "events": [
