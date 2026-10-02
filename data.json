@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-09-30T21:12:09.213Z",
+  "updatedAt": "2026-10-02T14:18:04.621Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -649,10 +649,11 @@
     {
       "id": "muolp0kx5bqw",
       "name": "Mariah",
+      "coach": false,
       "color": "#B06BFF",
       "ds": 3,
-      "nc": 0,
-      "usd": 0,
+      "nc": 1,
+      "usd": 32,
       "samples": [
         {
           "id": "muolp7x2xluk",
@@ -673,9 +674,21 @@
           "at": "2026-09-30"
         }
       ],
-      "customers": [],
-      "sales": [],
-      "coach": false
+      "customers": [
+        {
+          "id": "mur1sogdh7kc",
+          "name": "Morgan",
+          "at": "2026-10-02"
+        }
+      ],
+      "sales": [
+        {
+          "id": "mur1snollzzv",
+          "product": "Hair Mask",
+          "usd": 32,
+          "at": "2026-10-02"
+        }
+      ]
     }
   ],
   "events": [
