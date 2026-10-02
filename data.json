@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-02T14:18:28.657Z",
+  "updatedAt": "2026-10-02T14:18:40.155Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -319,7 +319,7 @@
       "coach": false,
       "color": "#9BE15D",
       "ds": 1,
-      "nc": 1,
+      "nc": 2,
       "usd": 125.5,
       "samples": [
         {
@@ -334,6 +334,11 @@
           "id": "mu4dddkb3t4d",
           "name": "Elizabeth",
           "at": "2026-09-16"
+        },
+        {
+          "id": "mur1tfveve3a",
+          "name": "Shawn",
+          "at": "2026-10-02"
         }
       ],
       "sales": [
