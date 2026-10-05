@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-02T14:18:40.155Z",
+  "updatedAt": "2026-10-05T07:53:22.409Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -54,7 +54,7 @@
       "color": "#FF8A3D",
       "ds": 0,
       "nc": 0,
-      "usd": 100,
+      "usd": 174,
       "samples": [],
       "customers": [],
       "sales": [
@@ -63,6 +63,12 @@
           "product": "Creatine + 2x Dishwasing Liquid",
           "usd": 100,
           "at": "2026-09-15"
+        },
+        {
+          "id": "muuydi3szk5f",
+          "product": "Choc protein",
+          "usd": 74,
+          "at": "2026-10-05"
         }
       ]
     },
