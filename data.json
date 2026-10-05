@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-05T19:59:46.576Z",
+  "updatedAt": "2026-10-05T20:00:09.216Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -333,7 +333,7 @@
       "color": "#9BE15D",
       "ds": 1,
       "nc": 4,
-      "usd": 125.5,
+      "usd": 185.5,
       "samples": [
         {
           "id": "mu4ccdwv6lx2",
@@ -388,6 +388,18 @@
           "product": "XS",
           "usd": 40,
           "at": "2026-10-02"
+        },
+        {
+          "id": "muvobzpla6fb",
+          "product": "Window Cleaner",
+          "usd": 20,
+          "at": "2026-10-05"
+        },
+        {
+          "id": "muvoc5bz4woz",
+          "product": "XS",
+          "usd": 40,
+          "at": "2026-10-05"
         }
       ]
     },
