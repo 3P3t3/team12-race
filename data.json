@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-05T19:58:52.052Z",
+  "updatedAt": "2026-10-05T19:59:46.576Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -332,7 +332,7 @@
       "coach": false,
       "color": "#9BE15D",
       "ds": 1,
-      "nc": 3,
+      "nc": 4,
       "usd": 125.5,
       "samples": [
         {
@@ -356,6 +356,11 @@
         {
           "id": "muvoahsj12uk",
           "name": "Ben",
+          "at": "2026-10-05"
+        },
+        {
+          "id": "muvobnv2l139",
+          "name": "Lizzy",
           "at": "2026-10-05"
         }
       ],
