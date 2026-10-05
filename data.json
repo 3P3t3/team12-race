@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-05T07:53:22.409Z",
+  "updatedAt": "2026-10-05T07:53:31.937Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -52,10 +52,17 @@
       "name": "Ester & Michael",
       "coach": false,
       "color": "#FF8A3D",
-      "ds": 0,
+      "ds": 1,
       "nc": 0,
       "usd": 174,
-      "samples": [],
+      "samples": [
+        {
+          "id": "muuydpggt1ff",
+          "name": "Artem",
+          "product": "Vanilla grass fed",
+          "at": "2026-10-05"
+        }
+      ],
       "customers": [],
       "sales": [
         {
