@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-07T17:49:20.733Z",
+  "updatedAt": "2026-10-07T17:49:38.741Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -141,7 +141,7 @@
       "coach": false,
       "color": "#2EC4F1",
       "ds": 14,
-      "nc": 1,
+      "nc": 2,
       "usd": 60,
       "samples": [
         {
@@ -233,6 +233,11 @@
         {
           "id": "muyejmqk3zs4",
           "name": "Izzy",
+          "at": "2026-10-07"
+        },
+        {
+          "id": "muyek0msxndh",
+          "name": "Marcus",
           "at": "2026-10-07"
         }
       ],
