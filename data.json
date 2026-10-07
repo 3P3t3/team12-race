@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-05T20:00:09.216Z",
+  "updatedAt": "2026-10-07T17:41:06.548Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -84,7 +84,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 1,
+      "ds": 2,
       "nc": 1,
       "usd": 137,
       "samples": [
@@ -93,6 +93,12 @@
           "name": "Anthony",
           "product": "PB Bar",
           "at": "2026-09-17"
+        },
+        {
+          "id": "muye91f77dgd",
+          "name": "Hector",
+          "product": "CBD",
+          "at": "2026-10-07"
         }
       ],
       "customers": [
