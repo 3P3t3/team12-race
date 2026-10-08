@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T23:06:30.550Z",
+  "updatedAt": "2026-10-08T23:06:45.612Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -365,8 +365,8 @@
       "coach": false,
       "color": "#9BE15D",
       "ds": 1,
-      "nc": 4,
-      "usd": 277.5,
+      "nc": 5,
+      "usd": 282.5,
       "samples": [
         {
           "id": "mu4ccdwv6lx2",
@@ -395,6 +395,11 @@
           "id": "muvobnv2l139",
           "name": "Lizzy",
           "at": "2026-10-05"
+        },
+        {
+          "id": "mv05boiz1c6v",
+          "name": "Maria",
+          "at": "2026-10-08"
         }
       ],
       "sales": [
@@ -430,8 +435,8 @@
         },
         {
           "id": "muvoc5bz4woz",
-          "product": "XS",
-          "usd": 40,
+          "product": "XS - Shawn",
+          "usd": 45,
           "at": "2026-10-05"
         },
         {
