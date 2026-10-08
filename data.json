@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T23:06:09.208Z",
+  "updatedAt": "2026-10-08T23:06:30.550Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -366,7 +366,7 @@
       "color": "#9BE15D",
       "ds": 1,
       "nc": 4,
-      "usd": 210.5,
+      "usd": 277.5,
       "samples": [
         {
           "id": "mu4ccdwv6lx2",
@@ -433,6 +433,12 @@
           "product": "XS",
           "usd": 40,
           "at": "2026-10-05"
+        },
+        {
+          "id": "mv05bcwlgal3",
+          "product": "Vitamin C Serum - Maria",
+          "usd": 67,
+          "at": "2026-10-08"
         }
       ]
     },
