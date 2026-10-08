@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T06:19:50.021Z",
+  "updatedAt": "2026-10-08T06:28:00.996Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -142,7 +142,7 @@
       "color": "#2EC4F1",
       "ds": 14,
       "nc": 2,
-      "usd": 60,
+      "usd": 115,
       "samples": [
         {
           "id": "mubk7ab1q5o5",
@@ -252,6 +252,12 @@
           "id": "muyejkxqu7gb",
           "product": "XS",
           "usd": 40,
+          "at": "2026-10-07"
+        },
+        {
+          "id": "muz5naebxidi",
+          "product": "Creatine",
+          "usd": 55,
           "at": "2026-10-07"
         }
       ]
