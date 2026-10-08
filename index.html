@@ -44,10 +44,20 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .count{text-align:right;display:flex;align-items:center;gap:8px}
 .count b{font:900 40px/.8 var(--display);transform:skewX(var(--skew));display:inline-block}
 .count span{font:700 11px/1.05 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-align:left}
-.vtabs{display:flex;gap:8px;margin-top:14px;pointer-events:auto}
-.vtab{display:inline-block;padding:8px 12px 7px;border:1px solid var(--line2);background:rgba(14,10,36,.5);font:800 12px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-decoration:none}
-.vtab.on{background:var(--acid);border-color:var(--acid);color:var(--night)}
-a.vtab:hover{color:var(--ink);border-color:var(--ink)}
+.vtabs{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;pointer-events:auto}
+.vtab{position:relative;display:inline-block;padding:13px 20px 11px;border:2px solid var(--line2);background:rgba(14,10,36,.62);font:900 clamp(17px,5vw,23px)/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);text-decoration:none;transform:skewX(var(--skew));
+  clip-path:polygon(2% 8%,12% 0,30% 7%,46% 1%,62% 8%,79% 2%,92% 9%,100% 26%,97% 46%,100% 70%,93% 92%,78% 99%,60% 93%,44% 100%,27% 94%,11% 100%,2% 88%,0 62%,3% 38%,0 20%)}
+.vtab.on{background:var(--acid);border-color:var(--acid);color:var(--night);filter:drop-shadow(3px 4px 0 var(--violet)) drop-shadow(0 0 16px rgba(228,255,58,.35))}
+.vtab.on::after{content:"";position:absolute;inset:-16px -20px;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(circle 4px at 4% 16%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 2.5px at 11% 92%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 3px at 93% 8%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 5px at 99% 72%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 2px at 52% 2%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 2.5px at 68% 99%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 1.8px at 25% 4%,var(--violet) 96%,transparent 100%),
+    radial-gradient(circle 3px at 86% 96%,var(--violet) 96%,transparent 100%)}
+a.vtab:hover{color:var(--ink);border-color:var(--ink);background:rgba(14,10,36,.85)}
 .wx{margin-top:14px;display:flex;align-items:flex-start;gap:10px}
 .wx-temp{font:800 58px/.8 var(--display);transform:skewX(var(--skew));letter-spacing:-.01em}
 .wx-meta{display:flex;flex-direction:column;gap:1px;padding-top:2px;font-size:12.5px;color:var(--mute)}
@@ -314,7 +324,7 @@ body:not(.owner) .row.has-more{cursor:pointer}
       </div>
       <nav class="vtabs" aria-label="Challenges">
         <span class="vtab on" aria-current="page">Retail race</span>
-        <a class="vtab" href="boardplan.html">Board plan fight</a>
+        <a class="vtab" href="boardplan.html">Board plan battle</a>
       </nav>
       <div class="wx">
         <div class="wx-temp" id="wxTemp">—°</div>
@@ -1994,7 +2004,7 @@ const scene = (() => {
     if (line) lines.push(line);
     const bw = Math.max(...lines.map(l => ctx.measureText(l).width)) + pad * 2, bh = lines.length * lh + pad * 2;
     // float high in the sky (just under the weather readout), with a long tail down to the coach
-    const skyTop = Math.max(H * .25, W < 700 ? 128 : 205);
+    const skyTop = Math.max(H * .4, W < 700 ? 252 : 300); // clear of the masthead, weather and tabs
     const bx = clamp(ax - bw + 34, 10, W - bw - 10), by = Math.min(skyTop, Math.max(ay - bh - 12, 12));
     ctx.save(); ctx.globalAlpha = alpha;
     ctx.fillStyle = 'rgba(242,239,255,.5)'; // half see-through so the runners behind it stay visible
