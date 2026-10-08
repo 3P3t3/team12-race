@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T15:33:17.931Z",
+  "updatedAt": "2026-10-08T23:05:19.295Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -344,18 +344,6 @@
           "at": null
         }
       ],
-      "customers": [],
-      "sales": []
-    },
-    {
-      "id": "mu1n0wyurnqr",
-      "name": "Francisco",
-      "coach": false,
-      "color": "#FF6BD6",
-      "ds": 0,
-      "nc": 0,
-      "usd": 0,
-      "samples": [],
       "customers": [],
       "sales": []
     },
