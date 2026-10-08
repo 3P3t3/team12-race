@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T23:05:23.911Z",
+  "updatedAt": "2026-10-08T23:06:09.208Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -366,7 +366,7 @@
       "color": "#9BE15D",
       "ds": 1,
       "nc": 4,
-      "usd": 185.5,
+      "usd": 210.5,
       "samples": [
         {
           "id": "mu4ccdwv6lx2",
@@ -407,13 +407,13 @@
         {
           "id": "mu6dlez30ti6",
           "product": "Shampoo + Conditioner",
-          "usd": 40,
+          "usd": 60,
           "at": "2026-09-17"
         },
         {
           "id": "mu6dln8cysuq",
           "product": "Hair, Skin, Nails",
-          "usd": 25,
+          "usd": 30,
           "at": "2026-09-17"
         },
         {
