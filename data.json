@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-07T17:49:38.741Z",
+  "updatedAt": "2026-10-08T06:18:29.793Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -684,7 +684,7 @@
       "coach": false,
       "color": "#4D7CFF",
       "ds": 1,
-      "nc": 2,
+      "nc": 3,
       "usd": 112,
       "samples": [
         {
@@ -704,6 +704,11 @@
           "id": "mun1vq6gn0ok",
           "name": "Mike",
           "at": "2026-09-29"
+        },
+        {
+          "id": "muz5b1nkxu8l",
+          "name": "Vijit",
+          "at": "2026-10-07"
         }
       ],
       "sales": [
