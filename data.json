@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T06:29:45.779Z",
+  "updatedAt": "2026-10-08T06:29:57.114Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -141,7 +141,7 @@
       "coach": false,
       "color": "#2EC4F1",
       "ds": 14,
-      "nc": 3,
+      "nc": 4,
       "usd": 366,
       "samples": [
         {
@@ -243,6 +243,11 @@
         {
           "id": "muz5pj8xhmxd",
           "name": "Olivia - Multiple Products",
+          "at": "2026-10-07"
+        },
+        {
+          "id": "muz5prztzpgg",
+          "name": "Chip - Multiple Products",
           "at": "2026-10-07"
         }
       ],
