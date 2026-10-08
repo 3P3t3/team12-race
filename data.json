@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T06:30:18.962Z",
+  "updatedAt": "2026-10-08T15:33:17.931Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -843,7 +843,7 @@
     },
     {
       "id": "ev-oct21",
-      "date": "2026-10-21",
+      "date": "2026-10-20",
       "end": "",
       "time": "8 PM",
       "title": "Team board plan",
