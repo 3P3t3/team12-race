@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T06:28:35.854Z",
+  "updatedAt": "2026-10-08T06:29:45.779Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -141,8 +141,8 @@
       "coach": false,
       "color": "#2EC4F1",
       "ds": 14,
-      "nc": 2,
-      "usd": 115,
+      "nc": 3,
+      "usd": 366,
       "samples": [
         {
           "id": "mubk7ab1q5o5",
@@ -239,6 +239,11 @@
           "id": "muz5nvdd2uku",
           "name": "Marcus - Creatine",
           "at": "2026-10-07"
+        },
+        {
+          "id": "muz5pj8xhmxd",
+          "name": "Olivia - Multiple Products",
+          "at": "2026-10-07"
         }
       ],
       "sales": [
@@ -258,6 +263,12 @@
           "id": "muz5naebxidi",
           "product": "Creatine",
           "usd": 55,
+          "at": "2026-10-07"
+        },
+        {
+          "id": "muz5pgfc6gzt",
+          "product": "Focus Tablets, Women's Daily, Fiber Etc",
+          "usd": 251,
           "at": "2026-10-07"
         }
       ]
