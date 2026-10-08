@@ -44,6 +44,10 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .count{text-align:right;display:flex;align-items:center;gap:8px}
 .count b{font:900 40px/.8 var(--display);transform:skewX(var(--skew));display:inline-block}
 .count span{font:700 11px/1.05 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-align:left}
+.vtabs{display:flex;gap:8px;margin-top:14px;pointer-events:auto}
+.vtab{display:inline-block;padding:8px 12px 7px;border:1px solid var(--line2);background:rgba(14,10,36,.5);font:800 12px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-decoration:none}
+.vtab.on{background:var(--acid);border-color:var(--acid);color:var(--night)}
+a.vtab:hover{color:var(--ink);border-color:var(--ink)}
 .wx{margin-top:14px;display:flex;align-items:flex-start;gap:10px}
 .wx-temp{font:800 58px/.8 var(--display);transform:skewX(var(--skew));letter-spacing:-.01em}
 .wx-meta{display:flex;flex-direction:column;gap:1px;padding-top:2px;font-size:12.5px;color:var(--mute)}
@@ -252,7 +256,9 @@ body.owner .coach-row{cursor:pointer}
 .btn-add{appearance:none;flex:none;height:48px;padding:0 16px;border:0;background:var(--violet);color:#fff;font:900 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
 .btn-add:active{background:var(--violet-hi)}
 .entries{list-style:none;margin:10px 0 0;padding:0;max-height:230px;overflow:auto}
-.entries li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.entries li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.entries li[data-kind]{cursor:pointer}
+.entries li[data-kind]:active{background:rgba(145,115,255,.1)}
 .entries li:last-child{border-bottom:0}
 .e-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .e-name.muted{color:var(--dim);font-style:italic}
@@ -306,6 +312,10 @@ body:not(.owner) .row.has-more{cursor:pointer}
         <div class="mark"><div class="mark-12"><span>12</span></div><div class="mark-txt">Team 12<small>Retail Challenge</small></div></div>
         <div class="count"><b id="daysLeft">—</b><span>days to<br>new year</span></div>
       </div>
+      <nav class="vtabs" aria-label="Challenges">
+        <span class="vtab on" aria-current="page">Retail race</span>
+        <a class="vtab" href="boardplan.html">Board plan fight</a>
+      </nav>
       <div class="wx">
         <div class="wx-temp" id="wxTemp">—°</div>
         <div class="wx-meta">
@@ -450,6 +460,33 @@ body:not(.owner) .row.has-more{cursor:pointer}
     <div class="sheet-actions">
       <button type="button" class="link-danger" id="edDelete">Remove runner</button>
       <button class="btn-acid" value="save">Done</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Edit one posted entry (a sample, a customer or a sale) -->
+<dialog class="sheet" id="entrySheet">
+  <form class="sheet-in" id="entryForm" method="dialog">
+    <div class="sheet-top"><h3 id="enTitle">Edit entry</h3><button class="btn-line close" value="cancel" formnovalidate>Done</button></div>
+    <div class="field" id="enNameField">
+      <label for="enName">Customer name</label>
+      <input class="text-input" id="enName" maxlength="60" autocomplete="off">
+    </div>
+    <div class="field" id="enProdField">
+      <label for="enProd">Product</label>
+      <input class="text-input" id="enProd" maxlength="60" autocomplete="off">
+    </div>
+    <div class="field" id="enAmtField">
+      <label for="enAmt">Amount</label>
+      <div class="amt" style="width:100%"><span aria-hidden="true">$</span><input id="enAmt" type="number" inputmode="decimal" min="0" step="0.01"></div>
+    </div>
+    <div class="field" style="border:0">
+      <label for="enDate">Date added (sets which week it counts for)</label>
+      <input type="date" id="enDate">
+    </div>
+    <div class="sheet-actions">
+      <button type="button" class="link-danger" id="enDelete">Delete entry</button>
+      <button class="btn-acid" value="save">Save</button>
     </div>
   </form>
 </dialog>
@@ -657,6 +694,7 @@ function clean(d) {
     end: DATE_RE.test(d.end) ? d.end : '2027-01-01',
     updatedAt: typeof d.updatedAt === 'string' ? d.updatedAt : null,
     people, events,
+    ...(d.bp && typeof d.bp === 'object' ? { bp: d.bp } : {}), // board plan challenge data, kept untouched
   };
 }
 let state = DEMO ? clean({
@@ -1274,6 +1312,7 @@ $('#addCoach').addEventListener('click', () => {
 });
 function entryRow(label, muted, amount, kind, id, sub) {
   const li = document.createElement('li');
+  li.dataset.kind = kind; li.dataset.id = id; li.title = 'Tap to edit';
   li.innerHTML = `<span class="e-name${muted ? ' muted' : ''}"></span>${sub ? '<span class="e-sub"></span>' : ''}${amount ? '<span class="e-amt"></span>' : ''}<button type="button" class="e-del">×</button>`;
   li.querySelector('.e-name').textContent = label;
   if (sub) li.querySelector('.e-sub').textContent = sub;
@@ -1357,6 +1396,45 @@ $('#editForm').addEventListener('click', e => {
   }
   const sw = e.target.closest('[data-color]');
   if (sw) { draft.color = sw.dataset.color; paintEditor(); applyDraft(); }
+  const row = e.target.closest('.entries li[data-kind]');
+  if (row && !del) openEntry(row.dataset.kind, row.dataset.id); // tap a posted entry to fix it
+});
+
+/* Editing one posted entry: fix a spelling, a product, an amount or its date */
+const LISTS = { samp: 'samples', cust: 'customers', sale: 'sales' };
+let editingEntry = null;
+function openEntry(kind, id) {
+  if (!draft) return;
+  const item = draft[LISTS[kind]].find(x => x.id === id); if (!item) return;
+  editingEntry = { kind, id };
+  $('#enTitle').textContent = kind === 'samp' ? 'Edit first sample' : kind === 'cust' ? 'Edit new customer' : 'Edit sale';
+  $('#enNameField').hidden = kind === 'sale';
+  $('#enProdField').hidden = kind === 'cust';
+  $('#enAmtField').hidden = kind !== 'sale';
+  $('#enName').value = item.name || '';
+  $('#enProd').value = item.product || '';
+  $('#enAmt').value = kind === 'sale' ? item.usd : '';
+  $('#enDate').value = item.at || '';
+  $('#entrySheet').showModal();
+  setTimeout(() => $(kind === 'sale' ? '#enProd' : '#enName').focus(), 60);
+}
+$('#entrySheet').addEventListener('close', () => {
+  const ref = editingEntry; editingEntry = null;
+  if (!ref || !draft) return;
+  const item = draft[LISTS[ref.kind]].find(x => x.id === ref.id); if (!item) return;
+  if (ref.kind !== 'sale') item.name = $('#enName').value.trim().slice(0, 60);
+  if (ref.kind !== 'cust') item.product = $('#enProd').value.trim().slice(0, 60);
+  if (ref.kind === 'sale') item.usd = money($('#enAmt').value);
+  item.at = DATE_RE.test($('#enDate').value) ? $('#enDate').value : item.at;
+  if (ref.kind === 'sale' && !item.usd) draft.sales = draft.sales.filter(x => x.id !== ref.id); // a $0 sale is a deleted sale
+  paintEditor(); applyDraft(`Edit entry for ${draft.name}`);
+});
+$('#enDelete').addEventListener('click', () => {
+  const ref = editingEntry; if (!ref || !draft) return;
+  editingEntry = null;
+  draft[LISTS[ref.kind]] = draft[LISTS[ref.kind]].filter(x => x.id !== ref.id);
+  $('#entrySheet').close();
+  paintEditor(); applyDraft(`Remove entry for ${draft.name}`); toast('Entry deleted');
 });
 $('#edName').addEventListener('change', () => applyDraft());
 // Enter adds to a list instead of submitting (or closing) the sheet
