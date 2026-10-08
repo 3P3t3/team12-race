@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0A24">
+<title>Board Plan Guest Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --night:#0E0A24; --night2:#150F33; --night3:#1E1747;
+  --line:rgba(236,232,255,.11); --line2:rgba(236,232,255,.22);
+  --ink:#F2EFFF; --mute:#A7A1CE; --dim:#6E6799;
+  --violet:#6633FF; --violet-hi:#9173FF; --acid:#E4FF3A;
+  --blue:#2E8BF1; --blue-hi:#6FB6FF; --red:#FF3D55; --red-hi:#FF7F8E;
+  --display:'Big Shoulders Display','Oswald','Arial Narrow',Impact,sans-serif;
+  --text:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --skew:-8deg; --gutter:16px;
+}
+*{box-sizing:border-box}
+html{background:var(--night);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--night);color:var(--ink);font:15px/1.4 var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ───── Ring ───── */
+.ring{position:relative;height:clamp(430px,58svh,560px);overflow:hidden;background:#120B2E}
+#ring{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shade-top{position:absolute;left:0;right:0;top:0;height:150px;background:linear-gradient(rgba(9,6,28,.66),rgba(9,6,28,0));pointer-events:none}
+.shade-bot{position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(rgba(14,10,36,0),rgba(14,10,36,.8) 60%,var(--night));pointer-events:none}
+.hud{position:absolute;inset:0;display:flex;flex-direction:column;padding:max(14px,env(safe-area-inset-top)) var(--gutter) 16px;pointer-events:none}
+.mast{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mark{display:flex;align-items:center;gap:10px}
+.mark-12{display:grid;place-items:center;width:42px;height:38px;background:var(--violet);transform:skewX(var(--skew));font:900 30px/1 var(--display);color:var(--acid);box-shadow:3px 3px 0 var(--acid)}
+.mark-12 span{transform:skewX(8deg)}
+.mark-txt{font:800 15px/.95 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.mark-txt small{display:block;font-weight:700;color:var(--acid);letter-spacing:.14em;font-size:11px;margin-top:3px}
+.rounds{text-align:right;font:700 11px/1.15 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.rounds b{display:block;font:900 30px/.85 var(--display);color:var(--ink);transform:skewX(var(--skew))}
+.vtabs{display:flex;gap:8px;margin-top:14px;pointer-events:auto}
+.vtab{display:inline-block;padding:8px 12px 7px;border:1px solid var(--line2);background:rgba(14,10,36,.5);font:800 12px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-decoration:none}
+.vtab.on{background:var(--acid);border-color:var(--acid);color:var(--night)}
+a.vtab:hover{color:var(--ink);border-color:var(--ink)}
+.bout{margin-top:auto}
+.kicker{display:inline-flex;font:800 12px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--night);background:var(--acid);padding:5px 9px 4px;transform:skewX(var(--skew))}
+.kicker span{transform:skewX(8deg)}
+.bout h1{margin:10px 0 0;font:900 clamp(34px,10vw,64px)/.86 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left bottom;text-wrap:balance;text-shadow:0 2px 24px rgba(14,10,36,.7)}
+.bout .sub{display:block;margin-top:8px;font-size:13px;color:var(--mute)}
+
+/* ───── Scorecard ───── */
+.card{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:18px var(--gutter);border-bottom:1px solid var(--line)}
+.corner{min-width:0}
+.corner.red{text-align:right}
+.corner .nm{display:block;font:800 13px/1.1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.corner.blue .nm{color:var(--blue-hi)}
+.corner.red .nm{color:var(--red-hi)}
+.corner .score{display:block;font:900 clamp(46px,16vw,78px)/.85 var(--display);font-variant-numeric:tabular-nums;transform:skewX(var(--skew))}
+.corner.blue .score{color:var(--blue-hi)}
+.corner.red .score{color:var(--red-hi)}
+.vs{font:900 20px/1 var(--display);color:var(--dim);transform:skewX(var(--skew))}
+.lead{padding:0 var(--gutter) 16px;font-size:13.5px;color:var(--acid);font-weight:600}
+.lead.tied{color:var(--mute)}
+
+/* ───── Corner lists ───── */
+.corners{padding:4px var(--gutter) 40px;display:grid;gap:26px}
+.side-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:2px solid var(--line2);padding-bottom:8px}
+.side-head h2{margin:0;font:900 26px/.9 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left bottom}
+.side.blue .side-head{border-color:var(--blue)}
+.side.red .side-head{border-color:var(--red)}
+.side-head .n{font:800 13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.guests{list-style:none;margin:0;padding:0}
+.guests li{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.g-name{min-width:0;font-weight:600;font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g-date{font:800 13px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-variant-numeric:tabular-nums}
+.g-empty{padding:14px 0;color:var(--dim);font-size:13.5px}
+body.owner .guests li{cursor:pointer}
+body.owner .guests li:active{background:rgba(145,115,255,.08)}
+.adder{display:flex;margin-top:12px}
+.text-input{width:100%;height:48px;border:1px solid var(--line2);background:var(--night);padding:0 12px;font-size:16px;outline:none}
+.text-input:focus{border-color:var(--acid)}
+.adder .text-input{flex:1;min-width:0;border-right:0}
+.adder input[type="date"]{flex:none;width:140px;height:48px;border:1px solid var(--line2);border-right:0;background:var(--night);padding:0 8px;font-size:14px;color-scheme:dark;outline:none}
+.btn-add{appearance:none;flex:none;height:48px;padding:0 16px;border:0;background:var(--violet);color:#fff;font:900 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.btn-add:active{background:var(--violet-hi)}
+
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 var(--gutter);padding:18px 0 40px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+.foot .race{font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase}
+.ghost{appearance:none;background:none;border:1px solid var(--line2);color:var(--ink);padding:10px 14px;font:800 13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase}
+.ghost:hover{border-color:var(--ink)}
+body.owner .foot .owner-in{display:none}
+.owner-flag{display:none;font:800 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--acid)}
+body.owner .owner-flag{display:block}
+
+/* ───── Owner dock ───── */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px var(--gutter) max(10px,env(safe-area-inset-bottom));background:rgba(21,15,51,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2)}
+.save-status{display:flex;align-items:center;gap:8px;max-width:560px;margin:0 auto 8px;padding:0;border:0;background:none;text-align:left;font-size:12.5px;color:var(--mute)}
+.save-status::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--acid)}
+.save-status[data-kind="saving"]::before{background:var(--violet-hi);animation:pulse 1.2s infinite}
+.save-status[data-kind="error"]{color:#FF8FA3;cursor:pointer}
+.save-status[data-kind="error"]::before{background:#FF8FA3}
+@keyframes pulse{70%{opacity:.35}}
+.dock-in{display:flex;gap:8px;align-items:center;max-width:560px;margin:0 auto;font-size:13px;color:var(--mute)}
+.dock-in .ghost{margin-left:auto}
+body.owner .corners{padding-bottom:120px}
+
+/* ───── Sheets ───── */
+dialog.sheet{border:0;padding:0;margin:0;max-width:none;max-height:92svh;width:100%;top:auto;bottom:0;left:0;right:0;background:var(--night2);color:var(--ink);border-top:3px solid var(--acid);overflow:auto;overscroll-behavior:contain}
+dialog.sheet::backdrop{background:rgba(6,4,20,.66)}
+.sheet-in{padding:18px var(--gutter) max(18px,env(safe-area-inset-bottom))}
+.sheet h3{margin:0;font:900 30px/.9 var(--display);text-transform:uppercase;transform:skewX(var(--skew));transform-origin:left}
+.sheet p.note{margin:8px 0 0;color:var(--mute);font-size:13.5px}
+.sheet-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sheet-top .close{margin-left:auto}
+.btn-line{appearance:none;border:1px solid var(--line2);background:none;height:44px;padding:0 14px;font:800 14px/1 var(--display);letter-spacing:.1em;text-transform:uppercase}
+.field{padding:14px 0;border-bottom:1px solid var(--line)}
+.field label{display:block;font-size:12px;color:var(--mute);margin-bottom:6px}
+.field input[type="date"]{width:100%;height:46px;border:1px solid var(--line2);background:var(--night);padding:0 10px;font-size:15px;color-scheme:dark;outline:none}
+.pin-input{width:100%;height:58px;margin-top:16px;border:1px solid var(--line2);background:var(--night);text-align:center;font:800 32px/1 var(--display);letter-spacing:.4em;outline:none}
+.pin-input:focus{border-color:var(--acid)}
+.err{min-height:18px;margin-top:8px;color:#FF8FA3;font-size:13px}
+.help{display:inline-block;margin-top:10px;color:var(--acid);font-weight:600;font-size:14px}
+.sheet-actions{display:flex;gap:10px;align-items:center;margin-top:18px}
+.sheet-actions .btn-acid{margin-left:auto;min-width:130px}
+.btn-acid{appearance:none;border:0;height:46px;padding:0 16px;background:var(--acid);color:var(--night);font:900 16px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.btn-acid:disabled{opacity:.6}
+.link-danger{appearance:none;border:0;background:none;color:#FF8FA3;padding:10px 0;font-weight:600;font-size:14px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);opacity:0;z-index:40;background:var(--acid);color:var(--night);padding:10px 14px;font:800 14px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;transition:.25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (min-width:760px){
+  :root{--gutter:28px}
+  .corners{grid-template-columns:1fr 1fr;gap:34px}
+  .card{padding-block:24px}
+}
+@media (min-width:1100px){
+  .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,520px)}
+  .ring{position:sticky;top:0;height:100vh;grid-column:1;grid-row:1}
+  .panel{grid-column:2;grid-row:1;height:100vh;overflow:auto;border-left:1px solid var(--line)}
+  .dock{left:auto;width:520px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="ring" aria-label="The ring">
+    <canvas id="ring" aria-hidden="true"></canvas>
+    <div class="shade-top"></div><div class="shade-bot"></div>
+    <div class="hud">
+      <div class="mast">
+        <div class="mark"><div class="mark-12"><span>12</span></div><div class="mark-txt">Team 12<small>Board plan fight</small></div></div>
+        <div class="rounds"><b id="daysLeft">—</b>days to<br>new year</div>
+      </div>
+      <nav class="vtabs" aria-label="Challenges">
+        <a class="vtab" href="index.html">Retail race</a>
+        <span class="vtab on" aria-current="page">Board plan fight</span>
+      </nav>
+      <div class="bout">
+        <span class="kicker"><span>BP1 guests · head to head</span></span>
+        <h1>Board Plan<br>Guest Challenge</h1>
+        <span class="sub" id="boutSub">Every BP1 guest lands a punch for their corner.</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="panel">
+    <div class="card">
+      <div class="corner blue"><span class="nm">Blue corner</span><span class="score" id="blueScore">0</span><span class="nm" id="blueName">Peter &amp; Yenni</span></div>
+      <div class="vs">VS</div>
+      <div class="corner red"><span class="nm">Red corner</span><span class="score" id="redScore">0</span><span class="nm" id="redName">Team 12</span></div>
+    </div>
+    <p class="lead" id="leadLine">No guests yet. First one lands the first punch.</p>
+
+    <div class="corners">
+      <section class="side blue" aria-label="Peter and Yenni's guests">
+        <div class="side-head"><h2>Peter &amp; Yenni</h2><span class="n" id="blueN">0 guests</span></div>
+        <ol class="guests" id="blueList"></ol>
+        <form class="adder" id="blueAdd" autocomplete="off" hidden>
+          <label class="sr" for="blueGuest">Guest name</label>
+          <input class="text-input" id="blueGuest" maxlength="60" placeholder="Guest name" enterkeyhint="done">
+          <label class="sr" for="blueDate">Board plan date</label>
+          <input type="date" id="blueDate">
+          <button class="btn-add" type="submit">Add</button>
+        </form>
+      </section>
+
+      <section class="side red" aria-label="Team 12's guests">
+        <div class="side-head"><h2>Team 12</h2><span class="n" id="redN">0 guests</span></div>
+        <ol class="guests" id="redList"></ol>
+        <form class="adder" id="redAdd" autocomplete="off" hidden>
+          <label class="sr" for="redGuest">Guest name</label>
+          <input class="text-input" id="redGuest" maxlength="60" placeholder="Guest name" enterkeyhint="done">
+          <label class="sr" for="redDate">Board plan date</label>
+          <input type="date" id="redDate">
+          <button class="btn-add" type="submit">Add</button>
+        </form>
+      </section>
+    </div>
+
+    <footer class="foot">
+      <span class="race">Race ID LPK63F · Sprint to ’27</span>
+      <button class="ghost owner-in" id="ownerBtn">Owner sign-in</button>
+      <span class="owner-flag">Owner mode</span>
+    </footer>
+  </main>
+</div>
+
+<div class="dock" id="dock" hidden>
+  <button type="button" class="save-status" id="saveStatus" data-kind="saved" aria-live="polite">Everything’s saved</button>
+  <div class="dock-in"><span>Add guests in either corner above.</span><button class="ghost" id="lockBtn">Lock</button></div>
+</div>
+
+<!-- Guest editor -->
+<dialog class="sheet" id="guestSheet">
+  <form class="sheet-in" id="guestForm" method="dialog">
+    <div class="sheet-top"><h3 id="gTitle">Edit guest</h3><button class="btn-line close" value="cancel" formnovalidate>Done</button></div>
+    <div class="field">
+      <label for="gName">Guest name</label>
+      <input class="text-input" id="gName" maxlength="60" autocomplete="off">
+    </div>
+    <div class="field" style="border:0">
+      <label for="gDate">Board plan date</label>
+      <input type="date" id="gDate">
+    </div>
+    <div class="sheet-actions">
+      <button type="button" class="link-danger" id="gDelete">Remove guest</button>
+      <button class="btn-acid" value="save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Owner sign-in -->
+<dialog class="sheet" id="keySheet">
+  <form class="sheet-in" id="keyForm" method="dialog">
+    <div class="sheet-top"><h3>Owner sign-in</h3><button class="btn-line close" value="cancel" formnovalidate>Close</button></div>
+    <p class="note" id="keyNote">Enter your owner PIN to add guests.</p>
+    <label class="sr" for="keyPin">Owner PIN</label>
+    <input class="pin-input" id="keyPin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" maxlength="12">
+    <div id="keyExtra" hidden>
+      <p class="note" style="margin-top:16px">This device also needs your GitHub key once, so it can save to the site. It stays in this browser.</p>
+      <div class="field">
+        <label for="keyRepo">GitHub project</label>
+        <input class="text-input" id="keyRepo" placeholder="your-username/team12-race" autocomplete="off" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="field" style="border:0">
+        <label for="keyToken">Access key</label>
+        <input class="text-input" id="keyToken" type="password" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <a class="help" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Make a key on GitHub ↗</a>
+      </div>
+    </div>
+    <div class="err" id="keyErr"></div>
+    <div class="sheet-actions"><button class="btn-acid" value="ok" id="keyGo">Unlock</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const DAY = 864e5;
+const KEY = 'team12-retail-challenge.v2'; // same storage as the retail page, so the key and PIN carry over
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const pad = n => String(n).padStart(2, '0');
+const isoOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseISO = s => { const [y, m, d] = String(s).split('-').map(Number); return new Date(y, (m || 1) - 1, d || 1); };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const ls = {
+  get(k, d = null) { try { const v = localStorage.getItem(KEY + ':' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { v == null ? localStorage.removeItem(KEY + ':' + k) : localStorage.setItem(KEY + ':' + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ───────────── Data ─────────────
+   The whole site shares one data.json. This page only ever touches `bp`,
+   and keeps everything else (people, events) exactly as it found it. */
+const SIDES = ['blue', 'red'];
+function cleanSide(a) {
+  return (Array.isArray(a) ? a : []).filter(g => g && typeof g === 'object').map((g, i) => ({
+    id: String(g.id || 'g' + i),
+    name: String(g.name || '').slice(0, 60),
+    at: DATE_RE.test(g.at) ? g.at : '',
+  })).sort((x, y) => (y.at || '').localeCompare(x.at || ''));
+}
+function normalize(raw) {
+  const d = raw && typeof raw === 'object' ? raw : {};
+  const bp = d.bp && typeof d.bp === 'object' ? d.bp : {};
+  d.bp = { blue: cleanSide(bp.blue), red: cleanSide(bp.red) };
+  return d;
+}
+let state = normalize(ls.get('cache'));
+let loaded = false;
+
+function guessRepo() {
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+  if (!m) return '';
+  const seg = location.pathname.split('/').filter(Boolean)[0];
+  return seg && !seg.includes('.') ? `${m[1]}/${seg}` : `${m[1]}/${location.hostname}`;
+}
+const conn = { repo: ls.get('repo', '') || guessRepo(), token: ls.get('token', '') };
+let owner = false;
+try { owner = !!conn.token && sessionStorage.getItem(KEY + ':owner') === '1'; } catch (e) {}
+
+let pending = false, lastSaved = ls.get('lastSaved', null);
+async function loadData() {
+  try {
+    const r = await fetch('data.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = normalize(await r.json());
+    if (pending || (lastSaved && (!d.updatedAt || d.updatedAt < lastSaved))) return;
+    const changed = JSON.stringify(d) !== JSON.stringify(state);
+    state = d; ls.set('cache', state);
+    if (changed || !loaded) { loaded = true; render(); }
+  } catch (e) { if (!loaded) { loaded = true; render(); } }
+}
+
+const b64 = s => { let bin = ''; new TextEncoder().encode(s).forEach(b => { bin += String.fromCharCode(b); }); return btoa(bin); };
+const unb64 = s => new TextDecoder().decode(Uint8Array.from(atob(String(s).replace(/\s/g, '')), c => c.charCodeAt(0)));
+async function gh(path, opts = {}) {
+  const r = await fetch(`https://api.github.com/repos/${conn.repo}${path}`, {
+    method: opts.method || 'GET', cache: 'no-store',
+    headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + conn.token, ...(opts.body ? { 'Content-Type': 'application/json' } : {}) },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) { const e = new Error(j.message || 'HTTP ' + r.status); e.status = r.status; throw e; }
+  return j;
+}
+function ghMessage(e) {
+  if (!navigator.onLine) return 'You’re offline. Reconnect, then tap here to try again.';
+  if (e.status === 401) return 'GitHub didn’t accept that key. It may be mistyped or expired, so make a new one.';
+  if (e.status === 403) return 'That key can look but can’t save. On GitHub, set “Contents” to “Read and write”.';
+  if (e.status === 404) return 'Couldn’t find that project. Check the name, and that your key is allowed to use it.';
+  return `GitHub had a hiccup (${e.message || 'unknown error'}). Tap here to try again.`;
+}
+let saveTimer = null, saving = null;
+const dirty = [];
+function setStatus(kind, msg) {
+  const el = $('#saveStatus'); el.dataset.kind = kind;
+  el.textContent = kind === 'saving' ? 'Saving to your site…' : kind === 'saved' ? 'Saved. Your team will see it in about a minute.' : msg;
+}
+function saveSoon(msg, delay = 900) {
+  state.updatedAt = new Date().toISOString();
+  ls.set('cache', state);
+  pending = true; dirty.push(msg);
+  setStatus('saving');
+  clearTimeout(saveTimer); saveTimer = setTimeout(flush, delay);
+}
+async function flush() {
+  if (saving) await saving.catch(() => {});
+  if (!dirty.length) return;
+  const msgs = dirty.splice(0);
+  const stamp = state.updatedAt;
+  const message = msgs.length === 1 ? msgs[0] : `Update board plan challenge (${msgs.length} changes)`;
+  setStatus('saving');
+  saving = (async () => {
+    for (let attempt = 0; ; attempt++) {
+      // merge our `bp` into whatever is on the site right now, so retail edits are never lost
+      let sha, remote = {};
+      try { const f = await gh('/contents/data.json'); sha = f.sha; remote = JSON.parse(unb64(f.content)); }
+      catch (e) { if (e.status !== 404) throw e; }
+      remote.bp = state.bp;
+      remote.updatedAt = stamp;
+      try { await gh('/contents/data.json', { method: 'PUT', body: { message, content: b64(JSON.stringify(remote, null, 2) + '\n'), sha } }); return; }
+      catch (e) { if (e.status === 409 && attempt === 0) continue; throw e; }
+    }
+  })();
+  try {
+    await saving;
+    lastSaved = stamp; ls.set('lastSaved', stamp);
+    if (!dirty.length) { pending = false; setStatus('saved'); }
+  } catch (e) { dirty.unshift(...msgs); setStatus('error', ghMessage(e)); }
+  finally { saving = null; }
+}
+$('#saveStatus').addEventListener('click', () => { if ($('#saveStatus').dataset.kind === 'error') flush(); });
+addEventListener('beforeunload', e => { if (pending) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ───────────── Scorecard and corner lists ───────────── */
+const NAMES = { blue: 'Peter & Yenni', red: 'Team 12' };
+const shortDate = s => s ? parseISO(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+function render() {
+  const b = state.bp.blue.length, r = state.bp.red.length;
+  $('#blueScore').textContent = b; $('#redScore').textContent = r;
+  $('#blueN').textContent = `${b} guest${b === 1 ? '' : 's'}`;
+  $('#redN').textContent = `${r} guest${r === 1 ? '' : 's'}`;
+  const lead = $('#leadLine');
+  if (!b && !r) { lead.textContent = 'No guests yet. First one lands the first punch.'; lead.className = 'lead tied'; }
+  else if (b === r) { lead.textContent = `All square at ${b}–${r}. Next guest breaks the tie.`; lead.className = 'lead tied'; }
+  else {
+    const who = b > r ? NAMES.blue : NAMES.red, by = Math.abs(b - r);
+    lead.textContent = `${who} ${by >= 3 ? 'pulling away' : 'up'} by ${by} guest${by === 1 ? '' : 's'}.`;
+    lead.className = 'lead';
+  }
+  SIDES.forEach(side => {
+    const ol = $(`#${side}List`); ol.textContent = '';
+    const list = state.bp[side];
+    if (!list.length) {
+      const li = document.createElement('li'); li.className = 'g-empty';
+      li.textContent = owner ? 'No guests yet. Add the first one below.' : 'No guests yet.';
+      ol.appendChild(li);
+    }
+    list.forEach(g => {
+      const li = document.createElement('li');
+      li.dataset.side = side; li.dataset.id = g.id;
+      li.innerHTML = '<span class="g-name"></span><span class="g-date"></span>';
+      li.querySelector('.g-name').textContent = g.name || 'Guest';
+      li.querySelector('.g-date').textContent = shortDate(g.at);
+      ol.appendChild(li);
+    });
+    $(`#${side}Add`).hidden = !owner;
+  });
+  scene.blue = b; scene.red = r;
+  const end = new Date(new Date().getFullYear() + (new Date().getMonth() === 11 ? 1 : 0), 0, 1);
+  $('#daysLeft').textContent = Math.max(0, Math.ceil((new Date(new Date().getFullYear() + 1, 0, 1) - Date.now()) / DAY));
+}
+
+SIDES.forEach(side => {
+  $(`#${side}Add`).addEventListener('submit', e => {
+    e.preventDefault();
+    if (!owner) return;
+    const input = $(`#${side}Guest`), dateInput = $(`#${side}Date`);
+    const name = input.value.trim().replace(/\s+/g, ' ');
+    if (!name) { input.focus(); return; }
+    const at = DATE_RE.test(dateInput.value) ? dateInput.value : isoOf(new Date());
+    state.bp[side].unshift({ id: uid(), name, at });
+    state.bp[side] = cleanSide(state.bp[side]);
+    input.value = '';
+    saveSoon(`Add BP1 guest ${name} for ${NAMES[side]}`);
+    render();
+    toast(`${name} added for ${NAMES[side]}`);
+    input.focus();
+  });
+  $(`#${side}List`).addEventListener('click', e => {
+    const li = e.target.closest('li[data-id]');
+    if (li && owner) openGuest(side, li.dataset.id);
+  });
+});
+
+/* Edit one guest */
+let editingGuest = null;
+function openGuest(side, id) {
+  const g = state.bp[side].find(x => x.id === id); if (!g) return;
+  editingGuest = { side, id };
+  $('#gTitle').textContent = `Edit guest · ${NAMES[side]}`;
+  $('#gName').value = g.name; $('#gDate').value = g.at;
+  $('#guestSheet').showModal();
+  setTimeout(() => $('#gName').focus(), 60);
+}
+$('#guestSheet').addEventListener('close', () => {
+  const ref = editingGuest; editingGuest = null;
+  if (!ref) return;
+  const g = state.bp[ref.side].find(x => x.id === ref.id); if (!g) return;
+  const next = { ...g, name: $('#gName').value.trim().slice(0, 60) || g.name, at: DATE_RE.test($('#gDate').value) ? $('#gDate').value : g.at };
+  if (JSON.stringify(next) === JSON.stringify(g)) return;
+  Object.assign(g, next);
+  state.bp[ref.side] = cleanSide(state.bp[ref.side]);
+  saveSoon(`Edit BP1 guest ${next.name}`); render();
+});
+$('#gDelete').addEventListener('click', () => {
+  const ref = editingGuest; if (!ref) return;
+  const g = state.bp[ref.side].find(x => x.id === ref.id);
+  if (!g || !confirm(`Remove ${g.name || 'this guest'} from ${NAMES[ref.side]}?`)) return;
+  editingGuest = null;
+  state.bp[ref.side] = state.bp[ref.side].filter(x => x.id !== ref.id);
+  $('#guestSheet').close();
+  saveSoon(`Remove BP1 guest ${g.name}`); render(); toast('Guest removed');
+});
+
+/* ───────────── Owner sign-in (same PIN and key as the retail page) ───────────── */
+const PIN_HASH = '1b31a4fb195a834eb49b5c4fa40eabc0e5e614edb7fad7dec9ecc225be339a9c', PIN_FALLBACK = 'd3ffe457';
+async function pinOk(v) {
+  const msg = 't12pin:' + v.trim();
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+    return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('') === PIN_HASH;
+  } catch (e) {
+    let h = 5381; for (const ch of msg) h = ((h << 5) + h + ch.charCodeAt(0)) | 0;
+    return (h >>> 0).toString(16) === PIN_FALLBACK;
+  }
+}
+function setOwner(on) {
+  owner = on;
+  document.body.classList.toggle('owner', on);
+  $('#dock').hidden = !on;
+  try { on ? sessionStorage.setItem(KEY + ':owner', '1') : sessionStorage.removeItem(KEY + ':owner'); } catch (e) {}
+  render();
+}
+async function verify() {
+  const repo = await gh('');
+  if (repo.permissions && repo.permissions.push === false) { const e = new Error('read only'); e.status = 403; throw e; }
+  try {
+    const f = await gh('/contents/data.json');
+    if (!pending) { state = normalize(JSON.parse(unb64(f.content))); ls.set('cache', state); loaded = true; render(); }
+  } catch (e) { if (e.status !== 404) throw e; }
+}
+function openKey(msg, needKey) {
+  const extra = needKey || !conn.repo || !conn.token;
+  $('#keyExtra').hidden = !extra;
+  $('#keyRepo').value = conn.repo || guessRepo();
+  $('#keyToken').value = ''; $('#keyPin').value = '';
+  $('#keyErr').textContent = msg || '';
+  $('#keyNote').textContent = extra ? 'Enter your owner PIN. This device needs your GitHub key once, too.' : 'Enter your owner PIN to add guests.';
+  $('#keySheet').showModal();
+  setTimeout(() => $('#keyPin').focus(), 50);
+}
+$('#ownerBtn').addEventListener('click', () => openKey());
+$('#lockBtn').addEventListener('click', () => { setOwner(false); toast('Owner mode off'); });
+$('#keyForm').addEventListener('submit', async e => {
+  if (e.submitter && e.submitter.value === 'cancel') return;
+  e.preventDefault();
+  const go = $('#keyGo'); go.disabled = true; go.textContent = 'Checking…'; $('#keyErr').textContent = '';
+  try {
+    if (!await pinOk($('#keyPin').value)) { $('#keyErr').textContent = 'That PIN doesn’t match.'; $('#keyPin').select(); return; }
+    const needKey = !$('#keyExtra').hidden;
+    const prev = { ...conn };
+    if (needKey) {
+      const repo = $('#keyRepo').value.trim().replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\.git$/i, '').replace(/\/+$/, '');
+      const token = $('#keyToken').value.trim();
+      if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) { $('#keyErr').textContent = 'Type the project like this: your-username/team12-race'; return; }
+      if (!token) { $('#keyErr').textContent = 'Paste your access key (this device needs it once).'; return; }
+      Object.assign(conn, { repo, token });
+    }
+    try {
+      await verify();
+      ls.set('repo', conn.repo); ls.set('token', conn.token);
+      $('#keySheet').close(); setOwner(true); toast('Owner mode on');
+    } catch (err) {
+      Object.assign(conn, prev);
+      $('#keyErr').textContent = ghMessage(err);
+      if (!needKey) openKey(ghMessage(err), true);
+    }
+  } finally { go.disabled = false; go.textContent = 'Unlock'; }
+});
+
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1900); }
+
+/* ════════════════════ The ring ════════════════════ */
+const scene = (() => {
+  const cv = $('#ring'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W = 0, H = 0, time = 0, last = 0, running = true;
+  const api = { blue: 0, red: 0 };
+  const crowd = Array.from({ length: 160 }, () => ({ x: Math.random(), y: Math.random(), r: .5 + Math.random() * 1.6, p: Math.random() * 6 }));
+
+  function resize() {
+    const r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  // one boxer, seen from the side; dir 1 faces right, -1 faces left
+  function boxer(x, y, h, dir, col, hi, punch, winning) {
+    const bob = Math.sin(time * 3.4 + (dir > 0 ? 0 : 1.6)) * h * .02;
+    const hip = y - h * .46 + bob, sh = y - h * .74 + bob, headY = sh - h * .13;
+    ctx.save();
+    ctx.fillStyle = 'rgba(8,6,24,.4)';
+    ctx.beginPath(); ctx.ellipse(x, y + 2, h * .26, h * .05, 0, 0, 7); ctx.fill();
+    // legs
+    ctx.strokeStyle = '#1B1440'; ctx.lineWidth = h * .085; ctx.lineCap = 'round';
+    [[-1, .9], [1, 1]].forEach(([s, len]) => {
+      ctx.beginPath(); ctx.moveTo(x, hip);
+      ctx.lineTo(x + s * dir * h * .13, hip + h * .24 * len);
+      ctx.lineTo(x + s * dir * h * .16, y - h * .02);
+      ctx.stroke();
+    });
+    // shorts + torso
+    ctx.fillStyle = col;
+    ctx.fillRect(x - h * .12, hip - h * .04, h * .24, h * .14);
+    ctx.beginPath();
+    ctx.moveTo(x - h * .13, sh); ctx.lineTo(x + h * .13, sh);
+    ctx.lineTo(x + h * .115, hip); ctx.lineTo(x - h * .115, hip);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = hi; ctx.fillRect(x - h * .13, hip - h * .055, h * .26, h * .02);
+    // head + headgear
+    ctx.fillStyle = '#2A2150'; ctx.beginPath(); ctx.arc(x + dir * h * .02, headY, h * .085, 0, 7); ctx.fill();
+    ctx.fillStyle = hi; ctx.beginPath(); ctx.arc(x + dir * h * .02, headY, h * .085, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
+    // arms: one guards the chin, the other throws
+    const reach = punch * h * .34;
+    ctx.strokeStyle = col; ctx.lineWidth = h * .075;
+    ctx.beginPath(); ctx.moveTo(x, sh + h * .04); ctx.lineTo(x + dir * (h * .1 + reach), sh + h * .02 - punch * h * .03); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, sh + h * .05); ctx.lineTo(x + dir * h * .13, headY + h * .12); ctx.stroke();
+    // gloves
+    ctx.fillStyle = hi;
+    ctx.beginPath(); ctx.arc(x + dir * (h * .13 + reach), sh + h * .02 - punch * h * .03, h * .075, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(x + dir * h * .15, headY + h * .13, h * .07, 0, 7); ctx.fill();
+    ctx.lineCap = 'butt';
+    if (winning) { // champion's glow
+      const g = ctx.createRadialGradient(x, y - h * .4, 0, x, y - h * .4, h * .9);
+      g.addColorStop(0, 'rgba(228,255,58,.16)'); g.addColorStop(1, 'rgba(228,255,58,0)');
+      ctx.fillStyle = g; ctx.fillRect(x - h, y - h * 1.3, h * 2, h * 1.6);
+    }
+    ctx.restore();
+  }
+
+  function frame(ts) {
+    if (!running) return;
+    const dt = Math.min(.05, (ts - last) / 1000 || 0); last = ts; time += dt;
+    if (!W) resize();
+    const floor = H * .78, ringTop = H * .44;
+
+    // arena
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#0B0722'); sky.addColorStop(.55, '#1A1140'); sky.addColorStop(1, '#0C0821');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+    // two spotlights
+    [[W * .3, '#2E8BF1'], [W * .7, '#FF3D55']].forEach(([x, c]) => {
+      const g = ctx.createRadialGradient(x, -H * .1, 0, x, floor, H * .95);
+      g.addColorStop(0, c + '44'); g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    });
+    // crowd
+    crowd.forEach(c => {
+      const y = ringTop * (.2 + c.y * .7), tw = .4 + .6 * Math.abs(Math.sin(time * 1.2 + c.p));
+      ctx.fillStyle = `rgba(190,180,255,${.05 + tw * .12})`;
+      ctx.beginPath(); ctx.arc(c.x * W, y, c.r, 0, 7); ctx.fill();
+    });
+
+    // canvas floor in perspective
+    const padL = W * .04, padR = W - W * .04, topL = W * .2, topR = W - W * .2;
+    ctx.fillStyle = '#241A5B';
+    ctx.beginPath(); ctx.moveTo(topL, ringTop); ctx.lineTo(topR, ringTop); ctx.lineTo(padR, floor); ctx.lineTo(padL, floor); ctx.closePath(); ctx.fill();
+    const sheen = ctx.createLinearGradient(0, ringTop, 0, floor);
+    sheen.addColorStop(0, 'rgba(255,255,255,.07)'); sheen.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sheen;
+    ctx.beginPath(); ctx.moveTo(topL, ringTop); ctx.lineTo(topR, ringTop); ctx.lineTo(padR, floor); ctx.lineTo(padL, floor); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = 'rgba(228,255,58,.5)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(W / 2, floor - (floor - ringTop) * .22, W * .17, (floor - ringTop) * .16, 0, 0, 7); ctx.stroke();
+    // apron
+    ctx.fillStyle = '#150F33'; ctx.fillRect(padL - W * .02, floor, (padR - padL) + W * .04, H - floor);
+
+    // ropes and posts
+    const posts = [[padL, floor], [padR, floor], [topL, ringTop], [topR, ringTop]];
+    const postH = [H * .22, H * .22, H * .14, H * .14];
+    [0, 1, 2].forEach(rope => {
+      const t = .32 + rope * .3;
+      ctx.strokeStyle = rope === 1 ? 'rgba(255,61,85,.75)' : 'rgba(236,232,255,.5)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(padL, floor - postH[0] * t); ctx.lineTo(padR, floor - postH[1] * t);
+      ctx.moveTo(topL, ringTop - postH[2] * t); ctx.lineTo(topR, ringTop - postH[3] * t);
+      ctx.moveTo(padL, floor - postH[0] * t); ctx.lineTo(topL, ringTop - postH[2] * t);
+      ctx.moveTo(padR, floor - postH[1] * t); ctx.lineTo(topR, ringTop - postH[3] * t);
+      ctx.stroke();
+    });
+    posts.forEach(([px, py], i) => {
+      ctx.fillStyle = i % 2 ? '#FF3D55' : '#2E8BF1';
+      ctx.fillRect(px - 4, py - postH[i], 8, postH[i]);
+      ctx.fillStyle = '#E4FF3A'; ctx.fillRect(px - 5, py - postH[i] - 5, 10, 6);
+    });
+
+    // the fighters: each lands a punch in turn, the one ahead throws more
+    const b = api.blue, r = api.red, lead = b - r;
+    const cycle = reduce ? 0 : (time % 2.6) / 2.6;
+    const bluePunch = clamp(Math.sin(cycle * Math.PI * 2) * (lead >= 0 ? 1 : .55), 0, 1);
+    const redPunch = clamp(Math.sin((cycle + .5) * Math.PI * 2) * (lead <= 0 ? 1 : .55), 0, 1);
+    const fh = Math.min(H * .3, W * .19, 190);
+    const gap = fh * .78;
+    boxer(W / 2 - gap - bluePunch * fh * .04, floor - (floor - ringTop) * .06, fh, 1, '#2E8BF1', '#6FB6FF', bluePunch, b > r);
+    boxer(W / 2 + gap + redPunch * fh * .04, floor - (floor - ringTop) * .06, fh, -1, '#FF3D55', '#FF7F8E', redPunch, r > b);
+
+    requestAnimationFrame(frame);
+  }
+
+  new ResizeObserver(() => resize()).observe(cv);
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) { last = performance.now(); requestAnimationFrame(frame); } });
+  requestAnimationFrame(frame);
+  return api;
+})();
+
+/* ───────────── Boot ───────────── */
+if (owner) { document.body.classList.add('owner'); $('#dock').hidden = false; }
+SIDES.forEach(s => { $(`#${s}Date`).value = isoOf(new Date()); });
+render();
+loadData();
+setInterval(() => { if (!document.hidden) loadData(); }, 60 * 1000);
+})();
+</script>
+</body>
+</html>
