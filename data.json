@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T23:06:45.612Z",
+  "updatedAt": "2026-10-08T23:51:39.074Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -10,7 +10,7 @@
       "color": "#FF5C8A",
       "ds": 3,
       "nc": 1,
-      "usd": 60,
+      "usd": 85,
       "samples": [
         {
           "id": "mu31bzrivssi",
@@ -44,6 +44,12 @@
           "product": "Protein",
           "usd": 60,
           "at": "2026-09-15"
+        },
+        {
+          "id": "mv06xete0ta9",
+          "product": "Double X - 10 day",
+          "usd": 25,
+          "at": "2026-10-08"
         }
       ]
     },
