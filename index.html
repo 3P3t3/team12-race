@@ -202,6 +202,18 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
 /* Runner colors */
+/* Board plan battle banner */
+.bp-banner{position:relative;display:flex;align-items:center;gap:14px;margin:18px 0 22px;padding:16px 16px 15px;text-decoration:none;color:var(--ink);overflow:hidden;
+  background:linear-gradient(100deg,rgba(46,139,241,.42),rgba(102,51,255,.26) 48%,rgba(255,61,85,.42));
+  border:2px solid var(--line2);box-shadow:4px 5px 0 rgba(255,61,85,.5),-4px -4px 0 rgba(46,139,241,.45)}
+.bp-banner::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 10px,transparent 10px 26px);pointer-events:none}
+.bp-banner:hover{border-color:var(--acid)}
+.bp-banner:active{transform:translate(1px,1px)}
+.bp-vs{flex:none;display:grid;place-items:center;width:46px;height:42px;background:var(--acid);color:var(--night);font:900 20px/1 var(--display);letter-spacing:.04em;transform:skewX(var(--skew))}
+.bp-txt{min-width:0;flex:1}
+.bp-txt b{display:block;font:900 clamp(19px,5.4vw,24px)/.95 var(--display);text-transform:uppercase;letter-spacing:.02em;transform:skewX(var(--skew));transform-origin:left}
+.bp-sub{display:block;margin-top:7px;font-size:12.5px;color:var(--ink);opacity:.85}
+.bp-go{flex:none;font:900 26px/1 var(--display);color:var(--acid)}
 /* Upcoming events */
 .events{padding:20px var(--gutter) 8px;border-top:1px solid var(--line)}
 .ev-list{list-style:none;margin:12px 0 0;padding:0}
@@ -294,6 +306,9 @@ body:not(.owner) .row.has-more{cursor:pointer}
 @media (min-width:1000px){
   :root{--gutter:28px}
   .app{display:grid;grid-template-columns:minmax(230px,280px) minmax(0,1fr) minmax(380px,470px);min-height:100vh}
+  .bp-banner{flex-direction:column;align-items:flex-start;gap:9px;padding:15px 14px}
+  .bp-banner .bp-go{position:absolute;right:14px;top:14px}
+  .bp-txt b{font-size:21px}
   .events{grid-column:1;grid-row:1;height:100vh;overflow:auto;border-top:0;border-right:1px solid var(--line);padding-top:30px}
   .stage{grid-column:2;grid-row:1;position:sticky;top:0;height:100vh}
   .panel{grid-column:3;grid-row:1}
@@ -343,6 +358,14 @@ body:not(.owner) .row.has-more{cursor:pointer}
   </section>
 
   <aside class="events" id="events" aria-label="Upcoming events">
+    <a class="bp-banner" href="boardplan.html">
+      <span class="bp-vs" aria-hidden="true">VS</span>
+      <span class="bp-txt">
+        <b>Click here for the<br>Board Plan Battle</b>
+        <span class="bp-sub" id="bpSub">Peter &amp; Yenni vs Team 12 · BP1 guests</span>
+      </span>
+      <span class="bp-go" aria-hidden="true">→</span>
+    </a>
     <div class="eyebrow"><span>Upcoming</span><b id="evCount"></b></div>
     <ol class="ev-list" id="evList"></ol>
     <button type="button" class="add-coach" id="addEvent" hidden>+ Add an event</button>
@@ -893,8 +916,12 @@ function renderHud() {
     li.title = `${STOPS[i].name} · ${shortDate(c.stopDate(i))}`;
     li.innerHTML = `<span>${STOPS[i].short} · ${shortDate(c.stopDate(i))}</span>`;
   });
-  // hide the next label if it would collide with the end labels
-  [...ol.children].forEach((li, i) => { if (li.classList.contains('next') && (i === 1 || i === LEGS - 1)) { ol.children[i === 1 ? 0 : LEGS].querySelector('span').style.opacity = 0; } });
+  // hide an end label when the current-stop label would overlap it
+  [...ol.children].forEach((li, i) => {
+    if (!li.classList.contains('next')) return;
+    if (i <= 2 && i !== 0) ol.children[0].querySelector('span').style.opacity = 0;
+    if (i >= LEGS - 2 && i !== LEGS) ol.children[LEGS].querySelector('span').style.opacity = 0;
+  });
   scene.clock = c;
 }
 function applyWeather() {
@@ -1073,7 +1100,15 @@ function renderBoard() {
 
 /* ───────────── Upcoming events ───────────── */
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+function renderBanner() {
+  const bp = state.bp && typeof state.bp === 'object' ? state.bp : {};
+  const b = Array.isArray(bp.blue) ? bp.blue.length : 0, r = Array.isArray(bp.red) ? bp.red.length : 0;
+  $('#bpSub').textContent = (b || r)
+    ? `Peter & Yenni ${b} — ${r} Team 12 · BP1 guests`
+    : 'Peter & Yenni vs Team 12 · BP1 guests';
+}
 function renderEvents() {
+  renderBanner();
   const today = isoOf(new Date());
   const list = state.events.filter(e => owner || (e.end || e.date) >= today);
   const ol = $('#evList'); ol.textContent = '';
