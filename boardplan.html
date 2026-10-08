@@ -42,10 +42,20 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mark-txt small{display:block;font-weight:700;color:var(--acid);letter-spacing:.14em;font-size:11px;margin-top:3px}
 .rounds{text-align:right;font:700 11px/1.15 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .rounds b{display:block;font:900 30px/.85 var(--display);color:var(--ink);transform:skewX(var(--skew))}
-.vtabs{display:flex;gap:8px;margin-top:14px;pointer-events:auto}
-.vtab{display:inline-block;padding:8px 12px 7px;border:1px solid var(--line2);background:rgba(14,10,36,.5);font:800 12px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-decoration:none}
-.vtab.on{background:var(--acid);border-color:var(--acid);color:var(--night)}
-a.vtab:hover{color:var(--ink);border-color:var(--ink)}
+.vtabs{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;pointer-events:auto}
+.vtab{position:relative;display:inline-block;padding:13px 20px 11px;border:2px solid var(--line2);background:rgba(14,10,36,.62);font:900 clamp(17px,5vw,23px)/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);text-decoration:none;transform:skewX(var(--skew));
+  clip-path:polygon(2% 8%,12% 0,30% 7%,46% 1%,62% 8%,79% 2%,92% 9%,100% 26%,97% 46%,100% 70%,93% 92%,78% 99%,60% 93%,44% 100%,27% 94%,11% 100%,2% 88%,0 62%,3% 38%,0 20%)}
+.vtab.on{background:var(--acid);border-color:var(--acid);color:var(--night);filter:drop-shadow(3px 4px 0 var(--red)) drop-shadow(0 0 16px rgba(228,255,58,.35))}
+.vtab.on::after{content:"";position:absolute;inset:-16px -20px;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(circle 4px at 4% 16%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 2.5px at 11% 92%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 3px at 93% 8%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 5px at 99% 72%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 2px at 52% 2%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 2.5px at 68% 99%,var(--acid) 96%,transparent 100%),
+    radial-gradient(circle 1.8px at 25% 4%,var(--red) 96%,transparent 100%),
+    radial-gradient(circle 3px at 86% 96%,var(--red) 96%,transparent 100%)}
+a.vtab:hover{color:var(--ink);border-color:var(--ink);background:rgba(14,10,36,.85)}
 .bout{margin-top:auto}
 .kicker{display:inline-flex;font:800 12px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--night);background:var(--acid);padding:5px 9px 4px;transform:skewX(var(--skew))}
 .kicker span{transform:skewX(8deg)}
@@ -153,12 +163,12 @@ dialog.sheet::backdrop{background:rgba(6,4,20,.66)}
     <div class="shade-top"></div><div class="shade-bot"></div>
     <div class="hud">
       <div class="mast">
-        <div class="mark"><div class="mark-12"><span>12</span></div><div class="mark-txt">Team 12<small>Board plan fight</small></div></div>
+        <div class="mark"><div class="mark-12"><span>12</span></div><div class="mark-txt">Team 12<small>Board plan battle</small></div></div>
         <div class="rounds"><b id="daysLeft">—</b>days to<br>new year</div>
       </div>
       <nav class="vtabs" aria-label="Challenges">
         <a class="vtab" href="index.html">Retail race</a>
-        <span class="vtab on" aria-current="page">Board plan fight</span>
+        <span class="vtab on" aria-current="page">Board plan battle</span>
       </nav>
       <div class="bout">
         <span class="kicker"><span>BP1 guests · head to head</span></span>
@@ -636,25 +646,43 @@ const scene = (() => {
     // apron
     ctx.fillStyle = '#150F33'; ctx.fillRect(padL - W * .02, floor, (padR - padL) + W * .04, H - floor);
 
-    // ropes and posts
+    // ropes and posts, drawn in two passes so the fighters sit INSIDE the ring
     const posts = [[padL, floor], [padR, floor], [topL, ringTop], [topR, ringTop]];
     const postH = [H * .22, H * .22, H * .14, H * .14];
-    [0, 1, 2].forEach(rope => {
-      const t = .32 + rope * .3;
-      ctx.strokeStyle = rope === 1 ? 'rgba(255,61,85,.75)' : 'rgba(236,232,255,.5)';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(padL, floor - postH[0] * t); ctx.lineTo(padR, floor - postH[1] * t);
-      ctx.moveTo(topL, ringTop - postH[2] * t); ctx.lineTo(topR, ringTop - postH[3] * t);
-      ctx.moveTo(padL, floor - postH[0] * t); ctx.lineTo(topL, ringTop - postH[2] * t);
-      ctx.moveTo(padR, floor - postH[1] * t); ctx.lineTo(topR, ringTop - postH[3] * t);
-      ctx.stroke();
-    });
-    posts.forEach(([px, py], i) => {
-      ctx.fillStyle = i % 2 ? '#FF3D55' : '#2E8BF1';
-      ctx.fillRect(px - 4, py - postH[i], 8, postH[i]);
-      ctx.fillStyle = '#E4FF3A'; ctx.fillRect(px - 5, py - postH[i] - 5, 10, 6);
-    });
+    const ropeT = [.32, .62, .92];
+    function backRopes() {
+      ropeT.forEach((t, rope) => {
+        ctx.strokeStyle = rope === 1 ? 'rgba(255,61,85,.6)' : 'rgba(236,232,255,.4)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(topL, ringTop - postH[2] * t); ctx.lineTo(topR, ringTop - postH[3] * t);   // far rope
+        ctx.moveTo(padL, floor - postH[0] * t); ctx.lineTo(topL, ringTop - postH[2] * t);     // left side
+        ctx.moveTo(padR, floor - postH[1] * t); ctx.lineTo(topR, ringTop - postH[3] * t);     // right side
+        ctx.stroke();
+      });
+      [2, 3].forEach(i => {
+        const [px, py] = posts[i];
+        ctx.fillStyle = i % 2 ? '#FF3D55' : '#2E8BF1';
+        ctx.fillRect(px - 3, py - postH[i], 6, postH[i]);
+        ctx.fillStyle = '#E4FF3A'; ctx.fillRect(px - 4, py - postH[i] - 4, 8, 5);
+      });
+    }
+    function frontRopes() {
+      ropeT.forEach((t, rope) => {
+        ctx.strokeStyle = rope === 1 ? 'rgba(255,61,85,.9)' : 'rgba(236,232,255,.62)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(padL, floor - postH[0] * t); ctx.lineTo(padR, floor - postH[1] * t);       // near rope, in front
+        ctx.stroke();
+      });
+      [0, 1].forEach(i => {
+        const [px, py] = posts[i];
+        ctx.fillStyle = i % 2 ? '#FF3D55' : '#2E8BF1';
+        ctx.fillRect(px - 5, py - postH[i], 10, postH[i]);
+        ctx.fillStyle = '#E4FF3A'; ctx.fillRect(px - 6, py - postH[i] - 6, 12, 7);
+      });
+    }
+    backRopes();
 
     // the fighters: each lands a punch in turn, the one ahead throws more
     const b = api.blue, r = api.red, lead = b - r;
@@ -663,8 +691,11 @@ const scene = (() => {
     const redPunch = clamp(Math.sin((cycle + .5) * Math.PI * 2) * (lead <= 0 ? 1 : .55), 0, 1);
     const fh = Math.min(H * .3, W * .19, 190);
     const gap = fh * .78;
-    boxer(W / 2 - gap - bluePunch * fh * .04, floor - (floor - ringTop) * .06, fh, 1, '#2E8BF1', '#6FB6FF', bluePunch, b > r);
-    boxer(W / 2 + gap + redPunch * fh * .04, floor - (floor - ringTop) * .06, fh, -1, '#FF3D55', '#FF7F8E', redPunch, r > b);
+    const stand = floor - (floor - ringTop) * .3; // well inside the ropes, not on the apron
+    boxer(W / 2 - gap - bluePunch * fh * .04, stand, fh, 1, '#2E8BF1', '#6FB6FF', bluePunch, b > r);
+    boxer(W / 2 + gap + redPunch * fh * .04, stand, fh, -1, '#FF3D55', '#FF7F8E', redPunch, r > b);
+
+    frontRopes();
 
     requestAnimationFrame(frame);
   }
