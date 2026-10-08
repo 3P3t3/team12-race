@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T23:05:19.295Z",
+  "updatedAt": "2026-10-08T23:05:23.911Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -352,18 +352,6 @@
       "name": "Wolf-Pack",
       "coach": false,
       "color": "#00D1C1",
-      "ds": 0,
-      "nc": 0,
-      "usd": 0,
-      "samples": [],
-      "customers": [],
-      "sales": []
-    },
-    {
-      "id": "mu1p3it6oo8k",
-      "name": "Free-Chicken",
-      "coach": false,
-      "color": "#FF4D4D",
       "ds": 0,
       "nc": 0,
       "usd": 0,
