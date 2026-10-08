@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T06:29:57.114Z",
+  "updatedAt": "2026-10-08T06:30:18.962Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -142,7 +142,7 @@
       "color": "#2EC4F1",
       "ds": 14,
       "nc": 4,
-      "usd": 366,
+      "usd": 522,
       "samples": [
         {
           "id": "mubk7ab1q5o5",
@@ -274,6 +274,12 @@
           "id": "muz5pgfc6gzt",
           "product": "Focus Tablets, Women's Daily, Fiber Etc",
           "usd": 251,
+          "at": "2026-10-07"
+        },
+        {
+          "id": "muz5q8upfxd8",
+          "product": "Protein, Creatine, Twist Tubes Etc",
+          "usd": 156,
           "at": "2026-10-07"
         }
       ]
