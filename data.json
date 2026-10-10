@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-08T23:51:39.074Z",
+  "updatedAt": "2026-10-10T19:28:49.752Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -539,7 +539,7 @@
       "name": "Emerson",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 3,
+      "ds": 4,
       "nc": 1,
       "usd": 33,
       "samples": [
@@ -560,6 +560,12 @@
           "name": "Jaidyn",
           "product": "XS",
           "at": "2026-09-22"
+        },
+        {
+          "id": "mv2sf4gngv0u",
+          "name": "Barber",
+          "product": "XS",
+          "at": "2026-10-10"
         }
       ],
       "customers": [
