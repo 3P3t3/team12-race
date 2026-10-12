@@ -202,6 +202,12 @@ dialog.sheet[open]{animation:up .32s cubic-bezier(.2,.8,.2,1)}
 .save-status[data-kind="error"]::before{background:#FF8FA3}
 .btn-acid:disabled{opacity:.6}
 /* Runner colors */
+/* Coach's quote, shown under the scene on phones (in the sky on bigger screens) */
+.coach-say{position:relative;display:flex;flex-direction:column;gap:5px;margin:0 var(--gutter);padding:13px 14px 14px;background:linear-gradient(100deg,rgba(145,115,255,.22),rgba(102,51,255,.08));border-left:4px solid var(--acid)}
+.coach-say::before{content:"";position:absolute;top:-9px;right:26px;border:9px solid transparent;border-top:0;border-bottom-color:rgba(152,124,255,.42)}
+.cs-who{font:800 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--acid)}
+.cs-txt{font-size:15px;line-height:1.35;font-weight:600}
+@media (min-width:700px){.coach-say{display:none}}
 /* Board plan battle banner */
 .bp-banner{position:relative;display:flex;align-items:center;gap:14px;margin:18px 0 22px;padding:16px 16px 15px;text-decoration:none;color:var(--ink);overflow:hidden;
   background:linear-gradient(100deg,rgba(46,139,241,.42),rgba(102,51,255,.26) 48%,rgba(255,61,85,.42));
@@ -357,12 +363,17 @@ body:not(.owner) .row.has-more{cursor:pointer}
     </div>
   </section>
 
+  <div class="coach-say" id="coachSay" hidden>
+    <span class="cs-who" id="csWho">Coach</span>
+    <span class="cs-txt" id="csTxt"></span>
+  </div>
+
   <aside class="events" id="events" aria-label="Upcoming events">
     <a class="bp-banner" href="boardplan.html">
       <span class="bp-vs" aria-hidden="true">VS</span>
       <span class="bp-txt">
         <b>Click here for the<br>Board Plan Battle</b>
-        <span class="bp-sub" id="bpSub">Peter &amp; Yenni vs Team 12 · BP1 guests</span>
+        <span class="bp-sub" id="bpSub">Peter &amp; Yenni vs Team 12 · Board Plan 1 guests</span>
       </span>
       <span class="bp-go" aria-hidden="true">→</span>
     </a>
@@ -1083,11 +1094,18 @@ function renderBoard() {
     appendDetail(cr, coach, m.key);
   }
   $('#addCoach').hidden = !owner || !!coach;
-  scene.coach = coach ? { name: /^coach\b/i.test(coach.name) ? coach.name : `Coach ${coach.name.trim().split(/\s+/)[0]}`, color: coach.color, rank: 'C', coach: true } : null;
+  if (coach) {
+    // "Peter & Yenni" takes turns on the course: a different one every 6 hours
+    const parts = coach.name.replace(/^coach\s+/i, '').split(/\s*(?:&|\+|\/| and )\s*/i).map(x => x.trim()).filter(Boolean);
+    const turn = Math.floor(Date.now() / 216e5) % Math.max(1, parts.length); // 216e5 ms = 6 hours
+    const first = (parts[turn] || coach.name).split(/\s+/)[0];
+    scene.coach = { name: `Coach ${first}`, color: coach.color, rank: 'C', coach: true, longHair: parts.length > 1 && turn === 1 };
+  } else scene.coach = null;
   scene.quotes = coach ? buildQuotes(racers) : [];
 
   renderWeek();
   renderEvents();
+  showQuote();
 
   scene.runners = (list.length ? list.slice(0, 3) : [null]).map((p, i) => ({
     name: p ? shortName(p.name) : 'Team 12',
@@ -1104,8 +1122,8 @@ function renderBanner() {
   const bp = state.bp && typeof state.bp === 'object' ? state.bp : {};
   const b = Array.isArray(bp.blue) ? bp.blue.length : 0, r = Array.isArray(bp.red) ? bp.red.length : 0;
   $('#bpSub').textContent = (b || r)
-    ? `Peter & Yenni ${b} — ${r} Team 12 · BP1 guests`
-    : 'Peter & Yenni vs Team 12 · BP1 guests';
+    ? `Peter & Yenni ${b} — ${r} Team 12 · Board Plan 1 guests`
+    : 'Peter & Yenni vs Team 12 · Board Plan 1 guests';
 }
 function renderEvents() {
   renderBanner();
@@ -1183,6 +1201,16 @@ $('#evDelete').addEventListener('click', () => {
   editingEv = null;
   $('#evSheet').close(); saveSoon(`Remove event: ${gone}`); renderEvents(); toast('Event removed');
 });
+
+/* The quote band under the scene (phones); the scene calls back as quotes cycle */
+function showQuote(text, who) {
+  const band = $('#coachSay');
+  const quotes = scene.quotes || [];
+  if (!scene.coach || !quotes.length) { band.hidden = true; return; }
+  band.hidden = false;
+  $('#csWho').textContent = who || (scene.coach && scene.coach.name) || 'Coach';
+  $('#csTxt').textContent = text || quotes[0];
+}
 
 /* ───────────── Weekly winners ───────────── */
 // Weeks run Monday–Sunday; an entry counts toward the week of the day it was added (its `at` date)
@@ -1977,6 +2005,15 @@ const scene = (() => {
     if (r.rank === 1) { ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .075, sh - h * .105, h * .15, h * .025); }
     if (r.coach) {
       // ball cap + whistle lanyard, and a "TWEET!" every few seconds, blown toward the pack
+      if (r.longHair) { // hair past the shoulders, with a ponytail
+        ctx.fillStyle = '#2B1D4D';
+        ctx.beginPath(); ctx.moveTo(x - h * .1, sh - h * .11);
+        ctx.quadraticCurveTo(x - h * .145, sh + h * .06, x - h * .085, sh + h * .12);
+        ctx.lineTo(x + h * .085, sh + h * .12);
+        ctx.quadraticCurveTo(x + h * .145, sh + h * .06, x + h * .1, sh - h * .11);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(x, sh + h * .14, h * .055, h * .07, 0, 0, 7); ctx.fill();
+      }
       ctx.fillStyle = '#0E0A24'; ctx.beginPath(); ctx.arc(x, sh - h * .1, h * .082, Math.PI, 0); ctx.fill();
       ctx.fillStyle = '#E4FF3A'; ctx.fillRect(x - h * .085, sh - h * .11, h * .17, h * .022);
       ctx.strokeStyle = '#F2EFFF'; ctx.lineWidth = Math.max(1, h * .012);
@@ -2031,9 +2068,9 @@ const scene = (() => {
   let coachAnchor = null, qIdx = 0, qT = 0;
   const Q_LEN = 7; // seconds per quote
   function drawBubble(text, ax, ay, alpha) {
-    const fs = W < 500 ? 13 : 15, lh = fs * 1.35, pad = fs * .75;
+    const fs = W < 500 ? 14 : 15, lh = fs * 1.4, pad = fs * .8;
     ctx.font = `700 ${fs}px 'Hanken Grotesk', system-ui, sans-serif`; // bold so it reads on the see-through bubble
-    const maxW = Math.min(W * .64, 360) - pad * 2;
+    const maxW = (W < 500 ? W - 24 : Math.min(W * .64, 360)) - pad * 2;
     const lines = []; let line = '';
     text.split(' ').forEach(w => { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
     if (line) lines.push(line);
@@ -2130,7 +2167,7 @@ const scene = (() => {
   /* ─── Frame ─── */
   const P = new Array(DRAW + 1);
   let last = 0, running = true;
-  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], coach: null, quotes: [], clock: null, setWeather(w) { wx = w; buildPal(); } };
+  const api = { runners: [{ name:'Team 12', rank:1, ratio:1 }], coach: null, quotes: [], onQuote: null, clock: null, setWeather(w) { wx = w; buildPal(); } };
 
   function frame(ts) {
     if (!running) return;
@@ -2182,9 +2219,13 @@ const scene = (() => {
     // the coach jogs behind the whole pack, off to the right side, cycling through his quotes
     coachAnchor = null;
     if (api.coach) {
-      if (api.quotes.length) { qT += dt; if (qT > Q_LEN) { qT = 0; qIdx++; } api.coach.qt = qT; }
+      if (api.quotes.length) {
+        qT += dt;
+        if (qT > Q_LEN) { qT = 0; qIdx++; if (api.onQuote) api.onQuote(api.quotes[qIdx % api.quotes.length], api.coach.name); }
+        api.coach.qt = qT;
+      }
       const zc = clamp(backZ - 380, 1250, 2300) + Math.sin(time * .35) * 60;
-      const sc = CD / zc, lane = Math.min(1.22, (W * .4) / (sc * RW * S)); // stay on screen on narrow phones
+      const sc = CD / zc, lane = Math.min(1.22, (W * (W < 500 ? .3 : .4)) / (sc * RW * S)); // stay on screen on narrow phones
       const rel = zc - CAMBACK + frac, n = Math.floor(rel / SEG), loc = (rel % SEG) / SEG;
       if (n >= 0 && n < DRAW) {
         if (!buckets.has(n)) buckets.set(n, []);
@@ -2215,13 +2256,14 @@ const scene = (() => {
       const rs = buckets.get(n);
       if (rs) rs.sort((p, q) => q.zc - p.zc).forEach(({ r, idx, zc, loc, lane }) => {
         const sc = CD / zc;
-        const rx = lerp(a.x, b.x, loc) + sc * lane * RW * S;
-        const ry = lerp(a.y, b.y, loc);
-        drawRunner(rx, ry, sc * 720 * S, r, idx);
+        let rx = lerp(a.x, b.x, loc) + sc * lane * RW * S;
+        const ry = lerp(a.y, b.y, loc), rh = sc * 720 * S;
+        if (r.coach) rx = clamp(rx, W * .5, W - Math.max(rh * .55, 62)); // never let the coach or his tag fall off the edge
+        drawRunner(rx, ry, rh, r, idx);
       });
     }
     drawFx(dt);
-    if (coachAnchor && api.quotes.length && qT > .6) {
+    if (coachAnchor && api.quotes.length && qT > .6 && innerWidth >= 700) {
       const fade = Math.min(1, (qT - .6) / .35, (Q_LEN - .4 - qT) / .35);
       if (fade > 0) drawBubble(api.quotes[qIdx % api.quotes.length], coachAnchor.x, coachAnchor.y, fade);
     }
@@ -2238,6 +2280,7 @@ const scene = (() => {
 if (owner) { document.body.classList.add('owner'); $('#dock').hidden = false; }
 renderHud();
 renderBoard();
+scene.onQuote = (text, who) => showQuote(text, who);
 applyWeather();
 fetchWx();
 loadData();
