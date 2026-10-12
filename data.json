@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-11T07:20:28.098Z",
+  "updatedAt": "2026-10-12T06:53:15.187Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -60,7 +60,7 @@
       "color": "#FF8A3D",
       "ds": 1,
       "nc": 0,
-      "usd": 174,
+      "usd": 210,
       "samples": [
         {
           "id": "muuydpggt1ff",
@@ -82,6 +82,12 @@
           "product": "Choc protein",
           "usd": 74,
           "at": "2026-10-05"
+        },
+        {
+          "id": "mv4wb5f75mwa",
+          "product": "Baby shampoos",
+          "usd": 36,
+          "at": "2026-10-11"
         }
       ]
     },
