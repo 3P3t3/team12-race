@@ -171,9 +171,9 @@ dialog.sheet::backdrop{background:rgba(6,4,20,.66)}
         <span class="vtab on" aria-current="page">Board plan battle</span>
       </nav>
       <div class="bout">
-        <span class="kicker"><span>BP1 guests · head to head</span></span>
+        <span class="kicker"><span>Board plan 1 guests · head to head</span></span>
         <h1>Board Plan<br>Guest Challenge</h1>
-        <span class="sub" id="boutSub">Every BP1 guest lands a punch for their corner.</span>
+        <span class="sub" id="boutSub">Every Board Plan 1 guest lands a punch for their corner.</span>
       </div>
     </div>
   </section>
@@ -248,7 +248,7 @@ dialog.sheet::backdrop{background:rgba(6,4,20,.66)}
 <dialog class="sheet" id="keySheet">
   <form class="sheet-in" id="keyForm" method="dialog">
     <div class="sheet-top"><h3>Owner sign-in</h3><button class="btn-line close" value="cancel" formnovalidate>Close</button></div>
-    <p class="note" id="keyNote">Enter your owner PIN to add guests.</p>
+    <p class="note" id="keyNote">Enter your owner PIN to add Board Plan 1 guests.</p>
     <label class="sr" for="keyPin">Owner PIN</label>
     <input class="pin-input" id="keyPin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" maxlength="12">
     <div id="keyExtra" hidden>
@@ -441,7 +441,7 @@ SIDES.forEach(side => {
     state.bp[side].unshift({ id: uid(), name, at });
     state.bp[side] = cleanSide(state.bp[side]);
     input.value = '';
-    saveSoon(`Add BP1 guest ${name} for ${NAMES[side]}`);
+    saveSoon(`Add Board Plan 1 guest ${name} for ${NAMES[side]}`);
     render();
     toast(`${name} added for ${NAMES[side]}`);
     input.focus();
@@ -470,7 +470,7 @@ $('#guestSheet').addEventListener('close', () => {
   if (JSON.stringify(next) === JSON.stringify(g)) return;
   Object.assign(g, next);
   state.bp[ref.side] = cleanSide(state.bp[ref.side]);
-  saveSoon(`Edit BP1 guest ${next.name}`); render();
+  saveSoon(`Edit Board Plan 1 guest ${next.name}`); render();
 });
 $('#gDelete').addEventListener('click', () => {
   const ref = editingGuest; if (!ref) return;
@@ -479,7 +479,7 @@ $('#gDelete').addEventListener('click', () => {
   editingGuest = null;
   state.bp[ref.side] = state.bp[ref.side].filter(x => x.id !== ref.id);
   $('#guestSheet').close();
-  saveSoon(`Remove BP1 guest ${g.name}`); render(); toast('Guest removed');
+  saveSoon(`Remove Board Plan 1 guest ${g.name}`); render(); toast('Guest removed');
 });
 
 /* ───────────── Owner sign-in (same PIN and key as the retail page) ───────────── */
@@ -515,7 +515,7 @@ function openKey(msg, needKey) {
   $('#keyRepo').value = conn.repo || guessRepo();
   $('#keyToken').value = ''; $('#keyPin').value = '';
   $('#keyErr').textContent = msg || '';
-  $('#keyNote').textContent = extra ? 'Enter your owner PIN. This device needs your GitHub key once, too.' : 'Enter your owner PIN to add guests.';
+  $('#keyNote').textContent = extra ? 'Enter your owner PIN. This device needs your GitHub key once, too.' : 'Enter your owner PIN to add Board Plan 1 guests.';
   $('#keySheet').showModal();
   setTimeout(() => $('#keyPin').focus(), 50);
 }
