@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-12T06:53:15.187Z",
+  "updatedAt": "2026-10-13T02:33:04.848Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -601,7 +601,7 @@
       "name": "Peter & Yenni",
       "coach": true,
       "color": "#3DDC97",
-      "ds": 5,
+      "ds": 6,
       "nc": 3,
       "usd": 342,
       "samples": [
@@ -634,6 +634,12 @@
           "name": "Wilson",
           "product": "XS",
           "at": "2026-09-22"
+        },
+        {
+          "id": "mv62gf2ncyt0",
+          "name": "Nick IT",
+          "product": "GI + PB Bar",
+          "at": "2026-10-12"
         }
       ],
       "customers": [
