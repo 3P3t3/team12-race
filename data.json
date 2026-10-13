@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-13T19:18:12.680Z",
+  "updatedAt": "2026-10-13T23:52:01.812Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 3,
+      "ds": 4,
       "nc": 1,
       "usd": 137,
       "samples": [
@@ -116,6 +116,12 @@
           "id": "mv72ak557dtf",
           "name": "Tedy",
           "product": "Skincare",
+          "at": "2026-10-13"
+        },
+        {
+          "id": "mv7c55ow96jz",
+          "name": "James",
+          "product": "Protein",
           "at": "2026-10-13"
         }
       ],
