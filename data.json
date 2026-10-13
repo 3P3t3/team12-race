@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-13T02:33:04.848Z",
+  "updatedAt": "2026-10-13T19:16:00.828Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -545,7 +545,7 @@
       "name": "Emerson",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 5,
+      "ds": 7,
       "nc": 1,
       "usd": 33,
       "samples": [
@@ -578,6 +578,18 @@
           "name": "Christian",
           "product": "PB Bar",
           "at": "2026-10-10"
+        },
+        {
+          "id": "mv72a345aeph",
+          "name": "Matthew",
+          "product": "GI Primer",
+          "at": "2026-10-13"
+        },
+        {
+          "id": "mv72a75nlhjb",
+          "name": "Rachael",
+          "product": "XS",
+          "at": "2026-10-13"
         }
       ],
       "customers": [
