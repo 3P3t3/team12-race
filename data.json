@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-13T19:16:43.624Z",
+  "updatedAt": "2026-10-13T19:17:26.400Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -884,5 +884,15 @@
       "note": "Bay Area teams",
       "big": false
     }
-  ]
+  ],
+  "bp": {
+    "blue": [
+      {
+        "id": "mv72c16np90g",
+        "name": "Ahmad",
+        "at": "2026-10-12"
+      }
+    ],
+    "red": []
+  }
 }
