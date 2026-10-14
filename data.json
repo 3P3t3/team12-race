@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-13T23:52:01.812Z",
+  "updatedAt": "2026-10-14T04:11:59.054Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -98,7 +98,7 @@
       "color": "#FFC53D",
       "ds": 4,
       "nc": 1,
-      "usd": 137,
+      "usd": 208,
       "samples": [
         {
           "id": "mu6c87dzb4sn",
@@ -144,6 +144,12 @@
           "product": "GI Primer",
           "usd": 85,
           "at": "2026-09-27"
+        },
+        {
+          "id": "mv7lfglp248f",
+          "product": "Sleep Health + Mag",
+          "usd": 71,
+          "at": "2026-10-13"
         }
       ]
     },
