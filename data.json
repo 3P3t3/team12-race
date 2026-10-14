@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-14T04:11:59.054Z",
+  "updatedAt": "2026-10-14T04:12:09.797Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -97,7 +97,7 @@
       "coach": false,
       "color": "#FFC53D",
       "ds": 4,
-      "nc": 1,
+      "nc": 2,
       "usd": 208,
       "samples": [
         {
@@ -130,6 +130,11 @@
           "id": "muezfz0r6xew",
           "name": "Anthony - PB Bars",
           "at": "2026-09-23"
+        },
+        {
+          "id": "mv7lfow4zmdk",
+          "name": "Cousin Vince",
+          "at": "2026-10-13"
         }
       ],
       "sales": [
