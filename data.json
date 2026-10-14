@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-14T04:12:09.797Z",
+  "updatedAt": "2026-10-14T20:31:48.317Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -626,7 +626,7 @@
       "color": "#3DDC97",
       "ds": 6,
       "nc": 3,
-      "usd": 342,
+      "usd": 493,
       "samples": [
         {
           "id": "mu7y7ere32i4",
@@ -712,6 +712,12 @@
           "product": "XS + PB Bars",
           "usd": 90,
           "at": "2026-09-29"
+        },
+        {
+          "id": "mv8kfios9jx1",
+          "product": "PB Bars + Repair Lotion",
+          "usd": 151,
+          "at": "2026-10-14"
         }
       ]
     },
