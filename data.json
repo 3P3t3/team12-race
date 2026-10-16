@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-14T20:31:48.317Z",
+  "updatedAt": "2026-10-16T03:13:31.859Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -533,7 +533,7 @@
       "color": "#FF8A3D",
       "ds": 0,
       "nc": 1,
-      "usd": 500,
+      "usd": 560,
       "samples": [],
       "customers": [
         {
@@ -548,6 +548,12 @@
           "product": "GI, Vitamins, All in 1, CBD, Bars",
           "usd": 500,
           "at": "2026-09-18"
+        },
+        {
+          "id": "mvae7zrmb8t5",
+          "product": "Twist Tubes + Blood Orange",
+          "usd": 60,
+          "at": "2026-10-15"
         }
       ]
     },
