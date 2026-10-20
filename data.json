@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-17T01:00:21.449Z",
+  "updatedAt": "2026-10-20T02:39:11.690Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 5,
+      "ds": 6,
       "nc": 3,
       "usd": 253,
       "samples": [
@@ -129,6 +129,12 @@
           "name": "Eric",
           "product": "PB Bars",
           "at": "2026-10-16"
+        },
+        {
+          "id": "mvg2r8snwdh0",
+          "name": "Vinny",
+          "product": "Protein",
+          "at": "2026-10-19"
         }
       ],
       "customers": [
