@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T06:35:54.554Z",
+  "updatedAt": "2026-10-20T06:36:06.155Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -391,7 +391,7 @@
       "name": "Anthony & Jess",
       "coach": false,
       "color": "#B06BFF",
-      "ds": 1,
+      "ds": 2,
       "nc": 1,
       "usd": 381,
       "samples": [
@@ -400,6 +400,12 @@
           "name": "",
           "product": "",
           "at": null
+        },
+        {
+          "id": "mvgb7wqyjfij",
+          "name": "Theresa",
+          "product": "Vit C",
+          "at": "2026-10-19"
         }
       ],
       "customers": [
