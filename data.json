@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T06:37:18.444Z",
+  "updatedAt": "2026-10-20T06:37:35.733Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -392,8 +392,8 @@
       "coach": false,
       "color": "#B06BFF",
       "ds": 2,
-      "nc": 2,
-      "usd": 781,
+      "nc": 3,
+      "usd": 824,
       "samples": [
         {
           "id": "f6-0",
@@ -417,6 +417,11 @@
         {
           "id": "mvgb8fzzqi3l",
           "name": "Theresa - Vit C + Mascara",
+          "at": "2026-10-19"
+        },
+        {
+          "id": "mvgb9tb6rhcc",
+          "name": "Rossi - Hair + Skin + Nail",
           "at": "2026-10-19"
         }
       ],
@@ -449,6 +454,12 @@
           "id": "mvgb9gj0auz0",
           "product": "Immunity + Vit C + XS + Double X",
           "usd": 210,
+          "at": "2026-10-19"
+        },
+        {
+          "id": "mvgb9tv9qc2c",
+          "product": "Hair + Skin + Nail",
+          "usd": 43,
           "at": "2026-10-19"
         }
       ]
