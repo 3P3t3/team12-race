@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T02:39:11.690Z",
+  "updatedAt": "2026-10-20T06:35:12.031Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -393,7 +393,7 @@
       "color": "#B06BFF",
       "ds": 1,
       "nc": 0,
-      "usd": 0,
+      "usd": 189,
       "samples": [
         {
           "id": "f6-0",
@@ -403,7 +403,14 @@
         }
       ],
       "customers": [],
-      "sales": []
+      "sales": [
+        {
+          "id": "mvgb6mhseuv7",
+          "product": "Creatine + Renew Cream",
+          "usd": 189,
+          "at": "2026-10-19"
+        }
+      ]
     },
     {
       "id": "mu4cc0agu5ns",
