@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T06:35:12.031Z",
+  "updatedAt": "2026-10-20T06:35:20.107Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -392,7 +392,7 @@
       "coach": false,
       "color": "#B06BFF",
       "ds": 1,
-      "nc": 0,
+      "nc": 1,
       "usd": 189,
       "samples": [
         {
@@ -402,7 +402,13 @@
           "at": null
         }
       ],
-      "customers": [],
+      "customers": [
+        {
+          "id": "mvgb6x7u7e9p",
+          "name": "Rob - Gut Routine",
+          "at": "2026-10-19"
+        }
+      ],
       "sales": [
         {
           "id": "mvgb6mhseuv7",
