@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T06:38:11.456Z",
+  "updatedAt": "2026-10-20T06:40:46.054Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -393,7 +393,7 @@
       "color": "#B06BFF",
       "ds": 2,
       "nc": 4,
-      "usd": 986,
+      "usd": 794,
       "samples": [
         {
           "id": "f6-0",
@@ -435,12 +435,6 @@
           "id": "mvgb6mhseuv7",
           "product": "Creatine + Renew Cream",
           "usd": 189,
-          "at": "2026-10-19"
-        },
-        {
-          "id": "mvgb7dtpgp12",
-          "product": "Gut Routine (Begin 30)",
-          "usd": 192,
           "at": "2026-10-19"
         },
         {
