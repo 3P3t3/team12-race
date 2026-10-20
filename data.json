@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T06:36:06.155Z",
+  "updatedAt": "2026-10-20T06:36:31.753Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -392,8 +392,8 @@
       "coach": false,
       "color": "#B06BFF",
       "ds": 2,
-      "nc": 1,
-      "usd": 381,
+      "nc": 2,
+      "usd": 479,
       "samples": [
         {
           "id": "f6-0",
@@ -413,6 +413,11 @@
           "id": "mvgb6x7u7e9p",
           "name": "Rob - Gut Routine",
           "at": "2026-10-19"
+        },
+        {
+          "id": "mvgb8fzzqi3l",
+          "name": "Theresa - Vit C + Mascara",
+          "at": "2026-10-19"
         }
       ],
       "sales": [
@@ -426,6 +431,12 @@
           "id": "mvgb7dtpgp12",
           "product": "Gut Routine (Begin 30)",
           "usd": 192,
+          "at": "2026-10-19"
+        },
+        {
+          "id": "mvgb8gi12k76",
+          "product": "Vit C + Mascara",
+          "usd": 98,
           "at": "2026-10-19"
         }
       ]
