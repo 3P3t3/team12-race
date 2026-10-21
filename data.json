@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-20T06:40:46.054Z",
+  "updatedAt": "2026-10-21T05:48:06.660Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 6,
+      "ds": 8,
       "nc": 3,
       "usd": 253,
       "samples": [
@@ -135,6 +135,18 @@
           "name": "Vinny",
           "product": "Protein",
           "at": "2026-10-19"
+        },
+        {
+          "id": "mvhoxvv5wq9t",
+          "name": "Cameron",
+          "product": "Sleep Health",
+          "at": "2026-10-20"
+        },
+        {
+          "id": "mvhoy1kz9o4b",
+          "name": "Arsen",
+          "product": "GI Primer",
+          "at": "2026-10-20"
         }
       ],
       "customers": [
