@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-21T05:48:06.660Z",
+  "updatedAt": "2026-10-21T05:48:16.994Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -98,7 +98,7 @@
       "color": "#FFC53D",
       "ds": 8,
       "nc": 3,
-      "usd": 253,
+      "usd": 208,
       "samples": [
         {
           "id": "mu6c87dzb4sn",
@@ -184,12 +184,6 @@
           "product": "Sleep Health + Mag",
           "usd": 71,
           "at": "2026-10-13"
-        },
-        {
-          "id": "mvbowkzs6j8b",
-          "product": "PB Bars",
-          "usd": 45,
-          "at": "2026-10-16"
         }
       ]
     },
