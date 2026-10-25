@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-21T05:48:16.994Z",
+  "updatedAt": "2026-10-25T01:51:14.486Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 8,
+      "ds": 9,
       "nc": 3,
       "usd": 208,
       "samples": [
@@ -147,6 +147,12 @@
           "name": "Arsen",
           "product": "GI Primer",
           "at": "2026-10-20"
+        },
+        {
+          "id": "mvn68u2ditef",
+          "name": "Payton",
+          "product": "Protein",
+          "at": "2026-10-24"
         }
       ],
       "customers": [
