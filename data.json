@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-10-30T01:56:58.304Z",
+  "updatedAt": "2026-11-04T23:48:36.582Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 10,
+      "ds": 13,
       "nc": 3,
       "usd": 208,
       "samples": [
@@ -159,6 +159,24 @@
           "name": "Connor",
           "product": "Pre + Post Workout",
           "at": "2026-10-29"
+        },
+        {
+          "id": "mw2rpi05mmkd",
+          "name": "Damian",
+          "product": "Post Workout",
+          "at": "2026-11-04"
+        },
+        {
+          "id": "mw2rpi0688tm",
+          "name": "Ish",
+          "product": "Whey Protein",
+          "at": "2026-11-04"
+        },
+        {
+          "id": "mw2rpi06dgba",
+          "name": "Joseph",
+          "product": "Energy Drinks + Hydration Pack",
+          "at": "2026-11-04"
         }
       ],
       "customers": [
