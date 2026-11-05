@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-05T01:19:55.196Z",
+  "updatedAt": "2026-11-05T01:22:09.223Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -1057,6 +1057,11 @@
       }
     ],
     "red": [
+      {
+        "id": "mw2v1sqvral5",
+        "name": "Cameron",
+        "at": "2026-10-20"
+      },
       {
         "id": "mv72cb5gp0t6",
         "name": "Ivan & Yamily (EA)",
