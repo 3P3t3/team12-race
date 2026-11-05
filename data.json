@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-05T01:22:50.118Z",
+  "updatedAt": "2026-11-05T01:23:00.174Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -1050,6 +1050,11 @@
   ],
   "bp": {
     "blue": [
+      {
+        "id": "mw2v2w26qpah",
+        "name": "Kaden & Alex",
+        "at": "2026-11-28"
+      },
       {
         "id": "mw2v2oatx5ny",
         "name": "Sam & Erika",
