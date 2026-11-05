@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-05T01:23:00.174Z",
+  "updatedAt": "2026-11-05T01:24:30.038Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -1071,6 +1071,11 @@
         "id": "mw2v1sqvral5",
         "name": "Cameron",
         "at": "2026-10-20"
+      },
+      {
+        "id": "mw2v4teex7br",
+        "name": "Amelia (Tiann)",
+        "at": "2026-10-19"
       },
       {
         "id": "mv72cb5gp0t6",
