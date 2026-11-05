@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-04T23:48:36.582Z",
+  "updatedAt": "2026-11-05T01:19:55.196Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -97,8 +97,8 @@
       "coach": false,
       "color": "#FFC53D",
       "ds": 13,
-      "nc": 3,
-      "usd": 208,
+      "nc": 4,
+      "usd": 230,
       "samples": [
         {
           "id": "mu6c87dzb4sn",
@@ -194,6 +194,11 @@
           "id": "mvbow4rw6awk",
           "name": "Eric - PB bars",
           "at": "2026-10-16"
+        },
+        {
+          "id": "mw2uyxbwihr6",
+          "name": "Hector - Twist Tubes",
+          "at": "2026-11-04"
         }
       ],
       "sales": [
@@ -214,6 +219,12 @@
           "product": "Sleep Health + Mag",
           "usd": 71,
           "at": "2026-10-13"
+        },
+        {
+          "id": "mw2uyxbw1lue",
+          "product": "Twist Tubes",
+          "usd": 22,
+          "at": "2026-11-04"
         }
       ]
     },
