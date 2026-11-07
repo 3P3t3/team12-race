@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-07T01:15:36.365Z",
+  "updatedAt": "2026-11-07T06:59:00.405Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -776,7 +776,7 @@
       "name": "Peter & Yenni",
       "coach": true,
       "color": "#3DDC97",
-      "ds": 6,
+      "ds": 7,
       "nc": 3,
       "usd": 493,
       "samples": [
@@ -815,6 +815,12 @@
           "name": "Nick IT",
           "product": "GI + PB Bar",
           "at": "2026-10-12"
+        },
+        {
+          "id": "mw61yp4la5bp",
+          "name": "Michael and Reyna",
+          "product": "Protein Powder + GI",
+          "at": "2026-11-06"
         }
       ],
       "customers": [
