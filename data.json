@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-07T01:13:36.965Z",
+  "updatedAt": "2026-11-07T01:15:36.365Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 14,
+      "ds": 15,
       "nc": 4,
       "usd": 230,
       "samples": [
@@ -181,6 +181,12 @@
         {
           "id": "mw5pmithk23i",
           "name": "Cam",
+          "product": "XS",
+          "at": "2026-11-06"
+        },
+        {
+          "id": "mw5pp2y5m2t2",
+          "name": "Adam",
           "product": "XS",
           "at": "2026-11-06"
         }
