@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-07T06:59:00.405Z",
+  "updatedAt": "2026-11-09T21:00:30.898Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 15,
+      "ds": 16,
       "nc": 4,
       "usd": 230,
       "samples": [
@@ -189,6 +189,12 @@
           "name": "Adam",
           "product": "XS",
           "at": "2026-11-06"
+        },
+        {
+          "id": "mw9qwl6azfcg",
+          "name": "Sam",
+          "product": "CBD Cream",
+          "at": "2026-11-09"
         }
       ],
       "customers": [
