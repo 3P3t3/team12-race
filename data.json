@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-09T21:00:30.898Z",
+  "updatedAt": "2026-11-09T21:01:29.186Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -783,8 +783,8 @@
       "coach": true,
       "color": "#3DDC97",
       "ds": 7,
-      "nc": 3,
-      "usd": 493,
+      "nc": 6,
+      "usd": 632,
       "samples": [
         {
           "id": "mu7y7ere32i4",
@@ -844,6 +844,21 @@
           "id": "mulq2srmyfsy",
           "name": "Leslie & Don",
           "at": "2026-09-28"
+        },
+        {
+          "id": "mw9qxu5e8l3o",
+          "name": "David L - Creatine",
+          "at": "2026-11-09"
+        },
+        {
+          "id": "mw9qxu5eqlcb",
+          "name": "Nate - Shampoo + Conditioner",
+          "at": "2026-11-09"
+        },
+        {
+          "id": "mw9qxu5efk0l",
+          "name": "Lesley - PB Bars",
+          "at": "2026-11-09"
         }
       ],
       "sales": [
@@ -882,6 +897,24 @@
           "product": "PB Bars + Repair Lotion",
           "usd": 151,
           "at": "2026-10-14"
+        },
+        {
+          "id": "mw9qxu5efhtl",
+          "product": "Creatine",
+          "usd": 55,
+          "at": "2026-11-09"
+        },
+        {
+          "id": "mw9qxu5ecuf2",
+          "product": "Shampoo + Conditioner",
+          "usd": 42,
+          "at": "2026-11-09"
+        },
+        {
+          "id": "mw9qxu5ep1ll",
+          "product": "PB Bars",
+          "usd": 42,
+          "at": "2026-11-09"
         }
       ]
     },
