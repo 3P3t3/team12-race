@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-09T21:01:29.186Z",
+  "updatedAt": "2026-11-10T20:04:57.642Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -954,7 +954,7 @@
       "name": "Alex Mathiesen",
       "coach": false,
       "color": "#4D7CFF",
-      "ds": 2,
+      "ds": 4,
       "nc": 2,
       "usd": 112,
       "samples": [
@@ -969,6 +969,18 @@
           "name": "Vijit",
           "product": "XS",
           "at": "2026-10-07"
+        },
+        {
+          "id": "mwb4czvtuh78",
+          "name": "Hannah",
+          "product": "Chocolate Protein Powder",
+          "at": "2026-11-10"
+        },
+        {
+          "id": "mwb4czvt41yd",
+          "name": "David",
+          "product": "XS",
+          "at": "2026-11-10"
         }
       ],
       "customers": [
