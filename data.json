@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-10T20:04:57.642Z",
+  "updatedAt": "2026-11-14T06:45:53.978Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 16,
+      "ds": 17,
       "nc": 4,
       "usd": 230,
       "samples": [
@@ -195,6 +195,12 @@
           "name": "Sam",
           "product": "CBD Cream",
           "at": "2026-11-09"
+        },
+        {
+          "id": "mwg1kszexizp",
+          "name": "Daniel",
+          "product": "Post Workout",
+          "at": "2026-11-13"
         }
       ],
       "customers": [
