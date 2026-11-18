@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-14T06:45:53.978Z",
+  "updatedAt": "2026-11-18T18:06:54.639Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 17,
+      "ds": 18,
       "nc": 4,
       "usd": 230,
       "samples": [
@@ -201,6 +201,12 @@
           "name": "Daniel",
           "product": "Post Workout",
           "at": "2026-11-13"
+        },
+        {
+          "id": "mwmfnzxrsoli",
+          "name": "Christian",
+          "product": "All In One Bar + Whey",
+          "at": "2026-11-18"
         }
       ],
       "customers": [
