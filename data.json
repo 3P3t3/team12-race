@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-18T18:06:54.639Z",
+  "updatedAt": "2026-11-21T22:20:14.742Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 18,
+      "ds": 19,
       "nc": 4,
       "usd": 230,
       "samples": [
@@ -207,6 +207,12 @@
           "name": "Christian",
           "product": "All In One Bar + Whey",
           "at": "2026-11-18"
+        },
+        {
+          "id": "mwqz1ceugbji",
+          "name": "T",
+          "product": "Coconut Water",
+          "at": "2026-11-21"
         }
       ],
       "customers": [
