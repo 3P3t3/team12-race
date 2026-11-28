@@ -1,7 +1,7 @@
 {
   "start": "2026-09-14",
   "end": "2027-01-01",
-  "updatedAt": "2026-11-21T22:20:14.742Z",
+  "updatedAt": "2026-11-28T04:03:14.452Z",
   "people": [
     {
       "id": "mu1j8g4abzip",
@@ -96,7 +96,7 @@
       "name": "Dylan Young",
       "coach": false,
       "color": "#FFC53D",
-      "ds": 19,
+      "ds": 21,
       "nc": 4,
       "usd": 230,
       "samples": [
@@ -213,6 +213,18 @@
           "name": "T",
           "product": "Coconut Water",
           "at": "2026-11-21"
+        },
+        {
+          "id": "mwzvxjtgam4u",
+          "name": "Michael",
+          "product": "Post Workout",
+          "at": "2026-11-27"
+        },
+        {
+          "id": "mwzvxjtgeqx6",
+          "name": "Dewayne",
+          "product": "XS + Preworkout",
+          "at": "2026-11-27"
         }
       ],
       "customers": [
